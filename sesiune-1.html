@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesiunea 1 — Prima zi cu Claude · AI Fluency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <svg class="loop-mark" viewBox="0 0 24 24"><circle cx="12" cy="4" r="3"/><circle cx="20" cy="12" r="3"/><circle cx="12" cy="20" r="3"/><circle cx="4" cy="12" r="3"/></svg>
+      AI FLUENCY · CURS
+    </a>
+    <div class="navlinks">
+      <a href="index.html">← Toate sesiunile</a>
+      <a href="#tutorial">Tutorial</a>
+      <a href="#aplicat">Lucru aplicat</a>
+      <a href="#anexe">Anexe</a>
+    </div>
+    <button class="toggle" onclick="toggleTheme()">☾ / ☀</button>
+  </div>
+</nav>
+
+<div class="wrap" id="top">
+  <header class="hero">
+    <div class="col">
+      <div class="eyebrow">Sesiunea 1 · Echipa Dev SQL</div>
+      <h1>Prima zi cu <em>Claude</em>.</h1>
+      <p class="lede">De la SQL developer la AI-assisted developer. La final ai făcut 3 lucruri reale pe propria muncă SQL, cunoști comenzile de bază, și înțelegi cum folosim Claude ca să respecte standardele echipei — cod ca al nostru, nu exemple de jucărie.</p>
+      <div class="hero-meta">
+        <span class="pill">~2,5–3 h</span>
+        <span class="pill">bucla 4D</span>
+        <span class="pill">Skills · MCP · Plugins</span>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="col">
+      <div class="sec-head"><span class="sec-num">01</span><h2>De ce sesiunea asta, și de ce acum</h2></div>
+      <p class="sec-intro">Echipa trece de la SQL pur spre full-stack cu AI. Nu învățăm „un tool care se schimbă săptămânal", ci un <strong>mod de a lucra cu Claude</strong> care rămâne valabil indiferent ce model sau buton se schimbă. Principiul: Claude nu e un autocomplete și nici un Google mai deștept — e un <strong>coleg junior foarte rapid și foarte citit</strong>, pe care tu îl conduci și al cărui rezultat tu îl verifici și ți-l asumi.</p>
+      <p>Regula de aur a acestei echipe rămâne valabilă și cu AI: <strong>correctness &gt; performance &gt; cleverness</strong>. Claude scrie repede; responsabilitatea rămâne a noastră.</p>
+
+      <h3>Obiective de învățare (măsurabile)</h3>
+      <p>La finalul sesiunii, fiecare participant:</p>
+      <ol>
+        <li>Poate explica, în cuvintele lui, cele 4 momente ale lucrului cu Claude (delegare → descriere → discernământ → diligență).</li>
+        <li>A folosit Claude pe <strong>o procedură / query reală</strong> din munca lui (documentare, review, optimizare).</li>
+        <li>Cunoaște și a folosit <strong>cel puțin 5 comenzi de bază</strong> + <code>@fișier</code>.</li>
+        <li>A văzut cum Claude produce cod <strong>în standardul echipei</strong> (header, logging, reguli).</li>
+        <li>Pleacă cu <strong>un artefact personal</strong>: un „cheat card" + o procedură reală documentată/revizuită.</li>
+      </ol>
+
+      <h3>Prerechizite — de trimis echipei cu o zi înainte</h3>
+      <p><strong>Obligatoriu pentru toți — de făcut ÎNAINTE de sesiune (nu în timpul ei):</strong></p>
+      <ol>
+        <li><strong>Cont Claude</strong> (Pro / Team / Enterprise) — necesar și pentru login-ul din Claude Code.</li>
+        <li><strong>Claude Code instalat și logat local.</strong> Instalare (o singură comandă):
+<pre><code># macOS / Linux / WSL
+curl -fsSL https://claude.ai/install.sh | sh
+# sau, pe orice sistem, cu npm:
+npm install -g @anthropic-ai/claude-code
+# verificare:
+claude --version</code></pre>
+        La prima rulare îți cere să te loghezi cu contul Claude (fără cheie API dacă ești pe plan Pro/Team/Enterprise). <strong>Verifică că <code>claude --version</code> merge înainte de sesiune</strong> — nu pierdem timpul de curs pe instalări.</li>
+        <li><strong>Repo-ul de lucru clonat local</strong>, cel care conține skill-ul <code>sql-enterprise</code> / <code>CLAUDE.md</code> (ca să demonstrăm în 1.4 că „Claude știe standardele noastre").</li>
+        <li><strong>Un obiect real, dar NEsensibil</strong>, din munca ta: o procedură stocată sau un query pe care le cunoști bine (de preferat din DEV). Ex: o variantă simplificată a unui sync, un raport, o procedură de pe care lucrezi acum.</li>
+      </ol>
+
+      <div class="note">
+        <span class="label">De reținut</span>
+        Lucrăm azi <strong>în Claude Code</strong> (toți îl aveți instalat). <code>claude.ai</code> din browser rămâne pentru întrebări rapide fără repo, dar mediul de lucru al echipei este Claude Code.
+      </div>
+
+      <div class="warn">
+        <span class="label">Înainte de sesiune</span>
+        Citește Anexa 2 (Ce NU trimiți niciodată). Lucrăm în distribuție farma — datele reale de clienți/stocuri și credențialele nu ies niciodată din mediul nostru. Aduceți obiecte din DEV, curățate.
+      </div>
+    </div>
+  </section>
+
+  <section id="tutorial">
+    <div class="col">
+      <div class="sec-head"><span class="sec-num">02</span><h2>Tutorial</h2></div>
+      <p class="sec-intro">~60 de minute. Un model mental, două fețe ale lui Claude, comenzile minime, și superputerea noastră: Claude cunoaște standardele echipei.</p>
+
+      <h3>1.1 Modelul mental: bucla celor 4D, pe un exemplu SQL</h3>
+      <p>Un singur cadru de reținut. Îl demonstrăm live pe un query lent, nu pe teorie.</p>
+      <table>
+        <thead><tr><th>Pas</th><th>Întrebarea</th><th>Pe exemplul nostru SQL</th></tr></thead>
+        <tbody>
+          <tr><td>1. Delegare</td><td>Merită AI aici? Ce parte îi dau, ce țin la mine?</td><td>„Am un query lent pe <code>[trans].[WarehouseStock]</code>. Îi cer lui Claude ipoteze de optimizare — dar decizia de a atinge PROD rămâne a mea."</td></tr>
+          <tr><td>2. Descriere</td><td>Cât de clar îi spun ce vreau + ce context are nevoie?</td><td>Îi dau query-ul, planul de execuție (dacă îl am) și <strong>standardele noastre</strong>: fără <code>SELECT *</code>, tipuri care se potrivesc în JOIN, etc.</td></tr>
+          <tr><td>3. Discernământ</td><td>E bun ce mi-a dat? Unde greșește?</td><td>Verific: respectă regulile? Propunerea de index e justificată sau e „ghicit"? A inventat o coloană?</td></tr>
+          <tr><td>4. Diligență</td><td>Pot să-mi pun numele pe asta?</td><td>Testez în DEV, validez în UAT, trec prin code review. <strong>„Claude a zis așa" nu e niciodată o scuză.</strong></td></tr>
+        </tbody>
+      </table>
+      <p>Idee de transmis: pașii 2 și 3 (descriere + verificare) sunt „skill-urile de prompting" — dar pașii 1 și 4 (ce delegăm și ce ne asumăm) sunt la fel de importanți și acolo greșește lumea.</p>
+
+      <h3>1.2 Cele două fețe ale lui Claude</h3>
+      <table>
+        <thead><tr><th></th><th>claude.ai (browser)</th><th>Claude Code (terminal / IDE)</th></tr></thead>
+        <tbody>
+          <tr><td>Unde</td><td>Oriunde, fără setup</td><td>În repo-ul tău, lângă cod</td></tr>
+          <tr><td>Bun pentru</td><td>întrebări, explicații, brainstorm, schițe</td><td>citește fișiere, rulează comenzi, modifică cod, <strong>știe standardele noastre</strong></td></tr>
+          <tr><td>Cum îi dai context</td><td>copiezi text, sau Projects cu instrucțiuni</td><td>vede fișierele direct cu <code>@fișier</code>, plus <code>CLAUDE.md</code></td></tr>
+          <tr><td>Rolul în tranziția noastră</td><td>întrebări rapide, fără repo</td><td><strong>mediul nostru de lucru — pasul spre full-stack</strong></td></tr>
+        </tbody>
+      </table>
+      <p>Azi lucrăm <strong>integral în Claude Code</strong> (toți îl aveți instalat și logat). Deschideți un terminal în folderul repo-ului și scrieți <code>claude</code>. <code>claude.ai</code> din browser e util pentru o întrebare rapidă când nu ești în cod, dar restul sesiunii e în Claude Code.</p>
+
+      <h3>1.3 Comenzile de bază — setul minim</h3>
+      <p>Nu învățăm 60 de comenzi. Doar cele pe care le folosești din prima zi. (Scrie <code>/</code> în Claude Code ca să le vezi pe toate — variază după versiune.)</p>
+      <table>
+        <thead><tr><th>Comandă</th><th>Ce face</th><th>Când o folosești</th></tr></thead>
+        <tbody>
+          <tr><td><code>claude</code></td><td>pornește o sesiune în folderul curent</td><td>la început, în folderul repo-ului</td></tr>
+          <tr><td><code>/init</code></td><td>scanează proiectul și creează <code>CLAUDE.md</code> (memoria proiectului)</td><td>o singură dată, la setup</td></tr>
+          <tr><td><code>/help</code></td><td>listează comenzile disponibile</td><td>când nu-ți amintești o comandă</td></tr>
+          <tr><td><code>@fisier.sql</code></td><td>aduce un fișier în context</td><td><strong>în loc de copy-paste</strong> — mai curat, apare în audit</td></tr>
+          <tr><td><code>/clear</code></td><td>șterge conversația, context curat</td><td>când începi un <strong>task nou</strong> (contextul vechi încurcă)</td></tr>
+          <tr><td><code>/compact</code></td><td>comprimă istoricul, eliberează context</td><td>când sesiunea devine lungă (la 20-30 min de lucru)</td></tr>
+          <tr><td><code>/model</code></td><td>schimbă modelul</td><td>task greu (raționament) vs. task simplu (viteză)</td></tr>
+          <tr><td><code>/review</code></td><td>code review pe modificări</td><td>înainte să dai ceva mai departe</td></tr>
+        </tbody>
+      </table>
+      <div class="note">
+        <span class="label">De știut, onest</span>
+        <ul class="tight">
+          <li>Comenzile <strong>consumă token-i</strong> — nu sunt gratis (până și <code>/compact</code> costă puțin context).</li>
+          <li>O comandă rulează în <strong>contextul curent</strong>, nu într-unul curat (de-aia există <code>/clear</code>).</li>
+          <li>Pe lângă comenzi built-in, <code>@fișier</code> și limbajul natural fac 80% din treabă la început. „Revizuiește modificările după standardele noastre" funcționează la fel de bine ca o comandă.</li>
+        </ul>
+      </div>
+
+      <h3>1.4 Superputerea noastră: Claude cunoaște standardele echipei</h3>
+      <p>Aici e diferența între „AI generic" și „AI care ne folosește nouă".</p>
+      <p>Am scris standardele noastre — <strong>formatul de header, pattern-ul de logging cu <code>RunId</code>, regulile de naming, ce e interzis</strong> — într-un fișier pe care Claude îl citește automat (un <em>skill</em> / <code>CLAUDE.md</code>). Rezultatul: când ceri o procedură, iese <strong>în formatul nostru</strong>, nu într-unul oarecare de pe internet.</p>
+      <p><strong>Demonstrație (before / after):</strong></p>
+      <ul>
+        <li><em>Before</em> (fără context): „scrie-mi o procedură care sincronizează un stoc" → cod generic, fără header-ul nostru, poate cu <code>SELECT *</code>.</li>
+        <li><em>After</em> (cu standardele încărcate): aceeași cerere → procedură cu header-ul <code>[Create] Ciotir Ionut ...</code>, <code>SET NOCOUNT ON</code>, <code>TRY/CATCH</code> cu logare în <code>logs.ProcError</code>, <code>RunId</code>, fără <code>SELECT *</code>.</li>
+      </ul>
+      <p><strong>Ideea de transmis:</strong> cu cât îi dăm mai bine contextul o dată (standardele, serverul <code>SMT-FAT-SQLB01</code>, baza <code>BufferSap</code>, pattern-urile noastre), cu atât prompturile de zi cu zi devin mai scurte și rezultatul mai bun. Ăsta e „context engineering" — subiectul unei sesiuni viitoare, dar îl simțim de azi.</p>
+      <div class="note">
+        <span class="label">Cum se numește, de fapt</span>
+        Fișierul cu regulile noastre pe care Claude îl aplică automat este un <strong>Skill</strong> (<code>.claude/skills/sql-enterprise/SKILL.md</code>). Îl poți chema explicit cu <code>/sql-enterprise</code>, sau Claude îl folosește singur când vede un task SQL. E prima dintre cele patru cărămizi ale ecosistemului (skills, MCP, agenți, plugins) — pe care le vezi la finalul acestei părți — și e <strong>deja a voastră</strong>.
+      </div>
+    </div>
+  </section>
+
+  <section id="aplicat">
+    <div class="col">
+      <div class="sec-head"><span class="sec-num">03</span><h2>Lucru aplicat</h2></div>
+      <p class="sec-intro">~90 de minute. Fiecare lucrează pe <strong>obiectul real, curățat</strong>, pe care l-a adus. Prompturile de mai jos sunt de copiat și adaptat.</p>
+      <div class="note">
+        Toate prompturile presupun că lipești obiectul tău la final. Dacă folosești skill-ul <code>sql-enterprise</code> / <code>CLAUDE.md</code>, poți scoate detaliile de standard din prompt — Claude le știe deja.
+      </div>
+
+      <h3>Exercițiul A — Documentează &amp; explică o procedură reală</h3>
+      <p><strong>Competențe: Descriere + Discernământ.</strong> Rezultat imediat util (documentăm oricum în Confluence).</p>
+      <p><strong>Prompt de pornit:</strong></p>
+<pre><code>Ești dezvoltator SQL Server senior în echipa noastră (SQL 2017+, server SMT-FAT-SQLB01, baza BufferSap).
+Îți dau o procedură stocată. Fă trei lucruri:
+
+1) Explică-mi în română, pe scurt (max 8 rânduri), ce face și în ce flux se încadrează.
+2) Verifică dacă are header-ul standard al echipei. Dacă lipsește sau e incomplet, generează-l:
+   format cu liniile [Create]/[Update]/[Modify], autor "Ciotir Ionut", dată DD.MM.YYYY,
+   SERVER: SMT-FAT-SQLB01, BD: BufferSap, plus un exemplu EXEC realist.
+3) Scrie o schiță de pagină de Confluence: scop, parametri, tabele atinse,
+   ce loghează (logs.*), riscuri și dependențe.
+
+Procedura:
+&lt;lipești aici&gt;</code></pre>
+      <div class="note">
+        <span class="label">De verificat (discernământ)</span>
+        A înțeles corect fluxul? A inventat vreo coloană/tabel? Header-ul e chiar în formatul nostru? → corectează în dialog.
+      </div>
+
+      <h3>Exercițiul B — Găsește probleme &amp; optimizează</h3>
+      <p><strong>Competențe: Discernământ + Diligență.</strong> Aici înveți să NU ai încredere oarbă.</p>
+      <p><strong>Prompt de pornit:</strong></p>
+<pre><code>Fă un code review pe procedura de mai jos, în ordinea echipei: corectitudine → securitate → performanță → stil.
+Verifică explicit regulile noastre:
+- fără SELECT * (coloane explicite)
+- SET NOCOUNT ON prezent; SET XACT_ABORT ON pentru tranzacții
+- TRY/CATCH cu logare în logs.ProcError (RunId)
+- fără cursoare dacă se poate set-based
+- tranzacții scurte; obiecte schema-qualified ([schema].[obiect])
+- fără conversii implicite în JOIN/WHERE
+
+Listează problemele pe priorități P0/P1/P2 și propune varianta corectată.
+NU-mi da recomandări de index fără să-mi spui pe baza a ce le faci (plan de execuție, DMV).
+
+Procedura:
+&lt;lipești aici&gt;</code></pre>
+      <p><strong>Opțional (nivel mid/senior):</strong> dă-i și output-ul de la query-ul „top queries by CPU" din pattern-urile noastre, sau planul de execuție, și cere ipoteze de optimizare.</p>
+      <div class="warn">
+        <span class="label">Momentul-cheie al sesiunii</span>
+        Sugestiile de index sunt <strong>puncte de plecare, nu comenzi</strong>. Se verifică față de indecșii existenți și se testează în DEV. Claude e junior-ul rapid; tu ești cel care semnează.
+      </div>
+
+      <h3>Exercițiul C — Podul spre full-stack: de la un SELECT la un endpoint</h3>
+      <p><strong>Competențe: Delegare + Descriere.</strong> Primul pas concret spre full-stack.</p>
+      <p>Luăm ceva ce știm (o interogare pe stoc) și îl ducem până la un mic API — exact drumul pe care îl facem ca echipă.</p>
+      <p><strong>Prompt de pornit:</strong></p>
+<pre><code>Am tabelul [trans].[WarehouseStock] (coloane relevante: &lt;enumeră câteva, ex: ProductCode, Quantity, ReservationsSto, WarehouseId, UpdatedAt&gt;).
+Vreau să expun stocul disponibil pentru un ProductCode printr-un mic API read-only.
+
+1) Scrie o procedură parametrizată [dbo].[WarehouseStock_GetByProduct] în standardul nostru
+   (header complet, SET NOCOUNT ON, fără SELECT *, TRY/CATCH cu logare, coloane explicite).
+   Disponibil = Quantity - ISNULL(ReservationsSto, 0).
+2) Scrie un endpoint minimal care apelează procedura și întoarce JSON, în &lt;FastAPI / .NET minimal API&gt;.
+   Ține-l scurt (sub ~40 de linii) și explică-mi fiecare parte, ca cineva care vine din SQL.
+
+Nu presupune nimic ce nu ți-am zis; dacă îți lipsește o informație, întreabă-mă întâi.</code></pre>
+      <div class="note">
+        <span class="label">Stack — deschis, la alegere</span>
+        Ambele variante sunt valide: <strong>.NET minimal API</strong> (natural, fiind pe stack Microsoft) sau <strong>Python / FastAPI</strong> (mai aproape de zona AI). Fiecare alege limbajul spre care vrea să meargă — sau, dacă are timp, cere-i lui Claude <em>ambele variante</em> și compară-le (exercițiu excelent de „delegare + descriere"). Înlocuiește <code>&lt;FastAPI / .NET minimal API&gt;</code> din prompt cu ce ai ales.
+      </div>
+      <p><strong>De transmis:</strong> nu mai scriem doar T-SQL. Cu Claude, drumul de la un <code>SELECT</code> la un endpoint funcțional e de câteva minute — dar procedura tot trebuie să treacă prin standardele și code review-ul nostru.</p>
+
+      <h3>Exercițiul D — Conectează Claude la o sursă read-only (MCP)</h3>
+      <p>MCP e „portul USB-C" prin care Claude vorbește cu unelte externe fără copy-paste. Îl gestionezi cu <code>/mcp</code>. Azi îl pornim pe DEV / read-only.</p>
+      <div class="warn">
+        <span class="label">Regula de aur MCP</span>
+        Un MCP acționează cu permisiunile tale. Pornește-l pe DEV / read-only, cu un user cu drepturi minime. Nu conecta nimic care poate modifica date direct pe BufferSap PROD fără discuție în echipă.
+      </div>
+      <p>Pas cu pas:</p>
+      <ol>
+        <li>În Claude Code, scrie <code>/mcp</code> ca să vezi conexiunile disponibile și starea lor.</li>
+        <li>Alege <strong>SQL MCP Server</strong> — varianta <strong>oficială Microsoft</strong>, construită pe Data API builder. E intenționat construit să <strong>NU</strong> lase modelul să genereze SQL liber pe date critice: expune tabele, view-uri și proceduri stocate ca unelte deterministe și controlate, nu ca un canal deschis către bază. Fix pentru cultura noastră „correctness first".</li>
+        <li>Configurează conexiunea către <code>SMT-FAT-SQLB01</code>, pe un mediu de <strong>DEV</strong>, cu un user care are doar drepturi de citire (read-only) pe <code>BufferSap</code>.</li>
+        <li>Odată conectat, cere-i lui Claude să interogheze o procedură expusă ca unealtă — de exemplu, aceeași <code>[dbo].[WarehouseStock_GetByProduct]</code> din Exercițiul C, sau o procedură de listare existentă. Observă cum Claude nu mai are nevoie să-i lipești tu output-ul: îl citește direct prin MCP.</li>
+        <li>Verifică (discernământ): răspunsul reflectă exact ce a întors procedura, sau Claude a „completat" ceva? Cere-i să-ți arate exact unealta MCP apelată și parametrii trimiși.</li>
+      </ol>
+      <p>Aceeași logică se aplică și pentru Jira / Confluence: MCP-ul <strong>oficial Atlassian</strong> (pe Cloud) sau varianta comunitară <code>sooperset/mcp-atlassian</code> (pentru Server / Data Center on-prem, în spatele VPN-ului) — utile mai târziu pentru citit tichete sau scris documentație direct din Claude Code.</p>
+      <div class="note">
+        <span class="label">Ce urmează</span>
+        Delegarea de fluxuri pe mai mulți pași către un asistent specializat (agenți / subagenți) e tema Sesiunii 2 — azi rămânem la conectarea directă prin MCP.
+      </div>
+
+      <h3>Exercițiul E — Ce e, de fapt, un plugin</h3>
+      <p>Un plugin împachetează skill-uri + comenzi + agenți + configurări MCP într-un pachet instalabil cu o comandă (<code>/plugin</code>) — „standardul echipei, la cheie". Deschide plugin-ul intern al echipei și identifică ce skill-uri și comenzi aduce.</p>
+      <p>Pas cu pas:</p>
+      <ol>
+        <li>Scrie <code>/plugin</code> în Claude Code și vezi ce pachete sunt instalate sau disponibile.</li>
+        <li>Gândește-te la ce ar însemna un plugin intern „<strong>bufferSap-dev</strong>": ar aduce dintr-o mișcare skill-ul <code>sql-enterprise</code>, plus conexiunile MCP de la Exercițiul D, plus (pe viitor) agenții de review/documentare — tot ce ai instalat și configurat azi manual, într-un singur pachet instalabil.</li>
+        <li>Identifică, în plugin-ul intern al echipei (dacă e deja disponibil) sau în structura pe care ai construit-o azi: ce skill-uri conține, ce comenzi expune, și ce configurări MCP livrează implicit.</li>
+        <li>Discuție: ce ar câștiga un coleg nou dacă tot ce ai făcut azi (skill + MCP DEV/read-only) ar veni instalat printr-un singur <code>/plugin install</code>, din prima zi?</li>
+      </ol>
+      <div class="note">
+        <span class="label">Ce urmează</span>
+        Agenții / subagenții (Sesiunea 2) și pachetarea lor într-un plugin complet (Sesiunea 5) le aprofundăm în sesiunile viitoare — azi rămâne la nivel de recunoaștere: ce este un plugin și ce aduce.
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="col">
+      <div class="sec-head"><span class="sec-num">04</span><h2>Schimb de practici</h2></div>
+      <p class="sec-intro">~20 de minute. Fiecare, pe rând (2 minute): <strong>un lucru care a mers, un lucru care NU a mers.</strong> Se notează într-un doc partajat „AI Wins &amp; Fails" (Confluence sau un doc comun). Fără judecată — și eșecurile sunt aur, arată unde greșește AI-ul și unde trebuie noi mai atenți.</p>
+      <p>Întrebări de ghidat discuția:</p>
+      <ul>
+        <li>Unde te-a ajutat cel mai mult? Unde ai pierdut timp?</li>
+        <li>A inventat ceva? Cum ți-ai dat seama?</li>
+        <li>Ce prompt a funcționat surprinzător de bine? (îl salvăm pentru toți)</li>
+      </ul>
+
+      <h3>Artefacte — ce rămâne cu tine</h3>
+      <ol>
+        <li><strong>Cheat card personal</strong> (Anexa 1) — comenzile + 2-3 prompturi care ți-au mers azi.</li>
+        <li><strong>O procedură reală</strong> documentată sau revizuită, gata de pus în Confluence / de dat la review.</li>
+        <li><strong>Docul „AI Wins &amp; Fails"</strong> al echipei — pornit azi, completat la fiecare sesiune.</li>
+      </ol>
+
+      <div class="note">
+        <span class="label">Ce urmează</span>
+        Azi ai lucrat cu un Skill, ai pornit un MCP pe DEV/read-only și ai văzut ce e un plugin. Sesiunile viitoare aprofundează, pe rând, context engineering + Skills, MCP pe datele noastre, agenți &amp; subagenți, și pachetarea totului într-un plugin intern al echipei.
+      </div>
+    </div>
+  </section>
+
+  <section id="anexe">
+    <div class="col">
+      <div class="sec-head"><span class="sec-num">05</span><h2>Anexe</h2></div>
+
+      <h3>Anexa 1 — Cheat card (de printat / lipit)</h3>
+      <p><strong>Comenzi (Claude Code):</strong></p>
+<pre><code>claude            pornește sesiunea în folderul curent
+/init             creează CLAUDE.md (memoria proiectului) — o dată
+/help             listează comenzile
+@fisier.sql       aduce un fișier în context (în loc de copy-paste)
+/clear            context curat pentru un task nou
+/compact          comprimă istoricul când sesiunea e lungă
+/model            schimbă modelul (greu vs. rapid)
+/review           code review pe modificări
+/                 (scrie doar „/") vezi toate comenzile disponibile</code></pre>
+      <p><strong>Prompturi de bază, reutilizabile:</strong></p>
+      <ul class="check">
+        <li><em>Explică:</em> „Explică-mi în română, pe scurt, ce face codul de mai jos și în ce flux se încadrează."</li>
+        <li><em>Review:</em> „Fă code review după standardele echipei (corectitudine → securitate → performanță → stil), pe priorități P0/P1/P2."</li>
+        <li><em>Documentează:</em> „Generează header-ul standard și o schiță de pagină Confluence pentru procedura de mai jos."</li>
+        <li><em>Verifică-te:</em> „Ce presupuneri ai făcut? Ce ar putea fi greșit în ce mi-ai dat?"</li>
+      </ul>
+      <div class="note">
+        <span class="label">Regula de aur</span>
+        Tu delegi, tu descrii, tu verifici, tu semnezi. Testează în DEV → UAT → PROD.
+      </div>
+
+      <h3>Anexa 2 — Ce NU trimiți niciodată către Claude (data safety &amp; GDPR)</h3>
+      <p>Suntem în distribuție farma. Tratăm asta serios de la prima zi (e și subiectul unei sesiuni viitoare dedicate).</p>
+      <div class="warn">
+        <span class="label">NU trimiți niciodată</span>
+        <ul class="tight">
+          <li>Date reale de clienți / pacienți / parteneri (nume, coduri, adrese, comenzi reale).</li>
+          <li>Connection strings, parole, chei API, token-uri.</li>
+          <li>Dump-uri de date de PROD.</li>
+          <li>Nume de utilizatori + informații care, combinate, identifică persoane.</li>
+        </ul>
+        <span class="label" style="margin-top:14px">Ce faci în schimb</span>
+        <ul class="tight">
+          <li>Lucrezi pe obiecte din <strong>DEV</strong>, cu date de test / anonimizate.</li>
+          <li>Înlocuiești valorile reale cu exemple (<code>ProductCode = 'TEST123'</code>).</li>
+          <li>Pentru scheme și proceduri e ok — structura codului nu e dată sensibilă. <strong>Datele din tabele sunt.</strong></li>
+        </ul>
+      </div>
+      <div class="note">
+        Când folosim un tool extern (inclusiv NotebookLM, care e cloud Google), verificăm întâi ce conține materialul. Acest suport are nume interne de obiecte/server/echipă, dar <strong>nu</strong> conține credențiale sau date de clienți.
+      </div>
+    </div>
+  </section>
+
+  <footer class="col">
+    <p><a href="index.html" style="color:var(--rust)">← Înapoi la toate sesiunile</a></p>
+  </footer>
+</div>
+<script src="assets/theme.js"></script>
+</body>
+</html>
