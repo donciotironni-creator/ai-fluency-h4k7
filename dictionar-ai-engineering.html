@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dicționar AI Engineering · AI Fluency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<style>
+  :root{
+    --cat-fundamente:#2f5fd0; --cat-prompting:#7a4fc0; --cat-rag:#1f8a70;
+    --cat-agenti:#b0492b; --cat-harness:#a9702a; --cat-guardrails:#b03a52;
+    --cat-evaluare:#2f7fb0; --cat-productie:#5f7d2a; --cat-deployment:#4a63b0;
+    --cat-multimodal:#a8478f; --cat-training:#3a6b8a; --cat-ecosistem:#6b6f7a;
+  }
+  [data-theme="dark"]{
+    --cat-fundamente:#7aa0ee; --cat-prompting:#b39bef; --cat-rag:#5cc2a3;
+    --cat-agenti:#dd7f57; --cat-harness:#d9ab5f; --cat-guardrails:#e07d95;
+    --cat-evaluare:#6fb0e0; --cat-productie:#a3c46a; --cat-deployment:#8ba0e0;
+    --cat-multimodal:#d68fc0; --cat-training:#79aacb; --cat-ecosistem:#a2aab8;
+  }
+
+  /* intro */
+  header.intro{padding:44px 0 22px;}
+  .lede b{color:var(--ink); font-weight:600;}
+
+  /* sticky toolbar */
+  .toolbar{position:sticky; top:57px; z-index:30; background:color-mix(in srgb,var(--paper) 90%,transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); padding:14px 0 12px;}
+  .search-row{display:flex; gap:12px; align-items:center;}
+  .search-box{position:relative; flex:1;}
+  .search-box svg{position:absolute; left:15px; top:50%; transform:translateY(-50%); width:18px; height:18px; stroke:var(--ink-faint); pointer-events:none;}
+  #q{
+    width:100%; font-family:'Hanken Grotesk',sans-serif; font-size:1.05rem; color:var(--ink);
+    background:var(--paper-3); border:1.5px solid var(--line); border-radius:12px;
+    padding:13px 44px 13px 44px; outline:none; transition:border-color .15s, box-shadow .15s;
+  }
+  #q::placeholder{color:var(--ink-faint);}
+  #q:focus{border-color:var(--rust); box-shadow:0 0 0 3px color-mix(in srgb,var(--rust) 18%,transparent);}
+  #clear{position:absolute; right:10px; top:50%; transform:translateY(-50%); border:none; background:transparent; color:var(--ink-faint); font-size:20px; cursor:pointer; padding:4px 8px; line-height:1; display:none;}
+  #clear:hover{color:var(--ink);}
+  .count{font-family:'DM Mono',monospace; font-size:12.5px; color:var(--ink-faint); white-space:nowrap;}
+  .count b{color:var(--rust);}
+
+  .chips{display:flex; gap:7px; flex-wrap:wrap; margin-top:12px;}
+  .chip{
+    font-family:'DM Mono',monospace; font-size:11.5px; cursor:pointer; user-select:none;
+    padding:5px 12px; border-radius:20px; border:1px solid var(--line); background:var(--paper-3);
+    color:var(--ink-soft); transition:all .12s; white-space:nowrap;
+  }
+  .chip:hover{border-color:var(--ink-faint); color:var(--ink);}
+  .chip.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+
+  /* entries */
+  main{padding:22px 0 40px;}
+  .group{margin-bottom:34px; scroll-margin-top:190px;}
+  .group-head{display:flex; align-items:baseline; gap:10px; margin:0 0 14px; padding-bottom:8px; border-bottom:2px solid var(--gc,var(--line));}
+  .group-head h2{font-family:'Fraunces',serif; font-weight:600; font-size:1.15rem; letter-spacing:-.01em; margin:0; color:var(--ink);}
+  .group-head .gcount{font-family:'DM Mono',monospace; font-size:11px; color:var(--ink-faint);}
+
+  .entry{padding:14px 0; border-bottom:1px solid var(--line-soft); display:grid; grid-template-columns:minmax(180px,240px) 1fr; gap:6px 26px;}
+  .entry:last-child{border-bottom:none;}
+  .term-col{display:flex; flex-direction:column; gap:6px;}
+  .term{font-family:'DM Mono',monospace; font-weight:500; font-size:1.02rem; color:var(--ink); line-height:1.3;}
+  .tag{font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.04em; text-transform:uppercase; padding:2px 8px; border-radius:20px; align-self:flex-start; background:color-mix(in srgb, currentColor 13%, transparent);}
+  .def{margin:0; color:var(--ink);}
+  .def .note{display:block; margin-top:6px; font-size:.9rem; color:var(--ink-soft); padding-left:14px; border-left:2px solid var(--line);}
+  mark{background:color-mix(in srgb,var(--rust) 28%,transparent); color:inherit; border-radius:2px; padding:0 1px;}
+
+  @media(max-width:640px){
+    .entry{grid-template-columns:1fr; gap:4px;}
+    .search-row{flex-wrap:wrap;}
+    .count{order:3; width:100%;}
+  }
+
+  .empty{text-align:center; color:var(--ink-faint); font-family:'DM Mono',monospace; font-size:14px; padding:50px 0;}
+  footer.dict-footer{padding:26px 0 60px; color:var(--ink-faint); font-size:.82rem; border-top:1px solid var(--line);}
+  footer.dict-footer code{font-family:'DM Mono',monospace; font-size:.9em;}
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html">
+      <svg class="loop-mark" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="4" r="3"/><circle cx="20" cy="12" r="3"/><circle cx="12" cy="20" r="3"/><circle cx="4" cy="12" r="3"/></svg>
+      AI FLUENCY · CURS
+    </a>
+    <div class="navlinks">
+      <a href="index.html">← Toate sesiunile</a>
+      <a href="harta-termeni-ai.html">Harta termenilor →</a>
+    </div>
+    <button class="toggle" onclick="toggleTheme()" aria-label="Comută tema (luminos/întunecat)">☾ / ☀</button>
+  </div>
+</nav>
+
+<div class="wrap">
+  <header class="intro">
+    <div class="eyebrow">Resursă · AI Engineering</div>
+    <h1>Termenii de care ai nevoie ca să devii AI engineer</h1>
+    <p class="lede">Peste 110 termeni, în <b>română</b>, grupați pe cele 12 zone pe care le străbate un inginer AI — de la <code>token</code> și <code>RAG</code> la <code>agentic</code> și <code>harness</code>. Caută pe măsură ce scrii; filtrează pe categorii.</p>
+  </header>
+</div>
+
+<div class="toolbar">
+  <div class="wrap">
+    <div class="search-row">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="q" type="text" placeholder="Caută un termen (RAG, agent, harness, embedding…)" autocomplete="off" spellcheck="false">
+        <button id="clear" aria-label="Șterge căutarea">×</button>
+      </div>
+      <span class="count" id="count"></span>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <main id="entries"></main>
+  <footer class="dict-footer">
+    Definiții originale, sintetizate pentru echipă. Termenii tehnici se folosesc în engleză (așa apar în practică); explicațiile sunt în română. Câteva repere: framework-ul 4D de AI fluency (Dakan &amp; Feller / Anthropic); documentația Claude Code („Claude Code e harness-ul agentic din jurul lui Claude”); glosare LLM publice pentru verificare încrucișată. Terminologia AI se schimbă rapid — actualizează dicționarul pe măsură ce echipa întâlnește termeni noi.
+  </footer>
+</div>
+
+<script src="assets/theme.js"></script>
+<script>
+var CATS = [
+  {id:"fundamente",  label:"Fundamente · LLM & modele"},
+  {id:"prompting",   label:"Prompting & context"},
+  {id:"rag",         label:"RAG · date proprii"},
+  {id:"agenti",      label:"Agenți & agentic"},
+  {id:"harness",     label:"Harness & infrastructură"},
+  {id:"guardrails",  label:"Guardrails & securitate"},
+  {id:"evaluare",    label:"Evaluare & observability"},
+  {id:"productie",   label:"Producție & performanță"},
+  {id:"deployment",  label:"Deployment & inferență"},
+  {id:"multimodal",  label:"Multimodal"},
+  {id:"training",    label:"Fine-tuning & training"},
+  {id:"ecosistem",   label:"Ecosistem & cultură dev"}
+];
+var CATLABEL={}; CATS.forEach(function(c){CATLABEL[c.id]=c.label;});
+
+var TERMS = [
+  // ---------- FUNDAMENTE ----------
+  {t:"LLM (Large Language Model)", c:"fundamente", d:"Model mare de limbaj: o rețea neuronală antrenată să prezică următorul token. Baza tuturor uneltelor de care vorbim (Claude, GPT, Gemini, Llama)."},
+  {t:"Transformer", c:"fundamente", d:"Arhitectura neuronală (bazată pe „atenție”) din spatele aproape tuturor LLM-urilor moderne. Introdusă în 2017 („Attention is all you need”).", n:"Dacă LLM-ul e mașina, transformer-ul e motorul."},
+  {t:"Token", c:"fundamente", d:"Unitatea de text pe care o procesează modelul: un cuvânt, o parte de cuvânt sau un semn de punctuație. Costurile și limitele se măsoară în token-i, nu în cuvinte."},
+  {t:"Tokenization", c:"fundamente", d:"Procesul de spargere a textului în token-i înainte ca modelul să-l poată procesa."},
+  {t:"Context window", c:"fundamente", d:"Cantitatea maximă de text (în token-i) pe care modelul o „vede” la un moment dat — prompt + istoric + răspuns. Ce iese din fereastră, modelul uită."},
+  {t:"Parameters (parametri)", c:"fundamente", d:"„Greutățile” învățate ale modelului; un indicator brut de capacitate (ex. 70B = 70 de miliarde de parametri)."},
+  {t:"Inference (inferență)", c:"fundamente", d:"Rularea unui model deja antrenat pe un input, ca să genereze un output. Opusul antrenării."},
+  {t:"Temperature", c:"fundamente", d:"Cât de aleatoriu/creativ e output-ul. 0 = cât mai determinist; valori mari = mai variat.", n:"Temperatura 0 NU elimină halucinațiile — doar reduce variația."},
+  {t:"Sampling (top-p / top-k)", c:"fundamente", d:"Metode de a alege următorul token dintre variantele probabile. Controlează diversitatea răspunsului."},
+  {t:"Embedding", c:"fundamente", d:"Reprezentarea numerică (un vector) a unui text, imagini sau audio. Texte cu sens similar → vectori apropiați. Baza căutării semantice și a RAG."},
+  {t:"Hallucination (halucinație)", c:"fundamente", d:"Când modelul produce ceva plauzibil, dar fals sau inventat. Se combate cu grounding, verificare și evals."},
+  {t:"Prompt", c:"fundamente", d:"Instrucțiunea și contextul date modelului ca să-i ghidezi comportamentul."},
+  {t:"System prompt", c:"fundamente", d:"Instrucțiunea de nivel înalt care setează rolul, tonul și regulile modelului pentru toată conversația."},
+  {t:"Zero-shot / Few-shot", c:"fundamente", d:"Fără exemple (zero-shot) sau cu câteva exemple (few-shot) în prompt, ca să arăți modelului formatul dorit."},
+  {t:"Chain-of-Thought (CoT)", c:"fundamente", d:"A cere modelului să „gândească pas cu pas”. Îmbunătățește sensibil raționamentul pe probleme complexe."},
+  {t:"Reasoning model", c:"fundamente", d:"Model care „gândește” explicit înainte să răspundă — mai bun la logică, matematică și sarcini pe mai mulți pași."},
+  {t:"Extended thinking", c:"fundamente", d:"Buget suplimentar de „gândire” dat unui reasoning model pentru probleme grele."},
+  {t:"Frontier model", c:"fundamente", d:"Cel mai avansat model disponibil la un moment dat, de la marii furnizori."},
+  {t:"Foundation model", c:"fundamente", d:"Model mare, general, pre-antrenat, folosit ca bază pentru multe sarcini diferite."},
+  {t:"Multimodal", c:"fundamente", d:"Model care înțelege mai multe tipuri de date: text, imagine, audio, uneori video."},
+  {t:"Benchmark", c:"fundamente", d:"Set standard de teste prin care se compară modele (ex. MMLU, SWE-bench)."},
+  {t:"Quantization (cuantizare)", c:"fundamente", d:"Reducerea preciziei numerice a modelului ca să fie mai mic și mai rapid, cu pierdere minimă de calitate."},
+  {t:"Distillation (distilare)", c:"fundamente", d:"Antrenarea unui model mic ca să imite comportamentul unuia mare."},
+  {t:"Mixture of Experts (MoE)", c:"fundamente", d:"Arhitectură în care, pentru fiecare token, se activează doar o parte din model („experți”). Mai eficient la scară."},
+  {t:"Emergent abilities", c:"fundamente", d:"Capabilități care apar doar la modele suficient de mari și nu existau la cele mici."},
+
+  // ---------- PROMPTING ----------
+  {t:"Prompt engineering", c:"prompting", d:"Arta de a formula prompturi (rol, task, format, exemple, constrângeri) ca să obții output-ul dorit."},
+  {t:"Context engineering", c:"prompting", d:"Proiectarea întregului „mediu de informație” în care gândește modelul — nu doar un mesaj, ci tot contextul: instrucțiuni, istoric, documente, unelte.", n:"Superset-ul prompt engineering-ului. Prompt engineering = un mesaj bun; context engineering = tot ce vede modelul."},
+  {t:"In-context learning", c:"prompting", d:"Modelul „învață” din exemplele date chiar în prompt, fără să-și schimbe greutățile."},
+  {t:"Prompt caching", c:"prompting", d:"Reutilizarea unei părți fixe de prompt între apeluri, ca să scazi costul și latența."},
+  {t:"Structured output", c:"prompting", d:"A cere modelului un răspuns într-un format fix (ex. JSON după o schemă), pe care îl poți valida și folosi programatic."},
+  {t:"Function calling / Tool use", c:"prompting", d:"Modelul cere execuția unei „unelte” (căutare, cod, API, MCP) și primește rezultatul înapoi.", n:"Fără unelte, un LLM e un „vorbitor”. Cu unelte, devine un „operator”."},
+  {t:"Grounding", c:"prompting", d:"Legarea răspunsului de surse și fapte reale (ex. documente furnizate), ca să scadă halucinațiile."},
+  {t:"Vibe coding", c:"prompting", d:"Stil de programare iterativ, „la feeling”: descrii intenția și lași AI-ul să scrie codul, corectând din mers."},
+
+  // ---------- RAG ----------
+  {t:"RAG (Retrieval-Augmented Generation)", c:"rag", d:"Combinarea unui LLM cu o etapă de căutare: aduci documente relevante și le pui în context ca modelul să răspundă pe datele TALE, nu doar din memorie."},
+  {t:"Retrieval", c:"rag", d:"Etapa de căutare și aducere a informației relevante pentru o întrebare."},
+  {t:"Vector database", c:"rag", d:"Bază de date optimizată pentru căutare după similaritate în embeddings. Ex.: Pinecone, Qdrant, Weaviate, pgvector, Chroma."},
+  {t:"Chunking", c:"rag", d:"Spargerea documentelor în bucăți mici înainte de indexare. Strategia de chunking face sau strică un sistem RAG."},
+  {t:"Semantic search", c:"rag", d:"Căutare după sens (prin embeddings), nu după potrivirea exactă a cuvintelor."},
+  {t:"Cosine similarity", c:"rag", d:"Măsură a cât de „apropiați” sunt doi vectori. Folosită la retrieval ca să găsești textele relevante."},
+  {t:"Reranking", c:"rag", d:"Reordonarea rezultatelor căutării cu un model mai fin, ca cele mai relevante să ajungă în față."},
+  {t:"Hybrid search", c:"rag", d:"Combinarea căutării semantice (vectori) cu cea clasică pe cuvinte-cheie, pentru rezultate mai bune."},
+  {t:"HyDE (Hypothetical Document Embeddings)", c:"rag", d:"Generezi un răspuns ipotetic, îi iei embedding-ul și cauți cu el. Îmbunătățește retrieval-ul pe întrebări vagi."},
+  {t:"GraphRAG", c:"rag", d:"RAG peste un graf de cunoștințe (relații între entități), nu doar peste bucăți de text izolate."},
+  {t:"Agentic RAG", c:"rag", d:"RAG în care un agent decide dinamic ce, când și cum să caute, iterativ, până are informația necesară."},
+  {t:"Ragas", c:"rag", d:"Framework de evaluare a sistemelor RAG (relevanța faptelor găsite, cât de bine e „ancorat” răspunsul etc.)."},
+  {t:"Knowledge base", c:"rag", d:"Colecția de documente și date proprii peste care se face retrieval."},
+
+  // ---------- AGENTI ----------
+  {t:"Agent", c:"agenti", d:"Un LLM înfășurat într-un harness care poate folosi unelte, ține stare și acționează în pași pentru a atinge un scop — nu doar răspunde o singură dată."},
+  {t:"Agentic", c:"agenti", d:"Adjectiv pentru un sistem care se comportă ca un agent: planifică, folosește unelte, iterează, cu un grad de autonomie."},
+  {t:"ReAct (Reason + Act)", c:"agenti", d:"Tipar de buclă în care modelul alternează raționament și acțiuni (tool calls), pas cu pas."},
+  {t:"MCP (Model Context Protocol)", c:"agenti", d:"Standard deschis prin care modelele se conectează la unelte și sisteme externe (baze de date, Jira, Confluence) în timpul inferenței.", n:"„USB-C pentru AI”: un mod standard de a lega modelul de datele și uneltele tale."},
+  {t:"Multi-agent", c:"agenti", d:"Mai mulți agenți specializați care colaborează (ex. planner + executant + reviewer)."},
+  {t:"Subagent", c:"agenti", d:"Un agent secundar căruia agentul principal îi deleagă o sub-sarcină; lucrează izolat și întoarce un rezumat, fără să umple contextul principal."},
+  {t:"Orchestration", c:"agenti", d:"Coordonarea pașilor, uneltelor și agenților într-un flux coerent."},
+  {t:"Memory (short / long-term)", c:"agenti", d:"Ce reține agentul: pe termen scurt (în contextul rulării curente) și pe termen lung (stocat extern, adus înapoi la nevoie)."},
+  {t:"Human-in-the-loop", c:"agenti", d:"Puncte în flux unde un om aprobă sau corectează înainte ca agentul să continue. Esențial pentru acțiuni riscante."},
+  {t:"Computer use", c:"agenti", d:"Capabilitatea unui agent de a controla un calculator (mouse, tastatură, ecran) ca un om."},
+  {t:"Coding agent", c:"agenti", d:"Agent specializat pe scris și modificat cod. Ex.: Claude Code."},
+  {t:"Planning", c:"agenti", d:"Etapa în care agentul își face un plan pe pași înainte de a executa."},
+  {t:"Autonomy (autonomie)", c:"agenti", d:"Cât de mult acționează agentul singur, fără intervenție umană."},
+  {t:"Policy", c:"agenti", d:"Comportamentul pe care-l urmează un agent — ce acțiune ia în fiecare situație. Parțial învățat în greutăți, parțial dat de harness."},
+
+  // ---------- HARNESS ----------
+  {t:"Harness (agent harness)", c:"harness", d:"„Schela” software din jurul modelului care-l transformă în agent: bucla, apelurile de unelte, gestiunea contextului, memoria, guardrails, tracing.", n:"Documentația spune direct: „Claude Code e harness-ul agentic din jurul lui Claude”. Harness = tot ce nu e modelul."},
+  {t:"Scaffolding", c:"harness", d:"Codul și structura inițiale care asamblează agentul înainte de prima rulare. (Harness = ce se întâmplă în timpul rulării.)"},
+  {t:"Agentic loop (bucla)", c:"harness", d:"Ciclul de bază al unui agent: apelezi modelul → parsezi output-ul → execuți tool-uri → bagi rezultatele înapoi → decizi când te oprești."},
+  {t:"Control flow", c:"harness", d:"Regulile din jurul buclei: retry-uri, timeout-uri, limită de pași, plafon de buget, condiții de oprire."},
+  {t:"AI gateway", c:"harness", d:"Strat prin care treci toate apelurile către modele — rutare, fallback, urmărire de cost, chei. Ex.: LiteLLM, OpenRouter, Portkey."},
+  {t:"Model routing", c:"harness", d:"Alegerea automată a modelului potrivit pentru fiecare cerere, după cost și complexitate."},
+  {t:"Fallback", c:"harness", d:"Trecerea automată pe alt model sau furnizor dacă primul eșuează."},
+  {t:"Semantic caching", c:"harness", d:"Servirea unui răspuns pre-calculat pentru cereri similare, ca să scazi latența și costul."},
+  {t:"Compound AI system", c:"harness", d:"Sistem care combină mai multe modele, componente și pași — nu un singur apel de model."},
+  {t:"Context compaction", c:"harness", d:"Comprimarea sau sumarizarea contextului când fereastra se umple, ca să poți continua."},
+
+  // ---------- GUARDRAILS ----------
+  {t:"Guardrails", c:"guardrails", d:"Mecanisme care constrâng intrările și ieșirile unui sistem AI: validare, filtrare, reguli de comportament."},
+  {t:"Prompt injection", c:"guardrails", d:"Atac în care un input — sau un document adus în context — conține instrucțiuni ascunse care „deturnează” modelul."},
+  {t:"Jailbreak", c:"guardrails", d:"Păcălirea modelului să treacă peste regulile și măsurile lui de siguranță."},
+  {t:"PII redaction", c:"guardrails", d:"Eliminarea sau anonimizarea datelor personale înainte de a le trimite modelului. Relevant pentru GDPR."},
+  {t:"Input / output validation", c:"guardrails", d:"Verificarea că intrarea și ieșirea respectă un format și niște reguli așteptate."},
+  {t:"Hallucination detection", c:"guardrails", d:"Tehnici de a detecta când modelul inventează informații."},
+  {t:"Red teaming", c:"guardrails", d:"Testarea deliberată a sistemului cu inputuri adverse sau răuvoitoare, ca să-i găsești slăbiciunile."},
+  {t:"Alignment", c:"guardrails", d:"Cât de bine se comportă modelul conform intențiilor și valorilor umane."},
+  {t:"Least privilege", c:"guardrails", d:"A da unui agent sau MCP doar drepturile minime necesare. Principiu de securitate esențial când conectezi AI la sistemele tale."},
+
+  // ---------- EVALUARE ----------
+  {t:"Eval (evaluare)", c:"evaluare", d:"Set de teste și metrici prin care măsori obiectiv calitatea output-ului AI. „E suficient de bun?” devine măsurabil."},
+  {t:"LLM-as-judge", c:"evaluare", d:"Folosirea unui LLM ca „arbitru” care notează output-ul altui model după criterii date."},
+  {t:"Golden dataset / ground truth", c:"evaluare", d:"Setul de răspunsuri corecte de referință față de care compari ce produce sistemul."},
+  {t:"Tracing", c:"evaluare", d:"Înregistrarea pas-cu-pas a ce a făcut sistemul (apeluri, unelte, decizii) pentru depanare."},
+  {t:"Observability", c:"evaluare", d:"Capacitatea de a vedea ce se întâmplă în sistem în producție: loguri, metrici, trace-uri. Ex.: LangSmith, Langfuse, Helicone, Arize Phoenix."},
+  {t:"Drift", c:"evaluare", d:"Degradarea în timp a performanței, pentru că datele sau lumea se schimbă."},
+  {t:"Regression testing", c:"evaluare", d:"Verificarea că o modificare nouă nu a stricat ceva ce funcționa înainte."},
+  {t:"Perplexity", c:"evaluare", d:"Măsură a cât de bine prezice un model un text de referință. Mai mic = mai bine."},
+
+  // ---------- PRODUCTIE ----------
+  {t:"Latency (latență)", c:"productie", d:"Cât durează până primești răspunsul de la model."},
+  {t:"Throughput", c:"productie", d:"Câte cereri sau câți token-i procesezi pe unitatea de timp."},
+  {t:"Streaming", c:"productie", d:"Trimiterea răspunsului token cu token, pe măsură ce se generează — UX mult mai bun decât să aștepți tot."},
+  {t:"Token budget", c:"productie", d:"Limita de token-i (deci de cost și de context) pe care ți-o aloci pentru o sarcină."},
+  {t:"Cost optimization", c:"productie", d:"Reducerea costului: model mai mic unde e suficient, caching, prompturi mai scurte, batching."},
+  {t:"Rate limit", c:"productie", d:"Limita de cereri pe care ți-o impune furnizorul într-un interval de timp."},
+  {t:"Batching", c:"productie", d:"Gruparea mai multor cereri împreună pentru eficiență și cost mai mic."},
+  {t:"SSE / WebSockets", c:"productie", d:"Mecanisme prin care serverul „împinge” date în timp real către client. Folosite pentru streaming."},
+
+  // ---------- DEPLOYMENT ----------
+  {t:"Self-hosting", c:"deployment", d:"Rularea unui model pe infrastructura ta, nu printr-un API extern. Mai mult control, mai multă responsabilitate."},
+  {t:"Inference platform", c:"deployment", d:"Serviciu care rulează modele pentru tine. Ex.: Together, Replicate, Fireworks, Groq, Cerebras."},
+  {t:"vLLM", c:"deployment", d:"Motor open-source pentru servirea eficientă a LLM-urilor la scară."},
+  {t:"Ollama", c:"deployment", d:"Unealtă simplă de rulat modele open-source local, pe mașina ta."},
+  {t:"GPU", c:"deployment", d:"Hardware-ul specializat pe care rulează antrenarea și inferența modelelor."},
+  {t:"API / endpoint", c:"deployment", d:"Interfața prin care apelezi un model (ex. endpoint-ul /v1/messages)."},
+  {t:"Serving", c:"deployment", d:"Punerea unui model „în producție” ca serviciu apelabil de aplicațiile tale."},
+
+  // ---------- MULTIMODAL ----------
+  {t:"Vision", c:"multimodal", d:"Capacitatea modelului de a „vedea” și înțelege imagini."},
+  {t:"Image generation", c:"multimodal", d:"Generarea de imagini din text (ex. modele de tip diffusion)."},
+  {t:"Diffusion model", c:"multimodal", d:"Clasă de modele care generează imagini pornind de la zgomot și „curățându-l” treptat până iese imaginea."},
+  {t:"TTS / STT", c:"multimodal", d:"Text-to-speech / speech-to-text: conversia voce ↔ text."},
+  {t:"Voice agent", c:"multimodal", d:"Agent care interacționează prin voce, în timp real."},
+  {t:"OCR / Document AI", c:"multimodal", d:"Extragerea de text și structură din documente și imagini scanate."},
+
+  // ---------- TRAINING ----------
+  {t:"Pretraining", c:"training", d:"Antrenarea inițială a modelului pe cantități uriașe de date generale — de aici vine „cunoașterea” lui de bază."},
+  {t:"Fine-tuning", c:"training", d:"Ajustarea unui model pre-antrenat pe datele tale, ca să-l specializezi (îi schimbă greutățile).", n:"RAG aduce fapte la runtime; fine-tuning „coace” stil și tipare în greutăți. RAG e mai ieftin de actualizat; fine-tuning câștigă la ton și format."},
+  {t:"SFT (Supervised Fine-Tuning)", c:"training", d:"Fine-tuning pe perechi input → output corecte, date de oameni."},
+  {t:"RLHF (Reinforcement Learning from Human Feedback)", c:"training", d:"Reglarea modelului pe baza preferințelor umane, ca să răspundă mai util și mai sigur."},
+  {t:"LoRA / PEFT", c:"training", d:"Fine-tuning eficient: adaugi adaptoare mici peste un model „înghețat”, în loc să rescrii toate greutățile. Mult mai ieftin și ușor de schimbat."},
+  {t:"Reward model", c:"training", d:"Model care notează output-urile în timpul antrenării prin reinforcement learning."},
+
+  // ---------- ECOSISTEM ----------
+  {t:"Open weights / open-source model", c:"ecosistem", d:"Model ale cărui greutăți sunt publice și le poți rula/adapta. Ex.: Llama, Qwen, DeepSeek, Mistral, Kimi."},
+  {t:"Hugging Face", c:"ecosistem", d:"Platforma centrală pentru modele, dataseturi și unelte open-source AI."},
+  {t:"Model card", c:"ecosistem", d:"Fișa unui model: capabilități, limite, licență, date de antrenare. Se citește înainte să-l adopți."},
+  {t:"arXiv", c:"ecosistem", d:"Arhiva de articole științifice unde apar, adesea primele, cercetările din AI."},
+  {t:"SWE-bench", c:"ecosistem", d:"Benchmark pentru sarcini reale de inginerie software (modificări de cod). Reper des citat pentru agenți de cod."},
+  {t:"Build in public", c:"ecosistem", d:"Practica de a-ți construi și împărtăși munca deschis — parte din cultura de creștere a unui inginer AI."}
+];
+
+// ---------- render ----------
+var state = { q:"", cat:"toate" };
+var entriesEl = document.getElementById('entries');
+var countEl = document.getElementById('count');
+var qEl = document.getElementById('q');
+var clearEl = document.getElementById('clear');
+var chipsEl = document.getElementById('chips');
+
+// build chips
+(function(){
+  var all = document.createElement('div');
+  all.className='chip active'; all.textContent='Toate'; all.dataset.cat='toate';
+  chipsEl.appendChild(all);
+  CATS.forEach(function(c){
+    var el=document.createElement('div');
+    el.className='chip'; el.dataset.cat=c.id;
+    el.textContent=c.label.split(' · ')[0].split(' & ')[0];
+    el.title=c.label;
+    chipsEl.appendChild(el);
+  });
+  chipsEl.addEventListener('click', function(e){
+    var chip=e.target.closest('.chip'); if(!chip) return;
+    state.cat=chip.dataset.cat;
+    [].forEach.call(chipsEl.children,function(ch){ch.classList.toggle('active', ch===chip);});
+    render();
+  });
+})();
+
+function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
+function hl(text, q){
+  if(!q) return text;
+  try{ return text.replace(new RegExp('('+esc(q)+')','ig'),'<mark>$1</mark>'); }
+  catch(e){ return text; }
+}
+
+function render(){
+  var q=state.q.trim().toLowerCase();
+  var total=0;
+  entriesEl.innerHTML='';
+  CATS.forEach(function(cat){
+    if(state.cat!=='toate' && state.cat!==cat.id) return;
+    var items=TERMS.filter(function(t){
+      if(t.c!==cat.id) return false;
+      if(!q) return true;
+      return (t.t.toLowerCase().indexOf(q)>-1) || (t.d.toLowerCase().indexOf(q)>-1) || (t.n&&t.n.toLowerCase().indexOf(q)>-1);
+    });
+    if(!items.length) return;
+    total+=items.length;
+    var group=document.createElement('section');
+    group.className='group';
+    group.style.setProperty('--gc','var(--cat-'+cat.id+')');
+    var head=document.createElement('div');
+    head.className='group-head';
+    head.innerHTML='<h2>'+cat.label+'</h2><span class="gcount">'+items.length+'</span>';
+    group.appendChild(head);
+    items.forEach(function(t){
+      var e=document.createElement('div'); e.className='entry';
+      var col=document.createElement('div'); col.className='term-col';
+      var term=document.createElement('div'); term.className='term'; term.innerHTML=hl(t.t,state.q.trim());
+      var tag=document.createElement('span'); tag.className='tag';
+      tag.style.color='var(--cat-'+cat.id+')';
+      tag.textContent=cat.label.split(' · ')[0].split(' & ')[0];
+      col.appendChild(term); col.appendChild(tag);
+      var def=document.createElement('p'); def.className='def';
+      def.innerHTML=hl(t.d,state.q.trim()) + (t.n?('<span class="note">'+hl(t.n,state.q.trim())+'</span>'):'');
+      e.appendChild(col); e.appendChild(def);
+      group.appendChild(e);
+    });
+    entriesEl.appendChild(group);
+  });
+  if(total===0){
+    entriesEl.innerHTML='<div class="empty">Niciun termen pentru „'+state.q+'”. Încearcă alt cuvânt.</div>';
+  }
+  countEl.innerHTML = q||state.cat!=='toate' ? '<b>'+total+'</b> / '+TERMS.length+' termeni' : '<b>'+TERMS.length+'</b> termeni';
+  clearEl.style.display = state.q ? 'block' : 'none';
+}
+
+qEl.addEventListener('input', function(){ state.q=this.value; render(); });
+clearEl.addEventListener('click', function(){ state.q=''; qEl.value=''; qEl.focus(); render(); });
+qEl.addEventListener('keydown', function(e){ if(e.key==='Escape'){ state.q=''; this.value=''; render(); } });
+
+render();
+</script>
+</body>
+</html>

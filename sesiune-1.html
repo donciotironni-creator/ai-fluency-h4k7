@@ -227,7 +227,7 @@ Nu presupune nimic ce nu ți-am zis; dacă îți lipsește o informație, între
       <p><strong>De transmis:</strong> nu mai scriem doar T-SQL. Cu Claude, drumul de la un <code>SELECT</code> la un endpoint funcțional e de câteva minute — dar procedura tot trebuie să treacă prin standardele și code review-ul nostru.</p>
 
       <h3>Exercițiul D — Conectează Claude la o sursă read-only (MCP)</h3>
-      <p>MCP e „portul USB-C" prin care Claude vorbește cu unelte externe fără copy-paste. Îl gestionezi cu <code>/mcp</code>. Azi îl pornim pe DEV / read-only.</p>
+      <p><a href="dictionar-ai-engineering.html" style="color:var(--rust)">MCP</a> e „portul USB-C" prin care Claude vorbește cu unelte externe fără copy-paste. Îl gestionezi cu <code>/mcp</code>. Azi îl pornim pe DEV / read-only.</p>
       <div class="warn">
         <span class="label">Regula de aur MCP</span>
         Un MCP acționează cu permisiunile tale. Pornește-l pe DEV / read-only, cu un user cu drepturi minime. Nu conecta nimic care poate modifica date direct pe BufferSap PROD fără discuție în echipă.
@@ -243,10 +243,10 @@ Nu presupune nimic ce nu ți-am zis; dacă îți lipsește o informație, între
       <p>Aceeași logică se aplică și pentru Jira / Confluence: MCP-ul <strong>oficial Atlassian</strong> (pe Cloud) sau varianta comunitară <code>sooperset/mcp-atlassian</code> (pentru Server / Data Center on-prem, în spatele VPN-ului) — utile mai târziu pentru citit tichete sau scris documentație direct din Claude Code.</p>
       <div class="note">
         <span class="label">Ce urmează</span>
-        Delegarea de fluxuri pe mai mulți pași către un asistent specializat (agenți / subagenți) e tema Sesiunii 2 — azi rămânem la conectarea directă prin MCP.
+        Delegarea de fluxuri pe mai mulți pași către un asistent specializat (<a href="harta-termeni-ai.html#traseu" style="color:var(--teal)">agenți / subagenți</a>) e tema Sesiunii 2 — azi rămânem la conectarea directă prin MCP.
       </div>
 
-      <h3>Exercițiul E — Ce e, de fapt, un plugin</h3>
+      <h3>Exercițiul E — Ce e, de fapt, un <a href="dictionar-ai-engineering.html" style="color:var(--rust)">plugin</a></h3>
       <p>Un plugin împachetează skill-uri + comenzi + agenți + configurări MCP într-un pachet instalabil cu o comandă (<code>/plugin</code>) — „standardul echipei, la cheie". Deschide plugin-ul intern al echipei și identifică ce skill-uri și comenzi aduce.</p>
       <p>Pas cu pas:</p>
       <ol>
@@ -258,6 +258,10 @@ Nu presupune nimic ce nu ți-am zis; dacă îți lipsește o informație, între
       <div class="note">
         <span class="label">Ce urmează</span>
         Agenții / subagenții le aprofundăm în Sesiunea 2 — azi rămâne la nivel de recunoaștere: ce este un plugin și ce aduce.
+      </div>
+      <div class="note">
+        <span class="label">Resurse</span>
+        Toți termenii de azi (și mulți alții — <code>RAG</code>, <code>agentic</code>, <code>harness</code>) sunt explicați în <a href="dictionar-ai-engineering.html" style="color:var(--rust)">Dicționarul AI Engineering</a>. Cum se leagă unii de alții și în ce ordine îi aprofundăm, în <a href="harta-termeni-ai.html" style="color:var(--rust)">Harta termenilor</a>.
       </div>
     </div>
   </section>
