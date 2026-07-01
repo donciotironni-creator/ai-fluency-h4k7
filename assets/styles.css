@@ -56,6 +56,7 @@
     padding:6px 12px; cursor:pointer; white-space:nowrap;
   }
   button.toggle:hover{color:var(--ink); border-color:var(--ink-faint);}
+  @media(max-width:760px){.topbar-inner{flex-wrap:wrap;}}
 
   .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
   .col{max-width:760px;}
@@ -176,3 +177,9 @@
   /* ---------- code blocks ---------- */
   pre{overflow-x:auto; background:var(--paper-2); border:1px solid var(--line-soft); border-radius:8px; padding:14px 16px; margin:14px 0; font-family:'DM Mono',monospace; font-size:.82rem; line-height:1.5;}
   pre code{background:none; border:none; padding:0; font-size:inherit;}
+
+  /* ---------- mobile table fixes ---------- */
+  @media(max-width:600px){
+    table{table-layout:fixed;}
+    th,td{word-wrap:break-word; overflow-wrap:break-word;}
+  }
