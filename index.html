@@ -2,178 +2,86 @@
 <html lang="ro">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Fluency — Platforma de curs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Academy — Skills, MCP & Plugins</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/academy.css">
 </head>
 <body>
 
-<nav class="topbar">
-  <div class="topbar-inner">
-    <a class="brand" href="index.html">
-      <svg class="loop-mark" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="4" r="3"/><circle cx="20" cy="12" r="3"/><circle cx="12" cy="20" r="3"/><circle cx="4" cy="12" r="3"/></svg>
-      AI FLUENCY · CURS
-    </a>
-    <button class="toggle" onclick="toggleTheme()" aria-label="Comută tema (luminos/întunecat)">☾ / ☀</button>
-  </div>
-</nav>
+<div class="app">
 
-<div class="wrap" id="top">
-  <header class="hero">
-    <div class="col">
-      <div class="eyebrow">Program intern · echipa Dev SQL</div>
-      <h1>De la SQL developer la <em>AI-assisted developer</em>.</h1>
-      <p class="lede">Patru sesiuni aplicate cu Claude, pe munca ta reală. Înveți un mod de a lucra cu AI care rămâne valabil indiferent ce model sau buton se schimbă — bucla celor 4D: delegare, descriere, discernământ, diligență.</p>
-      <div class="hero-meta">
-        <span class="pill">4 sesiuni</span>
-        <span class="pill">framework 4D</span>
-        <span class="pill">correctness &gt; performance &gt; cleverness</span>
-      </div>
-      <div class="note" style="margin-top:24px">
-        <span class="label">Steaua noastră polară</span>
-        Întrebarea nu e „folosim Claude Code?" — la aia răspundem în prima săptămână. Întrebarea e: <strong>ce știe echipa să facă acum și nu putea acum 6 luni?</strong> Succesul se vede în artefacte care se acumulează — skill-uri partajate, un <code>CLAUDE.md</code> îngrijit, practici adoptate — nu în licențe active.
-      </div>
+  <!-- ============ HEADER ============ -->
+  <header class="appbar">
+    <button class="brandbtn" data-action="goto-lesson" data-lesson="1.1">
+      <span class="brandmark"></span>
+      <span class="brandname">AI Academy</span>
+    </button>
+    <div class="crumb">
+      <span class="cur" id="crumb-module">Modul 1: Bucla 4D &amp; bazele Claude Code</span>
+      <span class="sep">›</span>
+      <span class="lesson" id="crumb-lesson">Lecția 1.1</span>
     </div>
+    <nav class="hdrnav">
+      <button class="themebtn lift" id="theme-btn" data-action="toggle-theme" aria-label="Comută tema light/dark">◐</button>
+      <button class="hlink" data-action="goto-route" data-route="onboarding">Despre curs</button>
+      <button class="cta lift" data-action="goto-lesson" data-lesson="1.1">Începe de aici</button>
+    </nav>
   </header>
 
-  <section>
-    <div class="col">
-      <div class="grid-3">
-        <div class="card flat" style="text-align:center;border:1px solid var(--line)">
-          <div style="font-family:'Fraunces',serif;font-weight:600;font-size:2rem;color:var(--rust)">4</div>
-          <p style="margin:6px 0 0;font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.06em">sesiuni</p>
-        </div>
-        <div class="card flat" style="text-align:center;border:1px solid var(--line)">
-          <div style="font-family:'Fraunces',serif;font-weight:600;font-size:2rem;color:var(--rust)">~2,5h</div>
-          <p style="margin:6px 0 0;font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.06em">joia / sesiune</p>
-        </div>
-        <div class="card flat" style="text-align:center;border:1px solid var(--line)">
-          <div style="font-family:'Fraunces',serif;font-weight:600;font-size:2rem;color:var(--rust)">110+</div>
-          <p style="margin:6px 0 0;font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.06em">termeni în dicționar</p>
-        </div>
+  <!-- ============ APP BODY ============ -->
+  <div class="app-body">
+
+    <!-- LEFT: COURSE SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-eyebrow">CURS AI FLUENCY</div>
+
+      <div id="module-list"></div>
+
+      <div class="sidebar-divider"></div>
+      <button class="sidebar-link" data-action="goto-route" data-route="glosar">
+        <span style="width:16px;height:14px;border:1.6px solid var(--faint);border-radius:2px;flex:none;display:block"></span>Glosar de termeni
+      </button>
+      <button class="sidebar-link" data-action="goto-route" data-route="map">
+        <span style="width:16px;height:16px;flex:none;position:relative;display:block"><span style="position:absolute;left:0;top:2px;width:5px;height:5px;border-radius:50%;background:var(--faint)"></span><span style="position:absolute;right:0;top:2px;width:5px;height:5px;border-radius:50%;background:var(--faint)"></span><span style="position:absolute;left:5px;bottom:1px;width:5px;height:5px;border-radius:50%;background:var(--faint)"></span></span>Harta conceptelor
+      </button>
+      <button class="sidebar-link" data-action="goto-route" data-route="resurse">
+        <span style="width:15px;height:15px;border:1.6px solid var(--faint);border-radius:50%;flex:none;display:block"></span>Resurse recomandate
+      </button>
+
+      <div class="newhere">
+        <div class="newhere-hd"><span class="newhere-dot"></span><span class="newhere-title">Nou aici?</span></div>
+        <p>Parcurge ghidul rapid și înțelege cum să folosești platforma.</p>
+        <button class="tlink" data-action="goto-route" data-route="onboarding">Vezi ghidul (2 min) →</button>
       </div>
-    </div>
-  </section>
+    </aside>
 
-  <section>
-    <div class="col">
-      <div class="sec-head"><span class="sec-num">01</span><h2>Start aici — prima săptămână</h2></div>
-      <p class="sec-intro">Trei pași ca să pornești azi, indiferent de rol. Restul vine la sesiuni.</p>
-    </div>
-    <div class="col">
-      <ol>
-        <li><strong>Instalează Claude Code &amp; loghează-te.</strong> Rulează <code>curl -fsSL https://claude.ai/install.sh | sh</code> (sau <code>npm i -g @anthropic-ai/claude-code</code>), apoi verifică cu <code>claude --version</code>.</li>
-        <li><strong>Clonează repo-ul cu skill-ul echipei.</strong> Cel cu <code>sql-enterprise</code> / <code>CLAUDE.md</code> — ca Claude să știe standardele noastre din prima.</li>
-        <li><strong>Fă un lucru real cu el azi.</strong> Ia o procedură din DEV și cere-i: „explică ce face și generează header-ul standard". Prompturi gata făcute — în <a href="sesiune-1.html" class="inline">Sesiunea 1</a>.</li>
-      </ol>
-    </div>
-  </section>
+    <!-- CENTER + RIGHT -->
+    <div class="content-row">
+      <main class="scr cmain" id="main-view">
+        <div id="view-lesson"></div>
+        <div id="view-glossary" style="display:none"></div>
+        <div id="view-map" style="display:none"></div>
+        <div id="view-onboarding" style="display:none"></div>
+        <div id="view-resurse" style="display:none"></div>
+      </main>
 
-  <section>
-    <div class="col">
-      <div class="sec-head"><span class="sec-num">02</span><h2>Sesiunile cursului</h2></div>
-      <p class="sec-intro">Parcurgem sesiunile în ordine. Fiecare produce un artefact real din munca ta. Prima e disponibilă; restul vin pe rând.</p>
-    </div>
-    <div class="col">
-      <div class="grid-2">
-
-        <a class="card" href="sesiune-1.html" style="text-decoration:none;color:inherit;display:block;">
-          <span class="label" style="color:var(--rust)">Sesiunea 1 · Disponibilă</span>
-          <h3 style="margin-top:6px">Prima zi cu Claude: Skills, MCP &amp; Plugins</h3>
-          <p style="font-size:.95rem;color:var(--ink-soft);margin:8px 0 0">Bucla 4D pe un exemplu SQL, comenzile de bază, și cum Claude cunoaște standardele echipei. Exerciții aplicate pe procedura ta reală.</p>
-          <p style="font-family:'DM Mono',monospace;font-size:11px;color:var(--teal);margin:12px 0 0">Description + Delegation (platform)</p>
-        </a>
-
-        <div class="card" style="opacity:.62">
-          <span class="label" style="color:var(--ink-faint)">Sesiunea 2 · În curând</span>
-          <h3 style="margin-top:6px">Agenți &amp; subagenți</h3>
-          <p style="font-size:.95rem;color:var(--ink-soft);margin:8px 0 0">Deleghezi fluxuri, nu doar întrebări: un agent de code-review pe standardele echipei, un subagent de documentare.</p>
-          <p style="font-family:'DM Mono',monospace;font-size:11px;color:var(--teal);margin:12px 0 0">Delegation (task) + Discernment</p>
+      <aside class="toc-aside" id="toc-aside">
+        <div class="toc-card">
+          <div class="toc-title">În această lecție</div>
+          <div class="toc-list" id="toc-list"></div>
+          <div class="toc-divider"></div>
+          <div class="toc-help-label">Ai nevoie de ajutor?</div>
+          <span class="toc-help-link" style="cursor:default">Întreabă la sesiunea live</span>
         </div>
-
-        <div class="card" style="opacity:.62">
-          <span class="label" style="color:var(--ink-faint)">Sesiunea 3 · În curând</span>
-          <h3 style="margin-top:6px">Evaluare output, cost &amp; când NU folosești AI</h3>
-          <p style="font-size:.95rem;color:var(--ink-soft);margin:8px 0 0">Seturi de teste pe output propriu, vânătoarea de halucinații, alegerea modelului potrivit sarcinii.</p>
-          <p style="font-family:'DM Mono',monospace;font-size:11px;color:var(--teal);margin:12px 0 0">Discernment (product) + Delegation</p>
-        </div>
-
-        <div class="card" style="opacity:.62">
-          <span class="label" style="color:var(--ink-faint)">Sesiunea 4 · În curând</span>
-          <h3 style="margin-top:6px">Securitate, GDPR &amp; playbook-ul de echipă</h3>
-          <p style="font-size:.95rem;color:var(--ink-soft);margin:8px 0 0">Threat-model pe fluxuri cu date sensibile, consolidare, și playbook-ul propriu al echipei.</p>
-          <p style="font-family:'DM Mono',monospace;font-size:11px;color:var(--teal);margin:12px 0 0">Diligence (creation + deployment)</p>
-        </div>
-
-      </div>
+      </aside>
     </div>
-  </section>
-
-  <section>
-    <div class="col">
-      <div class="sec-head"><span class="sec-num">03</span><h2>Cum lucrăm cu AI</h2></div>
-      <p class="sec-intro">Pe lângă cei 4D, framework-ul descrie trei <strong>modalități</strong> — un spectru de la „AI execută" la „AI acționează singur". Un dev fluent știe în care e și trece între ele chiar în același task.</p>
-    </div>
-    <div class="col">
-      <div class="grid-3">
-        <div class="mode">
-          <div class="idx">Modalitatea 1</div>
-          <h4>Automation</h4>
-          <p>AI execută o sarcină definită de tine, pe o instrucțiune directă. Cere definire clară + control de calitate.</p>
-          <div class="ex">ex: documentează o procedură, sumarizează un log</div>
-        </div>
-        <div class="mode">
-          <div class="idx">Modalitatea 2</div>
-          <h4>Augmentation</h4>
-          <p>Tu și AI co-gândiți iterativ, ca parteneri. Scopul e să amplifice creativitatea ta, nu s-o înlocuiască.</p>
-          <div class="ex">ex: optimizezi un query complex, arhitecturezi un flux</div>
-        </div>
-        <div class="mode">
-          <div class="idx">Modalitatea 3</div>
-          <h4>Agency</h4>
-          <p>Configurezi AI să execute singur sarcini viitoare. Definești comportamentul, nu o sarcină punctuală.</p>
-          <div class="ex">ex: un subagent care revizuiește orice procedură nouă</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="col">
-      <div class="sec-head"><span class="sec-num">04</span><h2>Resurse</h2></div>
-      <p class="sec-intro">Referințe pe care le folosești oricând, în paralel cu sesiunile — nu trebuie parcurse în ordine.</p>
-    </div>
-    <div class="col">
-      <div class="grid-2">
-
-        <a class="card" href="dictionar-ai-engineering.html" style="text-decoration:none;color:inherit;display:block;border-color:var(--gold)">
-          <span class="label" style="color:var(--gold)">Dicționar</span>
-          <h3 style="margin-top:6px">Dicționar AI Engineering</h3>
-          <p style="font-size:.95rem;color:var(--ink-soft);margin:8px 0 0">Peste 110 termeni, în română, căutabili și filtrabili pe categorii — de la <code>token</code> și <code>RAG</code> la <code>agentic</code> și <code>harness</code>.</p>
-        </a>
-
-        <a class="card" href="harta-termeni-ai.html" style="text-decoration:none;color:inherit;display:block;border-color:var(--gold)">
-          <span class="label" style="color:var(--gold)">Hartă</span>
-          <h3 style="margin-top:6px">Harta termenilor AI</h3>
-          <p style="font-size:.95rem;color:var(--ink-soft);margin:8px 0 0">Companion la dicționar: cum se leagă conceptele unele de altele și în ce ordine merită aprofundate, legat de sesiunile cursului.</p>
-        </a>
-
-      </div>
-
-      <h3 style="margin-top:32px">Resurse externe</h3>
-      <div class="card flat" style="border:1px solid var(--line);padding:8px 22px">
-        <div class="res"><div class="name">AI Fluency: Framework &amp; Foundations<small>START · gratuit · certificat</small></div><p>Cursul de bază: cei 4D + cele 3 modalități, cu exerciții. Punctul zero pentru toată echipa. → <a href="https://aifluencyframework.org/" target="_blank" rel="noopener" class="inline">aifluencyframework.org</a></p></div>
-        <div class="res"><div class="name">Documentație Claude Code<small>instalare &amp; comenzi</small></div><p><code>curl -fsSL https://claude.ai/install.sh | sh</code> → apoi <code>claude --version</code>. → <a href="https://docs.claude.com" target="_blank" rel="noopener" class="inline">docs.claude.com</a></p></div>
-        <div class="res"><div class="name">SQL Server MCP<small>oficial Microsoft</small></div><p>Expune tabele și proceduri ca unelte sigure; nu lasă modelul să genereze SQL liber pe date critice. → <a href="https://learn.microsoft.com/en-us/sql/mcp/" target="_blank" rel="noopener" class="inline">learn.microsoft.com/en-us/sql/mcp</a></p></div>
-        <div class="res"><div class="name">Atlassian MCP<small>Jira / Confluence, oficial</small></div><p>OAuth, respectă permisiunile tale. Pentru Server/Data Center: <a href="https://github.com/sooperset/mcp-atlassian" target="_blank" rel="noopener" class="inline">sooperset/mcp-atlassian</a>. → <a href="https://support.atlassian.com/atlassian-rovo-mcp-server/docs/getting-started-with-the-atlassian-remote-mcp-server/" target="_blank" rel="noopener" class="inline">support.atlassian.com</a></p></div>
-      </div>
-    </div>
-  </section>
+  </div>
 </div>
 
-<script src="assets/theme.js"></script>
+<script src="assets/academy-data.js"></script>
+<script src="assets/academy.js"></script>
 </body>
 </html>

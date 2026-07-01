@@ -1,131 +1,6 @@
-<!DOCTYPE html>
-<html lang="ro">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dicționar AI Engineering · AI Fluency</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Hanken+Grotesk:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/styles.css">
-<style>
-  :root{
-    --cat-fundamente:#2f5fd0; --cat-prompting:#7a4fc0; --cat-rag:#1f8a70;
-    --cat-agenti:#b0492b; --cat-harness:#a9702a; --cat-guardrails:#b03a52;
-    --cat-evaluare:#2f7fb0; --cat-productie:#5f7d2a; --cat-deployment:#4a63b0;
-    --cat-multimodal:#a8478f; --cat-training:#3a6b8a; --cat-ecosistem:#6b6f7a;
-  }
-  [data-theme="dark"]{
-    --cat-fundamente:#7aa0ee; --cat-prompting:#b39bef; --cat-rag:#5cc2a3;
-    --cat-agenti:#dd7f57; --cat-harness:#d9ab5f; --cat-guardrails:#e07d95;
-    --cat-evaluare:#6fb0e0; --cat-productie:#a3c46a; --cat-deployment:#8ba0e0;
-    --cat-multimodal:#d68fc0; --cat-training:#79aacb; --cat-ecosistem:#a2aab8;
-  }
+/* ============ AI Academy — date de conținut ============ */
+/* Module 1-2: conținut real, din suport-curs-sesiunea-1.md. Module 3-5: "în curând". */
 
-  /* intro */
-  header.intro{padding:44px 0 22px;}
-  .lede b{color:var(--ink); font-weight:600;}
-
-  /* sticky toolbar */
-  .toolbar{position:sticky; top:57px; z-index:30; background:color-mix(in srgb,var(--paper) 90%,transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); padding:14px 0 12px;}
-  .search-row{display:flex; gap:12px; align-items:center;}
-  .search-box{position:relative; flex:1;}
-  .search-box svg{position:absolute; left:15px; top:50%; transform:translateY(-50%); width:18px; height:18px; stroke:var(--ink-faint); pointer-events:none;}
-  #q{
-    width:100%; font-family:'Hanken Grotesk',sans-serif; font-size:1.05rem; color:var(--ink);
-    background:var(--paper-3); border:1.5px solid var(--line); border-radius:12px;
-    padding:13px 44px 13px 44px; outline:none; transition:border-color .15s, box-shadow .15s;
-  }
-  #q::placeholder{color:var(--ink-faint);}
-  #q:focus{border-color:var(--rust); box-shadow:0 0 0 3px color-mix(in srgb,var(--rust) 18%,transparent);}
-  #clear{position:absolute; right:10px; top:50%; transform:translateY(-50%); border:none; background:transparent; color:var(--ink-faint); font-size:20px; cursor:pointer; padding:4px 8px; line-height:1; display:none;}
-  #clear:hover{color:var(--ink);}
-  .count{font-family:'DM Mono',monospace; font-size:12.5px; color:var(--ink-faint); white-space:nowrap;}
-  .count b{color:var(--rust);}
-
-  .chips{display:flex; gap:7px; flex-wrap:wrap; margin-top:12px;}
-  .chip{
-    font-family:'DM Mono',monospace; font-size:11.5px; cursor:pointer; user-select:none;
-    padding:5px 12px; border-radius:20px; border:1px solid var(--line); background:var(--paper-3);
-    color:var(--ink-soft); transition:all .12s; white-space:nowrap;
-  }
-  .chip:hover{border-color:var(--ink-faint); color:var(--ink);}
-  .chip.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
-
-  /* entries */
-  main{padding:22px 0 40px;}
-  .group{margin-bottom:34px; scroll-margin-top:190px;}
-  .group-head{display:flex; align-items:baseline; gap:10px; margin:0 0 14px; padding-bottom:8px; border-bottom:2px solid var(--gc,var(--line));}
-  .group-head h2{font-family:'Fraunces',serif; font-weight:600; font-size:1.15rem; letter-spacing:-.01em; margin:0; color:var(--ink);}
-  .group-head .gcount{font-family:'DM Mono',monospace; font-size:11px; color:var(--ink-faint);}
-
-  .entry{padding:14px 0; border-bottom:1px solid var(--line-soft); display:grid; grid-template-columns:minmax(180px,240px) 1fr; gap:6px 26px;}
-  .entry:last-child{border-bottom:none;}
-  .term-col{display:flex; flex-direction:column; gap:6px;}
-  .term{font-family:'DM Mono',monospace; font-weight:500; font-size:1.02rem; color:var(--ink); line-height:1.3;}
-  .tag{font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.04em; text-transform:uppercase; padding:2px 8px; border-radius:20px; align-self:flex-start; background:color-mix(in srgb, currentColor 13%, transparent);}
-  .def{margin:0; color:var(--ink);}
-  .def .note{display:block; margin-top:6px; font-size:.9rem; color:var(--ink-soft); padding-left:14px; border-left:2px solid var(--line);}
-  mark{background:color-mix(in srgb,var(--rust) 28%,transparent); color:inherit; border-radius:2px; padding:0 1px;}
-
-  @media(max-width:640px){
-    .entry{grid-template-columns:1fr; gap:4px;}
-    .search-row{flex-wrap:wrap;}
-    .count{order:3; width:100%;}
-  }
-
-  .empty{text-align:center; color:var(--ink-faint); font-family:'DM Mono',monospace; font-size:14px; padding:50px 0;}
-  footer.dict-footer{padding:26px 0 60px; color:var(--ink-faint); font-size:.82rem; border-top:1px solid var(--line);}
-  footer.dict-footer code{font-family:'DM Mono',monospace; font-size:.9em;}
-</style>
-</head>
-<body>
-
-<nav class="topbar">
-  <div class="topbar-inner">
-    <a class="brand" href="index.html">
-      <svg class="loop-mark" aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="4" r="3"/><circle cx="20" cy="12" r="3"/><circle cx="12" cy="20" r="3"/><circle cx="4" cy="12" r="3"/></svg>
-      AI FLUENCY · CURS
-    </a>
-    <div class="navlinks">
-      <a href="index.html">← Toate sesiunile</a>
-      <a href="harta-termeni-ai.html">Harta termenilor →</a>
-    </div>
-    <button class="toggle" onclick="toggleTheme()" aria-label="Comută tema (luminos/întunecat)">☾ / ☀</button>
-  </div>
-</nav>
-
-<div class="wrap">
-  <header class="intro">
-    <div class="eyebrow">Resursă · AI Engineering</div>
-    <h1>Termenii de care ai nevoie ca să devii AI engineer</h1>
-    <p class="lede">Peste 110 termeni, în <b>română</b>, grupați pe cele 12 zone pe care le străbate un inginer AI — de la <code>token</code> și <code>RAG</code> la <code>agentic</code> și <code>harness</code>. Caută pe măsură ce scrii; filtrează pe categorii.</p>
-  </header>
-</div>
-
-<div class="toolbar">
-  <div class="wrap">
-    <div class="search-row">
-      <div class="search-box">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input id="q" type="text" placeholder="Caută un termen (RAG, agent, harness, embedding…)" autocomplete="off" spellcheck="false">
-        <button id="clear" aria-label="Șterge căutarea">×</button>
-      </div>
-      <span class="count" id="count"></span>
-    </div>
-    <div class="chips" id="chips"></div>
-  </div>
-</div>
-
-<div class="wrap">
-  <main id="entries"></main>
-  <footer class="dict-footer">
-    Definiții originale, sintetizate pentru echipă. Termenii tehnici se folosesc în engleză (așa apar în practică); explicațiile sunt în română. Câteva repere: framework-ul 4D de AI fluency (Dakan &amp; Feller / Anthropic); documentația Claude Code („Claude Code e harness-ul agentic din jurul lui Claude”); glosare LLM publice pentru verificare încrucișată. Terminologia AI se schimbă rapid — actualizează dicționarul pe măsură ce echipa întâlnește termeni noi.
-  </footer>
-</div>
-
-<script src="assets/theme.js"></script>
-<script>
 var CATS = [
   {id:"fundamente",  label:"Fundamente · LLM & modele"},
   {id:"prompting",   label:"Prompting & context"},
@@ -140,10 +15,8 @@ var CATS = [
   {id:"training",    label:"Fine-tuning & training"},
   {id:"ecosistem",   label:"Ecosistem & cultură dev"}
 ];
-var CATLABEL={}; CATS.forEach(function(c){CATLABEL[c.id]=c.label;});
 
-var TERMS = [
-  // ---------- FUNDAMENTE ----------
+var GLOSSARY = [
   {t:"LLM (Large Language Model)", c:"fundamente", d:"Model mare de limbaj: o rețea neuronală antrenată să prezică următorul token. Baza tuturor uneltelor de care vorbim (Claude, GPT, Gemini, Llama)."},
   {t:"Transformer", c:"fundamente", d:"Arhitectura neuronală (bazată pe „atenție”) din spatele aproape tuturor LLM-urilor moderne. Introdusă în 2017 („Attention is all you need”).", n:"Dacă LLM-ul e mașina, transformer-ul e motorul."},
   {t:"Token", c:"fundamente", d:"Unitatea de text pe care o procesează modelul: un cuvânt, o parte de cuvânt sau un semn de punctuație. Costurile și limitele se măsoară în token-i, nu în cuvinte."},
@@ -169,8 +42,6 @@ var TERMS = [
   {t:"Distillation (distilare)", c:"fundamente", d:"Antrenarea unui model mic ca să imite comportamentul unuia mare."},
   {t:"Mixture of Experts (MoE)", c:"fundamente", d:"Arhitectură în care, pentru fiecare token, se activează doar o parte din model („experți”). Mai eficient la scară."},
   {t:"Emergent abilities", c:"fundamente", d:"Capabilități care apar doar la modele suficient de mari și nu existau la cele mici."},
-
-  // ---------- PROMPTING ----------
   {t:"Prompt engineering", c:"prompting", d:"Arta de a formula prompturi (rol, task, format, exemple, constrângeri) ca să obții output-ul dorit."},
   {t:"Context engineering", c:"prompting", d:"Proiectarea întregului „mediu de informație” în care gândește modelul — nu doar un mesaj, ci tot contextul: instrucțiuni, istoric, documente, unelte.", n:"Superset-ul prompt engineering-ului. Prompt engineering = un mesaj bun; context engineering = tot ce vede modelul."},
   {t:"In-context learning", c:"prompting", d:"Modelul „învață” din exemplele date chiar în prompt, fără să-și schimbe greutățile."},
@@ -179,8 +50,6 @@ var TERMS = [
   {t:"Function calling / Tool use", c:"prompting", d:"Modelul cere execuția unei „unelte” (căutare, cod, API, MCP) și primește rezultatul înapoi.", n:"Fără unelte, un LLM e un „vorbitor”. Cu unelte, devine un „operator”."},
   {t:"Grounding", c:"prompting", d:"Legarea răspunsului de surse și fapte reale (ex. documente furnizate), ca să scadă halucinațiile."},
   {t:"Vibe coding", c:"prompting", d:"Stil de programare iterativ, „la feeling”: descrii intenția și lași AI-ul să scrie codul, corectând din mers."},
-
-  // ---------- RAG ----------
   {t:"RAG (Retrieval-Augmented Generation)", c:"rag", d:"Combinarea unui LLM cu o etapă de căutare: aduci documente relevante și le pui în context ca modelul să răspundă pe datele TALE, nu doar din memorie."},
   {t:"Retrieval", c:"rag", d:"Etapa de căutare și aducere a informației relevante pentru o întrebare."},
   {t:"Vector database", c:"rag", d:"Bază de date optimizată pentru căutare după similaritate în embeddings. Ex.: Pinecone, Qdrant, Weaviate, pgvector, Chroma."},
@@ -194,8 +63,6 @@ var TERMS = [
   {t:"Agentic RAG", c:"rag", d:"RAG în care un agent decide dinamic ce, când și cum să caute, iterativ, până are informația necesară."},
   {t:"Ragas", c:"rag", d:"Framework de evaluare a sistemelor RAG (relevanța faptelor găsite, cât de bine e „ancorat” răspunsul etc.)."},
   {t:"Knowledge base", c:"rag", d:"Colecția de documente și date proprii peste care se face retrieval."},
-
-  // ---------- AGENTI ----------
   {t:"Agent", c:"agenti", d:"Un LLM înfășurat într-un harness care poate folosi unelte, ține stare și acționează în pași pentru a atinge un scop — nu doar răspunde o singură dată."},
   {t:"Agentic", c:"agenti", d:"Adjectiv pentru un sistem care se comportă ca un agent: planifică, folosește unelte, iterează, cu un grad de autonomie."},
   {t:"ReAct (Reason + Act)", c:"agenti", d:"Tipar de buclă în care modelul alternează raționament și acțiuni (tool calls), pas cu pas."},
@@ -210,8 +77,6 @@ var TERMS = [
   {t:"Planning", c:"agenti", d:"Etapa în care agentul își face un plan pe pași înainte de a executa."},
   {t:"Autonomy (autonomie)", c:"agenti", d:"Cât de mult acționează agentul singur, fără intervenție umană."},
   {t:"Policy", c:"agenti", d:"Comportamentul pe care-l urmează un agent — ce acțiune ia în fiecare situație. Parțial învățat în greutăți, parțial dat de harness."},
-
-  // ---------- HARNESS ----------
   {t:"Harness (agent harness)", c:"harness", d:"„Schela” software din jurul modelului care-l transformă în agent: bucla, apelurile de unelte, gestiunea contextului, memoria, guardrails, tracing.", n:"Documentația spune direct: „Claude Code e harness-ul agentic din jurul lui Claude”. Harness = tot ce nu e modelul."},
   {t:"Scaffolding", c:"harness", d:"Codul și structura inițiale care asamblează agentul înainte de prima rulare. (Harness = ce se întâmplă în timpul rulării.)"},
   {t:"Agentic loop (bucla)", c:"harness", d:"Ciclul de bază al unui agent: apelezi modelul → parsezi output-ul → execuți tool-uri → bagi rezultatele înapoi → decizi când te oprești."},
@@ -223,8 +88,6 @@ var TERMS = [
   {t:"Compound AI system", c:"harness", d:"Sistem care combină mai multe modele, componente și pași — nu un singur apel de model."},
   {t:"Context compaction", c:"harness", d:"Comprimarea sau sumarizarea contextului când fereastra se umple, ca să poți continua."},
   {t:"Hooks", c:"harness", d:"Comenzi care rulează automat la anumite momente în harness (ex. la scrierea unui fișier, la oprire). În Claude Code, un mod de a impune reguli deterministe (formatare, verificări) fără să te bazezi pe model.", n:"Alături de skills, config comisă și un CLAUDE.md îngrijit, hooks sunt un semn de adopție reală de echipă."},
-
-  // ---------- GUARDRAILS ----------
   {t:"Guardrails", c:"guardrails", d:"Mecanisme care constrâng intrările și ieșirile unui sistem AI: validare, filtrare, reguli de comportament."},
   {t:"Prompt injection", c:"guardrails", d:"Atac în care un input — sau un document adus în context — conține instrucțiuni ascunse care „deturnează” modelul."},
   {t:"Jailbreak", c:"guardrails", d:"Păcălirea modelului să treacă peste regulile și măsurile lui de siguranță."},
@@ -234,8 +97,6 @@ var TERMS = [
   {t:"Red teaming", c:"guardrails", d:"Testarea deliberată a sistemului cu inputuri adverse sau răuvoitoare, ca să-i găsești slăbiciunile."},
   {t:"Alignment", c:"guardrails", d:"Cât de bine se comportă modelul conform intențiilor și valorilor umane."},
   {t:"Least privilege", c:"guardrails", d:"A da unui agent sau MCP doar drepturile minime necesare. Principiu de securitate esențial când conectezi AI la sistemele tale."},
-
-  // ---------- EVALUARE ----------
   {t:"Eval (evaluare)", c:"evaluare", d:"Set de teste și metrici prin care măsori obiectiv calitatea output-ului AI. „E suficient de bun?” devine măsurabil."},
   {t:"LLM-as-judge", c:"evaluare", d:"Folosirea unui LLM ca „arbitru” care notează output-ul altui model după criterii date."},
   {t:"Golden dataset / ground truth", c:"evaluare", d:"Setul de răspunsuri corecte de referință față de care compari ce produce sistemul."},
@@ -244,8 +105,6 @@ var TERMS = [
   {t:"Drift", c:"evaluare", d:"Degradarea în timp a performanței, pentru că datele sau lumea se schimbă."},
   {t:"Regression testing", c:"evaluare", d:"Verificarea că o modificare nouă nu a stricat ceva ce funcționa înainte."},
   {t:"Perplexity", c:"evaluare", d:"Măsură a cât de bine prezice un model un text de referință. Mai mic = mai bine."},
-
-  // ---------- PRODUCTIE ----------
   {t:"Latency (latență)", c:"productie", d:"Cât durează până primești răspunsul de la model."},
   {t:"Throughput", c:"productie", d:"Câte cereri sau câți token-i procesezi pe unitatea de timp."},
   {t:"Streaming", c:"productie", d:"Trimiterea răspunsului token cu token, pe măsură ce se generează — UX mult mai bun decât să aștepți tot."},
@@ -254,8 +113,6 @@ var TERMS = [
   {t:"Rate limit", c:"productie", d:"Limita de cereri pe care ți-o impune furnizorul într-un interval de timp."},
   {t:"Batching", c:"productie", d:"Gruparea mai multor cereri împreună pentru eficiență și cost mai mic."},
   {t:"SSE / WebSockets", c:"productie", d:"Mecanisme prin care serverul „împinge” date în timp real către client. Folosite pentru streaming."},
-
-  // ---------- DEPLOYMENT ----------
   {t:"Self-hosting", c:"deployment", d:"Rularea unui model pe infrastructura ta, nu printr-un API extern. Mai mult control, mai multă responsabilitate."},
   {t:"Inference platform", c:"deployment", d:"Serviciu care rulează modele pentru tine. Ex.: Together, Replicate, Fireworks, Groq, Cerebras."},
   {t:"vLLM", c:"deployment", d:"Motor open-source pentru servirea eficientă a LLM-urilor la scară."},
@@ -263,24 +120,18 @@ var TERMS = [
   {t:"GPU", c:"deployment", d:"Hardware-ul specializat pe care rulează antrenarea și inferența modelelor."},
   {t:"API / endpoint", c:"deployment", d:"Interfața prin care apelezi un model (ex. endpoint-ul /v1/messages)."},
   {t:"Serving", c:"deployment", d:"Punerea unui model „în producție” ca serviciu apelabil de aplicațiile tale."},
-
-  // ---------- MULTIMODAL ----------
   {t:"Vision", c:"multimodal", d:"Capacitatea modelului de a „vedea” și înțelege imagini."},
   {t:"Image generation", c:"multimodal", d:"Generarea de imagini din text (ex. modele de tip diffusion)."},
   {t:"Diffusion model", c:"multimodal", d:"Clasă de modele care generează imagini pornind de la zgomot și „curățându-l” treptat până iese imaginea."},
   {t:"TTS / STT", c:"multimodal", d:"Text-to-speech / speech-to-text: conversia voce ↔ text."},
   {t:"Voice agent", c:"multimodal", d:"Agent care interacționează prin voce, în timp real."},
   {t:"OCR / Document AI", c:"multimodal", d:"Extragerea de text și structură din documente și imagini scanate."},
-
-  // ---------- TRAINING ----------
   {t:"Pretraining", c:"training", d:"Antrenarea inițială a modelului pe cantități uriașe de date generale — de aici vine „cunoașterea” lui de bază."},
   {t:"Fine-tuning", c:"training", d:"Ajustarea unui model pre-antrenat pe datele tale, ca să-l specializezi (îi schimbă greutățile).", n:"RAG aduce fapte la runtime; fine-tuning „coace” stil și tipare în greutăți. RAG e mai ieftin de actualizat; fine-tuning câștigă la ton și format."},
   {t:"SFT (Supervised Fine-Tuning)", c:"training", d:"Fine-tuning pe perechi input → output corecte, date de oameni."},
   {t:"RLHF (Reinforcement Learning from Human Feedback)", c:"training", d:"Reglarea modelului pe baza preferințelor umane, ca să răspundă mai util și mai sigur."},
   {t:"LoRA / PEFT", c:"training", d:"Fine-tuning eficient: adaugi adaptoare mici peste un model „înghețat”, în loc să rescrii toate greutățile. Mult mai ieftin și ușor de schimbat."},
   {t:"Reward model", c:"training", d:"Model care notează output-urile în timpul antrenării prin reinforcement learning."},
-
-  // ---------- ECOSISTEM ----------
   {t:"Open weights / open-source model", c:"ecosistem", d:"Model ale cărui greutăți sunt publice și le poți rula/adapta. Ex.: Llama, Qwen, DeepSeek, Mistral, Kimi."},
   {t:"Hugging Face", c:"ecosistem", d:"Platforma centrală pentru modele, dataseturi și unelte open-source AI."},
   {t:"Model card", c:"ecosistem", d:"Fișa unui model: capabilități, limite, licență, date de antrenare. Se citește înainte să-l adopți."},
@@ -289,88 +140,121 @@ var TERMS = [
   {t:"Build in public", c:"ecosistem", d:"Practica de a-ți construi și împărtăși munca deschis — parte din cultura de creștere a unui inginer AI."}
 ];
 
-// ---------- render ----------
-var state = { q:"", cat:"toate" };
-var entriesEl = document.getElementById('entries');
-var countEl = document.getElementById('count');
-var qEl = document.getElementById('q');
-var clearEl = document.getElementById('clear');
-var chipsEl = document.getElementById('chips');
+/* ---------- module & lesson content ---------- */
+var MODULES = [
+  { id:1, title:"Bucla 4D & bazele Claude Code", available:true, lessons:[
+    { id:"1.1", title:"Bucla celor 4D, pe un exemplu SQL", time:"12 min", level:"Începător",
+      intro:"Un singur cadru de reținut, demonstrat pe un query lent de pe <code>[trans].[WarehouseStock]</code>, nu pe teorie: Delegare → Descriere → Discernământ → Diligență. Regula de aur a echipei rămâne valabilă și cu AI: <strong>correctness &gt; performance &gt; cleverness</strong>.",
+      obiective:["explici cei 4D în cuvintele tale", "aplici bucla pe un query lent real din munca ta", "distingi ce e „prompting” (descriere+discernământ) de ce e „decizie strategică” (delegare+diligență)"],
+      concept:"Claude nu e un autocomplete și nici un Google mai deștept — e un coleg junior foarte rapid și foarte citit, pe care tu îl conduci și al cărui rezultat tu îl verifici și ți-l asumi.",
+      exemplu:"„Am un query lent pe <code>[trans].[WarehouseStock]</code>.” <strong>Delegare</strong>: îi cer lui Claude ipoteze de optimizare, dar decizia de a atinge PROD rămâne a mea. <strong>Descriere</strong>: îi dau query-ul, planul de execuție și standardele noastre (fără <code>SELECT *</code>, tipuri care se potrivesc în JOIN). <strong>Discernământ</strong>: verific dacă propunerea de index e justificată sau „ghicită”. <strong>Diligență</strong>: testez în DEV, validez în UAT, trec prin code review.",
+      exercitiuTitle:"Aplică bucla pe un task propriu",
+      exercitiuText:"Alege un query sau o procedură din munca ta de zi cu zi. Scrie, pentru fiecare din cei 4D, un răspuns de o propoziție: ce delegi, cum descrii, ce verifici, cum îți asumi.",
+      exercitiuPlaceholder:"1. Delegare: …\n2. Descriere: …\n3. Discernământ: …\n4. Diligență: …",
+      recap:["Cei 4D formează o buclă, nu o listă de bifat o dată.", "Descrierea și discernământul sunt „skill-urile de prompting” — dar delegarea și diligența sunt la fel de importante.", "„Claude a zis așa” nu e niciodată o scuză."]
+    },
+    { id:"1.2", title:"Cele două fețe ale lui Claude", time:"8 min", level:"Începător",
+      intro:"<code>claude.ai</code> (browser) și Claude Code (terminal) nu sunt interschimbabile — fiecare are un rol clar în ziua ta de lucru.",
+      obiective:["distingi claude.ai de Claude Code", "alegi mediul corect pentru fiecare tip de întrebare", "știi de ce echipa noastră lucrează integral în Claude Code"],
+      concept:"Claude Code vede fișierele direct cu <code>@fișier</code>, plus <code>CLAUDE.md</code> — de-aici vine „superputerea” lui: știe standardele echipei, nu doar răspunde generic.",
+      exemplu:"<code>claude.ai</code> e util pentru o întrebare rapidă când nu ești în cod. Dar mediul nostru de lucru — pasul spre full-stack — e Claude Code: deschizi un terminal în folderul repo-ului și scrii <code>claude</code>.",
+      exercitiuTitle:"Recunoaște mediul potrivit",
+      exercitiuText:"Scrie 2 situații din munca ta recentă: una pentru care ai folosi claude.ai (întrebare rapidă, fără context de repo) și una pentru Claude Code (are nevoie de fișiere/comenzi reale).",
+      exercitiuPlaceholder:"claude.ai: …\nClaude Code: …",
+      recap:["claude.ai = întrebări rapide, fără repo.", "Claude Code = mediul nostru de lucru, vede fișierele, rulează comenzi, știe standardele echipei.", "Azi lucrăm integral în Claude Code."]
+    },
+    { id:"1.3", title:"Comenzile de bază — setul minim", time:"10 min", level:"Începător",
+      intro:"Nu învățăm 60 de comenzi. Doar cele pe care le folosești din prima zi.",
+      obiective:["cunoști minimum 5 comenzi de bază", "folosești <code>@fișier</code> în loc de copy-paste", "știi de ce există <code>/clear</code> și <code>/compact</code>"],
+      concept:"Comenzile consumă token-i — nu sunt gratis. O comandă rulează în contextul curent, nu într-unul curat (de-aia există <code>/clear</code>). Pe lângă comenzi, <code>@fișier</code> și limbajul natural fac 80% din treabă la început.",
+      exemplu:"<pre><code>claude            pornește sesiunea în folderul curent\n/init             creează CLAUDE.md (memoria proiectului) — o dată\n/help             listează comenzile disponibile\n@fisier.sql       aduce un fișier în context — în loc de copy-paste\n/clear            șterge conversația, context curat\n/compact          comprimă istoricul, eliberează context\n/model            schimbă modelul\n/review           code review pe modificări</code></pre>",
+      exercitiuTitle:"Rulează /init pe repo-ul tău",
+      exercitiuText:"Deschide un terminal în folderul repo-ului tău și scrie <code>/init</code>. Ce a generat Claude în CLAUDE.md? Ce ar trebui corectat sau adăugat?",
+      exercitiuPlaceholder:"Ce a scris Claude în CLAUDE.md, ce e corect, ce ai adăuga tu…",
+      recap:["<code>claude</code>, <code>/init</code>, <code>/help</code>, <code>@fișier</code>, <code>/clear</code>, <code>/compact</code>, <code>/model</code>, <code>/review</code> — setul minim.", "Comenzile costă token-i.", "<code>@fișier</code> + limbaj natural fac 80% din treabă."]
+    },
+    { id:"1.4", title:"Superputerea noastră: Claude cunoaște standardele echipei", time:"15 min", level:"Începător",
+      intro:"Diferența dintre „AI generic” și „AI care ne folosește nouă” — standardele noastre scrise într-un Skill pe care Claude îl citește automat.",
+      obiective:["explici ce este un Skill", "recunoști header-ul standard al echipei", "ceri lui Claude să aplice standardele fără să le repeți în fiecare prompt"],
+      concept:"Fișierul cu regulile noastre pe care Claude îl aplică automat este un <strong>Skill</strong> (<code>.claude/skills/sql-enterprise/SKILL.md</code>). Îl poți chema explicit cu <code>/sql-enterprise</code>, sau Claude îl folosește singur când vede un task SQL.",
+      exemplu:"<em>Before</em> (fără context): „scrie-mi o procedură care sincronizează un stoc” → cod generic, fără header-ul nostru, poate cu <code>SELECT *</code>. <em>After</em> (cu standardele încărcate): aceeași cerere → procedură cu header-ul <code>[Create] Ciotir Ionut ...</code>, <code>SET NOCOUNT ON</code>, <code>TRY/CATCH</code> cu logare în <code>logs.ProcError</code>, <code>RunId</code>, fără <code>SELECT *</code>.",
+      exercitiuTitle:"Testează before/after pe propria procedură",
+      exercitiuText:"Cere lui Claude aceeași sarcină de două ori: o dată fără să menționezi standardele, o dată cu skill-ul încărcat. Ce diferă?",
+      exercitiuPlaceholder:"Ce a fost diferit între cele două rezultate…",
+      recap:["Standardele echipei (header, logging cu RunId, reguli) trăiesc într-un Skill, nu într-un prompt repetat.", "Cu cât contextul e mai bun o dată, cu atât prompturile de zi cu zi devin mai scurte.", "Skills e prima dintre cele patru cărămizi ale ecosistemului: skills, MCP, agenți, plugins."]
+    }
+  ]},
+  { id:2, title:"Exerciții aplicate: Skills, MCP & Plugins", available:true, lessons:[
+    { id:"2.1", title:"Exercițiul A — Documentează & explică o procedură reală", time:"25 min", level:"Aplicat",
+      intro:"Competențe: Descriere + Discernământ. Rezultat imediat util — documentăm oricum în Confluence.",
+      obiective:["obții o explicație clară a unei proceduri reale", "verifici/generezi header-ul standard", "produci o schiță de pagină Confluence"],
+      concept:"Dacă folosești skill-ul <code>sql-enterprise</code>, poți scoate detaliile de standard din prompt — Claude le știe deja.",
+      exemplu:"<pre><code>Ești dezvoltator SQL Server senior în echipa noastră (SQL 2017+, server SMT-FAT-SQLB01, baza BufferSap).\nÎți dau o procedură stocată. Fă trei lucruri:\n\n1) Explică-mi în română, pe scurt (max 8 rânduri), ce face și în ce flux se încadrează.\n2) Verifică dacă are header-ul standard al echipei. Dacă lipsește sau e incomplet, generează-l:\n   format cu liniile [Create]/[Update]/[Modify], autor \"Ciotir Ionut\", dată DD.MM.YYYY,\n   SERVER: SMT-FAT-SQLB01, BD: BufferSap, plus un exemplu EXEC realist.\n3) Scrie o schiță de pagină de Confluence: scop, parametri, tabele atinse,\n   ce loghează (logs.*), riscuri și dependențe.\n\nProcedura:\n&lt;lipești aici&gt;</code></pre>",
+      exercitiuTitle:"De verificat (discernământ)",
+      exercitiuText:"Rulează promptul pe o procedură reală, curățată. A înțeles corect fluxul? A inventat vreo coloană/tabel? Header-ul e chiar în formatul nostru?",
+      exercitiuPlaceholder:"Ce a inventat/greșit Claude, dacă e cazul, și cum ai corectat…",
+      recap:["Promptul cere 3 lucruri distincte — explicație, header, schiță Confluence.", "Verifică mereu dacă modelul a inventat o coloană sau un tabel.", "Cu skill-ul încărcat, poți omite detaliile de standard din prompt."]
+    },
+    { id:"2.2", title:"Exercițiul B — Găsește probleme & optimizează", time:"30 min", level:"Aplicat",
+      intro:"Competențe: Discernământ + Diligență. Aici înveți să NU ai încredere oarbă.",
+      obiective:["obții un code review structurat pe priorități P0/P1/P2", "distingi o recomandare de index justificată de una „ghicită”", "aplici regula: sugestiile de index sunt puncte de plecare, nu comenzi"],
+      concept:"Momentul-cheie: sugestiile de index sunt puncte de plecare, nu comenzi. Se verifică față de indecșii existenți și se testează în DEV. Claude e junior-ul rapid; tu ești cel care semnează.",
+      exemplu:"<pre><code>Fă un code review pe procedura de mai jos, în ordinea echipei: corectitudine → securitate → performanță → stil.\nVerifică explicit regulile noastre:\n- fără SELECT * (coloane explicite)\n- SET NOCOUNT ON prezent; SET XACT_ABORT ON pentru tranzacții\n- TRY/CATCH cu logare în logs.ProcError (RunId)\n- fără cursoare dacă se poate set-based\n- tranzacții scurte; obiecte schema-qualified ([schema].[obiect])\n- fără conversii implicite în JOIN/WHERE\n\nListează problemele pe priorități P0/P1/P2 și propune varianta corectată.\nNU-mi da recomandări de index fără să-mi spui pe baza a ce le faci (plan de execuție, DMV).\n\nProcedura:\n&lt;lipești aici&gt;</code></pre>",
+      exercitiuTitle:"De verificat (discernământ)",
+      exercitiuText:"Din problemele P0/P1/P2 primite, care sunt reale și care sunt „ghicite”? Cum verifici o recomandare de index față de indecșii existenți?",
+      exercitiuPlaceholder:"Problemele reale identificate vs. cele pe care le-ai respins, și de ce…",
+      recap:["Ordinea de review a echipei: corectitudine → securitate → performanță → stil.", "Recomandările de index se testează în DEV, nu se aplică direct.", "Discernământul e reflexul de bază — nu încrederea oarbă."]
+    },
+    { id:"2.3", title:"Exercițiul C — Podul spre full-stack: de la un SELECT la un endpoint", time:"30 min", level:"Aplicat",
+      intro:"Competențe: Delegare + Descriere. Primul pas concret spre full-stack.",
+      obiective:["scrii o procedură parametrizată în standardul echipei", "obții un endpoint minimal funcțional peste ea", "înțelegi drumul de la un SELECT la un API read-only"],
+      concept:"Nu mai scriem doar T-SQL. Cu Claude, drumul de la un <code>SELECT</code> la un endpoint funcțional e de câteva minute — dar procedura tot trebuie să treacă prin standardele și code review-ul nostru.",
+      exemplu:"<pre><code>Am tabelul [trans].[WarehouseStock] (coloane relevante: ProductCode, Quantity, ReservationsSto, WarehouseId, UpdatedAt).\nVreau să expun stocul disponibil pentru un ProductCode printr-un mic API read-only.\n\n1) Scrie o procedură parametrizată [dbo].[WarehouseStock_GetByProduct] în standardul nostru\n   (header complet, SET NOCOUNT ON, fără SELECT *, TRY/CATCH cu logare, coloane explicite).\n   Disponibil = Quantity - ISNULL(ReservationsSto, 0).\n2) Scrie un endpoint minimal care apelează procedura și întoarce JSON, în &lt;FastAPI / .NET minimal API&gt;.\n   Ține-l scurt (sub ~40 de linii) și explică-mi fiecare parte, ca cineva care vine din SQL.\n\nNu presupune nimic ce nu ți-am zis; dacă îți lipsește o informație, întreabă-mă întâi.</code></pre>",
+      exercitiuTitle:"Alege-ți stack-ul",
+      exercitiuText:"Stack deschis: .NET minimal API sau Python/FastAPI — sau cere-i lui Claude ambele variante și compară. Ce ai ales și de ce?",
+      exercitiuPlaceholder:"Stack-ul ales, motivul, și ce a fost surprinzător în explicație…",
+      recap:["Procedura tot respectă header, SET NOCOUNT ON, TRY/CATCH — standardele nu se negociază.", "Endpoint-ul rămâne sub ~40 de linii, explicat pas cu pas.", "Nu presupune informații — cere-i lui Claude să întrebe dacă îi lipsește context."]
+    },
+    { id:"2.4", title:"Exercițiul D — Conectează Claude la o sursă read-only (MCP)", time:"20 min", level:"Aplicat",
+      intro:"MCP e „portul USB-C” prin care Claude vorbește cu unelte externe fără copy-paste. Îl gestionezi cu <code>/mcp</code>. Azi îl pornim pe DEV / read-only.",
+      obiective:["conectezi Claude la SQL MCP Server pe DEV/read-only", "interoghezi o procedură expusă ca unealtă, fără copy-paste", "aplici regula de aur MCP"],
+      concept:"Un MCP acționează cu permisiunile tale. Pornește-l pe DEV / read-only, cu un user cu drepturi minime. Nu conecta nimic care poate modifica date direct pe BufferSap PROD fără discuție în echipă.",
+      exemplu:"Pas cu pas: (1) scrie <code>/mcp</code> ca să vezi conexiunile disponibile; (2) alege <strong>SQL MCP Server</strong> — varianta oficială Microsoft, pe Data API builder, care expune tabele/proceduri ca unelte deterministe, nu ca un canal SQL liber; (3) configurează conexiunea către <code>SMT-FAT-SQLB01</code>, pe DEV, cu user read-only pe <code>BufferSap</code>; (4) cere-i lui Claude să interogheze <code>[dbo].[WarehouseStock_GetByProduct]</code> direct prin MCP, fără să-i lipești tu output-ul.",
+      exercitiuTitle:"Verifică unealta apelată",
+      exercitiuText:"După conectare, cere-i lui Claude să-ți arate exact unealta MCP apelată și parametrii trimiși. Răspunsul reflectă exact ce a întors procedura, sau Claude a „completat” ceva?",
+      exercitiuPlaceholder:"Unealta apelată, parametrii, și dacă răspunsul a fost fidel sursei…",
+      recap:["MCP conectează Claude la unelte externe fără copy-paste.", "Regula de aur: DEV/read-only, drepturi minime, niciodată direct pe PROD fără discuție.", "Aceeași logică se aplică și pentru Jira/Confluence (MCP oficial Atlassian)."]
+    },
+    { id:"2.5", title:"Exercițiul E — Ce e, de fapt, un plugin", time:"15 min", level:"Aplicat",
+      intro:"Un plugin împachetează skill-uri + comenzi + agenți + configurări MCP într-un pachet instalabil cu o comandă (<code>/plugin</code>) — „standardul echipei, la cheie”.",
+      obiective:["explici ce este un plugin, în relație cu skills și MCP", "identifici ce ar conține un plugin intern al echipei", "recunoști ce aduce concret un /plugin install"],
+      concept:"Un plugin intern „bufferSap-dev” ar aduce dintr-o mișcare skill-ul <code>sql-enterprise</code>, plus conexiunile MCP de la Exercițiul D, plus (pe viitor) agenții de review/documentare — tot ce ai instalat și configurat azi manual, într-un singur pachet instalabil.",
+      exemplu:"Scrie <code>/plugin</code> în Claude Code și vezi ce pachete sunt instalate sau disponibile. Identifică, în plugin-ul intern al echipei (dacă e deja disponibil): ce skill-uri conține, ce comenzi expune, ce configurări MCP livrează implicit.",
+      exercitiuTitle:"Discuție",
+      exercitiuText:"Ce ar câștiga un coleg nou dacă tot ce ai făcut azi (skill + MCP DEV/read-only) ar veni instalat printr-un singur <code>/plugin install</code>, din prima zi?",
+      exercitiuPlaceholder:"Ce ar economisi un coleg nou, ce ar rămâne totuși de făcut manual…",
+      recap:["Plugin = skills + comenzi + agenți + MCP, într-un singur pachet.", "Agenții/subagenții îi aprofundăm în Modulul „Agenți & subagenți”.", "Azi rămâne la nivel de recunoaștere: ce este un plugin și ce aduce."]
+    }
+  ]},
+  { id:3, title:"Agenți & subagenți", available:false, lessons:[] },
+  { id:4, title:"Evaluare, cost & când NU folosești AI", available:false, lessons:[] },
+  { id:5, title:"Securitate, GDPR & Playbook de echipă", available:false, lessons:[] }
+];
 
-// build chips
-(function(){
-  var all = document.createElement('div');
-  all.className='chip active'; all.textContent='Toate'; all.dataset.cat='toate';
-  chipsEl.appendChild(all);
-  CATS.forEach(function(c){
-    var el=document.createElement('div');
-    el.className='chip'; el.dataset.cat=c.id;
-    el.textContent=c.label.split(' · ')[0].split(' & ')[0];
-    el.title=c.label;
-    chipsEl.appendChild(el);
-  });
-  chipsEl.addEventListener('click', function(e){
-    var chip=e.target.closest('.chip'); if(!chip) return;
-    state.cat=chip.dataset.cat;
-    [].forEach.call(chipsEl.children,function(ch){ch.classList.toggle('active', ch===chip);});
-    render();
-  });
-})();
+/* ---------- hartă de concepte: legată de temele noastre reale ---------- */
+var MAP_NODES = [
+  { id:"center", label:"Bucla celor 4D", center:true, x:50, y:46, action:{type:"lesson", lesson:"1.1"} },
+  { id:"skills",   label:"Skills, MCP & Plugins", x:22, y:20, action:{type:"lesson", lesson:"2.1"} },
+  { id:"agenti",   label:"Agenți & subagenți", x:78, y:20, action:{type:"glosar", cat:"agenti"} },
+  { id:"evaluare", label:"Evaluare & cost", x:22, y:76, action:{type:"glosar", cat:"evaluare"} },
+  { id:"securitate", label:"Securitate & GDPR", x:78, y:76, action:{type:"glosar", cat:"guardrails"} }
+];
+var MAP_LINES = [[50,46,22,20],[50,46,78,20],[50,46,22,76],[50,46,78,76],[22,20,22,76],[78,20,78,76]];
 
-function esc(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');}
-function hl(text, q){
-  if(!q) return text;
-  try{ return text.replace(new RegExp('('+esc(q)+')','ig'),'<mark>$1</mark>'); }
-  catch(e){ return text; }
-}
-
-function render(){
-  var q=state.q.trim().toLowerCase();
-  var total=0;
-  entriesEl.innerHTML='';
-  CATS.forEach(function(cat){
-    if(state.cat!=='toate' && state.cat!==cat.id) return;
-    var items=TERMS.filter(function(t){
-      if(t.c!==cat.id) return false;
-      if(!q) return true;
-      return (t.t.toLowerCase().indexOf(q)>-1) || (t.d.toLowerCase().indexOf(q)>-1) || (t.n&&t.n.toLowerCase().indexOf(q)>-1);
-    });
-    if(!items.length) return;
-    total+=items.length;
-    var group=document.createElement('section');
-    group.className='group';
-    group.style.setProperty('--gc','var(--cat-'+cat.id+')');
-    var head=document.createElement('div');
-    head.className='group-head';
-    head.innerHTML='<h2>'+cat.label+'</h2><span class="gcount">'+items.length+'</span>';
-    group.appendChild(head);
-    items.forEach(function(t){
-      var e=document.createElement('div'); e.className='entry';
-      var col=document.createElement('div'); col.className='term-col';
-      var term=document.createElement('div'); term.className='term'; term.innerHTML=hl(t.t,state.q.trim());
-      var tag=document.createElement('span'); tag.className='tag';
-      tag.style.color='var(--cat-'+cat.id+')';
-      tag.textContent=cat.label.split(' · ')[0].split(' & ')[0];
-      col.appendChild(term); col.appendChild(tag);
-      var def=document.createElement('p'); def.className='def';
-      def.innerHTML=hl(t.d,state.q.trim()) + (t.n?('<span class="note">'+hl(t.n,state.q.trim())+'</span>'):'');
-      e.appendChild(col); e.appendChild(def);
-      group.appendChild(e);
-    });
-    entriesEl.appendChild(group);
-  });
-  if(total===0){
-    entriesEl.innerHTML='<div class="empty">Niciun termen pentru „'+state.q+'”. Încearcă alt cuvânt.</div>';
-  }
-  countEl.innerHTML = q||state.cat!=='toate' ? '<b>'+total+'</b> / '+TERMS.length+' termeni' : '<b>'+TERMS.length+'</b> termeni';
-  clearEl.style.display = state.q ? 'block' : 'none';
-}
-
-qEl.addEventListener('input', function(){ state.q=this.value; render(); });
-clearEl.addEventListener('click', function(){ state.q=''; qEl.value=''; qEl.focus(); render(); });
-qEl.addEventListener('keydown', function(e){ if(e.key==='Escape'){ state.q=''; this.value=''; render(); } });
-
-render();
-</script>
-</body>
-</html>
+/* ---------- resurse participant-facing (nu conținut de facilitare) ---------- */
+var RESOURCES = [
+  { title:"AI Fluency: Framework &amp; Foundations", meta:"START · gratuit · certificat", body:"Cursul de bază: cei 4D + cele 3 modalități, cu exerciții. Punctul zero pentru toată echipa. → <a href=\"https://aifluencyframework.org/\" target=\"_blank\" rel=\"noopener\">aifluencyframework.org</a>" },
+  { title:"Documentație Claude Code", meta:"instalare &amp; comenzi", body:"<code>curl -fsSL https://claude.ai/install.sh | sh</code> → apoi <code>claude --version</code>. → <a href=\"https://docs.claude.com\" target=\"_blank\" rel=\"noopener\">docs.claude.com</a>" },
+  { title:"SQL Server MCP", meta:"oficial Microsoft", body:"Expune tabele și proceduri ca unelte sigure; nu lasă modelul să genereze SQL liber pe date critice. → <a href=\"https://learn.microsoft.com/en-us/sql/mcp/\" target=\"_blank\" rel=\"noopener\">learn.microsoft.com/en-us/sql/mcp</a>" },
+  { title:"Atlassian MCP", meta:"Jira / Confluence, oficial", body:"OAuth, respectă permisiunile tale. Pentru Server/Data Center: <a href=\"https://github.com/sooperset/mcp-atlassian\" target=\"_blank\" rel=\"noopener\">sooperset/mcp-atlassian</a>." }
+];
