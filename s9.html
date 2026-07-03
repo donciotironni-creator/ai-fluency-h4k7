@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S9 — Securitate &amp; guvernanță · AI Fluency</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">AI Fluency</a>
+  <div class="nav-divider"></div>
+  <div class="nav-sessions">
+    <a href="index.html" class="nav-pill">Acasă</a>
+    <a href="s0.html" class="nav-pill">S0</a>
+    <a href="s1.html" class="nav-pill">S1</a>
+    <a href="s2.html" class="nav-pill">S2</a>
+    <a href="s3.html" class="nav-pill">S3</a>
+    <a href="s4.html" class="nav-pill">S4</a>
+    <a href="s5.html" class="nav-pill">S5</a>
+    <a href="s6.html" class="nav-pill">S6</a>
+    <a href="s7.html" class="nav-pill">S7</a>
+    <a href="s8.html" class="nav-pill">S8</a>
+    <a href="s9.html" class="nav-pill">S9</a>
+    <a href="s10.html" class="nav-pill">S10</a>
+    <div class="nav-divider"></div>
+    <a href="dictionar.html" class="nav-pill">Dicționar</a>
+  </div>
+  <button class="nav-toggle" onclick="toggleTheme()">☾ / ☀</button>
+</nav>
+
+<div class="wrap">
+
+  <div class="session-hero">
+    <span class="kicker">S9 · Faza 3 — Scalare &amp; guvernanță · ~3h</span>
+    <h1>Securitate, permisiuni, cost &amp; guvernanță</h1>
+    <div class="meta">
+      <span class="badge badge-p3">Faza 3</span>
+      <span class="tag">security</span>
+      <span class="tag">permissions</span>
+      <span class="tag">GDPR</span>
+      <span class="tag">cost</span>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent-3);">
+    <h2 style="color:var(--accent-3);font-size:1.1rem;">Conținut în pregătire</h2>
+    <p>Ghidul de facilitare și exercițiile pentru S9 sunt în lucru. Mai jos găsești rezumatul sesiunii din curriculum.</p>
+  </div>
+
+  <div class="card">
+    <h2>Despre această sesiune</h2>
+    <p>Cele cinci straturi de settings și precedența lor, riscurile prompt injection, GDPR aplicat fluxurilor cu AI și economia model/effort la scară de echipă.</p>
+
+    <h3 style="margin-top:16px;">Straturile de settings (precedență crescătoare)</h3>
+    <table>
+      <tr><th>#</th><th>Strat</th><th>Fișier</th></tr>
+      <tr><td>1</td><td>Personal global</td><td><code>~/.claude/settings.json</code></td></tr>
+      <tr><td>2</td><td>Proiect</td><td><code>.claude/settings.json</code></td></tr>
+      <tr><td>3</td><td>Proiect local (gitignored)</td><td><code>.claude/settings.local.json</code></td></tr>
+      <tr><td>4</td><td>Flag-uri CLI</td><td><code>--permission ...</code></td></tr>
+      <tr><td>5</td><td>Managed enterprise</td><td>Politică centralizată</td></tr>
+    </table>
+
+    <h3 style="margin-top:16px;">Riscuri cheie</h3>
+    <ul>
+      <li><strong>Prompt injection:</strong> conținut citit de tool-uri / MCP poate conține instrucțiuni malițioase pentru Claude.</li>
+      <li><strong>Date sensibile:</strong> ce nu iese niciodată din perimetru — igiena cheilor API, connection strings.</li>
+      <li><strong>GDPR:</strong> ce date trimite Claude la Anthropic și cum configurezi retenția.</li>
+      <li><strong><code>--dangerously-skip-permissions</code>:</strong> acceptabil <em>doar</em> în sandbox complet izolat, niciodată pe cod sau date reale.</li>
+    </ul>
+
+    <div class="artefact">o politică de permisiuni (settings.json) + note de threat-model</div>
+  </div>
+
+  <div class="page-nav">
+    <a href="s8.html">← S8: Headless &amp; automatizare</a>
+    <a href="s10.html">S10: Playbook de echipă →</a>
+  </div>
+
+</div>
+
+<script src="assets/main.js"></script>
+<script src="assets/glossary.js"></script>
+</body>
+</html>

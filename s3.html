@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S3 — Slash commands &amp; skills · AI Fluency</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">AI Fluency</a>
+  <div class="nav-divider"></div>
+  <div class="nav-sessions">
+    <a href="index.html" class="nav-pill">Acasă</a>
+    <a href="s0.html" class="nav-pill">S0</a>
+    <a href="s1.html" class="nav-pill">S1</a>
+    <a href="s2.html" class="nav-pill">S2</a>
+    <a href="s3.html" class="nav-pill">S3</a>
+    <a href="s4.html" class="nav-pill">S4</a>
+    <a href="s5.html" class="nav-pill">S5</a>
+    <a href="s6.html" class="nav-pill">S6</a>
+    <a href="s7.html" class="nav-pill">S7</a>
+    <a href="s8.html" class="nav-pill">S8</a>
+    <a href="s9.html" class="nav-pill">S9</a>
+    <a href="s10.html" class="nav-pill">S10</a>
+    <div class="nav-divider"></div>
+    <a href="dictionar.html" class="nav-pill">Dicționar</a>
+  </div>
+  <button class="nav-toggle" onclick="toggleTheme()">☾ / ☀</button>
+</nav>
+
+<div class="wrap">
+
+  <div class="session-hero">
+    <span class="kicker">S3 · Faza 1 — Folosire disciplinată · ~3h</span>
+    <h1>Slash commands &amp; skills — promptul repetat devine unealtă</h1>
+    <div class="meta">
+      <span class="badge badge-p1">Faza 1</span>
+      <span class="tag">skills</span>
+      <span class="tag">slash commands</span>
+      <span class="tag">reutilizare</span>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent-3);">
+    <h2 style="color:var(--accent-3);font-size:1.1rem;">Conținut în pregătire</h2>
+    <p>Ghidul de facilitare și exercițiile pentru S3 sunt în lucru. Mai jos găsești rezumatul sesiunii din curriculum.</p>
+  </div>
+
+  <div class="card">
+    <h2>Despre această sesiune</h2>
+    <p>Comenzile custom și skills sunt acum unificate — ambele se invocă cu <code>/nume</code>. Înveți când e „doar un template de prompt" vs. când e „logică de domeniu cu fișiere ajutătoare".</p>
+
+    <h3 style="margin-top:16px;">Slash command vs. Skill</h3>
+    <table>
+      <tr><th>Slash command</th><th>Skill</th></tr>
+      <tr><td>Un fișier <code>.md</code> cu un prompt template</td><td>Un folder <code>.claude/skills/&lt;nume&gt;/</code> cu <code>SKILL.md</code> + fișiere ajutătoare</td></tr>
+      <tr><td>Bun pentru: <code>/review</code>, <code>/commit</code>, <code>/pr</code></td><td>Bun pentru logică de domeniu complexă, cu context suplimentar</td></tr>
+      <tr><td>Simplu, rapid de creat</td><td>Mai structurat, mai ușor de evoluat</td></tr>
+    </table>
+
+    <h3 style="margin-top:16px;">Capabilități avansate</h3>
+    <ul>
+      <li><strong>Argumente:</strong> <code>/review --strict</code> — valorile vin în <code>$ARGUMENTS</code>.</li>
+      <li><strong><code>allowed-tools</code>:</strong> restricționezi ce unealtă poate folosi skill-ul.</li>
+      <li><strong>Injectare de context:</strong> <code>!`git log --oneline -10`</code> injectează output de comandă; <code>@fișier.md</code> injectează un fișier.</li>
+    </ul>
+
+    <div class="artefact">un slash command / skill funcțional (ex: /review, /commit, /pr)</div>
+    <div class="callout" style="margin-top:12px;">Review de fază după S3 (10 min): fiecare are acum un CLAUDE.md + minim un command propriu. Ce se standardizează la nivel de echipă?</div>
+  </div>
+
+  <div class="page-nav">
+    <a href="s2.html">← S2: CLAUDE.md</a>
+    <a href="s4.html">S4: Subagents →</a>
+  </div>
+
+</div>
+
+<script src="assets/main.js"></script>
+<script src="assets/glossary.js"></script>
+</body>
+</html>

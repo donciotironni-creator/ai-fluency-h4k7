@@ -3,85 +3,339 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Academy — Skills, MCP & Plugins</title>
+<title>AI Fluency — Claude Code pentru echipe senior</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/academy.css">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
-<div class="app">
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">AI Fluency</a>
+  <div class="nav-divider"></div>
+  <div class="nav-sessions">
+    <a href="index.html" class="nav-pill">Acasă</a>
+    <a href="s0.html" class="nav-pill">S0</a>
+    <a href="s1.html" class="nav-pill">S1</a>
+    <a href="s2.html" class="nav-pill">S2</a>
+    <a href="s3.html" class="nav-pill">S3</a>
+    <a href="s4.html" class="nav-pill">S4</a>
+    <a href="s5.html" class="nav-pill">S5</a>
+    <a href="s6.html" class="nav-pill">S6</a>
+    <a href="s7.html" class="nav-pill">S7</a>
+    <a href="s8.html" class="nav-pill">S8</a>
+    <a href="s9.html" class="nav-pill">S9</a>
+    <a href="s10.html" class="nav-pill">S10</a>
+    <div class="nav-divider"></div>
+    <a href="dictionar.html" class="nav-pill">Dicționar</a>
+  </div>
+  <button class="nav-toggle" onclick="toggleTheme()">☾ / ☀</button>
+</nav>
 
-  <!-- ============ HEADER ============ -->
-  <header class="appbar">
-    <button class="brandbtn" data-action="goto-lesson" data-lesson="1.1">
-      <span class="brandmark"></span>
-      <span class="brandname">AI Academy</span>
-    </button>
-    <div class="crumb">
-      <span class="cur" id="crumb-module">Modul 1: Bucla 4D &amp; bazele Claude Code</span>
-      <span class="sep">›</span>
-      <span class="lesson" id="crumb-lesson">Lecția 1.1</span>
+<div class="wrap">
+
+  <div style="margin-bottom: 36px;">
+    <span class="kicker">Programul de joi · nivel senior</span>
+    <h1>Claude Code Fluency</h1>
+    <p class="sub">10 săptămâni, același format de joi: 1–1,5h tutorial, lucru aplicat, schimb de practici. Publicul e senior — pornim direct de la „știi să prompt-uiești" și construim <b>Claude Code ca platformă de echipă</b>: comenzi reutilizabile, subagenți, hooks, MCP, plugins și automatizare.</p>
+  </div>
+
+  <!-- Session grid -->
+  <h2 style="font-size:1rem; font-family:'DM Mono',monospace; text-transform:uppercase; letter-spacing:.1em; color:var(--ink-soft); font-weight:500; margin-bottom:14px;">Sesiunile programului</h2>
+  <div class="sessions-grid">
+
+    <a href="s0.html" class="session-card done">
+      <div class="sc-num">S0 · 30 min</div>
+      <div class="sc-title">Kickoff &amp; Diagnostic</div>
+      <div class="sc-phase p0">Pre-program</div>
+    </a>
+
+    <a href="s1.html" class="session-card done">
+      <div class="sc-num">S1 · ~3h</div>
+      <div class="sc-title">Modelul mental &amp; bucla zilnică</div>
+      <div class="sc-phase p1">Faza 1 — Folosire disciplinată</div>
+    </a>
+
+    <a href="s2.html" class="session-card">
+      <div class="sc-num">S2 · ~3h</div>
+      <div class="sc-title">CLAUDE.md — constituția repo-ului</div>
+      <div class="sc-phase p1">Faza 1 — Folosire disciplinată</div>
+    </a>
+
+    <a href="s3.html" class="session-card">
+      <div class="sc-num">S3 · ~3h</div>
+      <div class="sc-title">Slash commands &amp; skills</div>
+      <div class="sc-phase p1">Faza 1 — Folosire disciplinată</div>
+    </a>
+
+    <a href="s4.html" class="session-card">
+      <div class="sc-num">S4 · ~3h</div>
+      <div class="sc-title">Subagents — izolare &amp; paralelism</div>
+      <div class="sc-phase p2">Faza 2 — Extensii proprii</div>
+    </a>
+
+    <a href="s5.html" class="session-card">
+      <div class="sc-num">S5 · ~3h</div>
+      <div class="sc-title">Hooks — reguli deterministe</div>
+      <div class="sc-phase p2">Faza 2 — Extensii proprii</div>
+    </a>
+
+    <a href="s6.html" class="session-card">
+      <div class="sc-num">S6 · ~3h</div>
+      <div class="sc-title">MCP — Claude vorbește cu lumea</div>
+      <div class="sc-phase p2">Faza 2 — Extensii proprii</div>
+    </a>
+
+    <a href="s7.html" class="session-card">
+      <div class="sc-num">S7 · ~3h</div>
+      <div class="sc-title">Plugins — unitate de echipă</div>
+      <div class="sc-phase p2">Faza 2 — Extensii proprii</div>
+    </a>
+
+    <a href="s8.html" class="session-card">
+      <div class="sc-num">S8 · ~3h</div>
+      <div class="sc-title">Headless &amp; automatizare</div>
+      <div class="sc-phase p3">Faza 3 — Scalare &amp; guvernanță</div>
+    </a>
+
+    <a href="s9.html" class="session-card">
+      <div class="sc-num">S9 · ~3h</div>
+      <div class="sc-title">Securitate, permisiuni &amp; cost</div>
+      <div class="sc-phase p3">Faza 3 — Scalare &amp; guvernanță</div>
+    </a>
+
+    <a href="s10.html" class="session-card">
+      <div class="sc-num">S10 · ~3h</div>
+      <div class="sc-title">Playbook de echipă &amp; standard de casă</div>
+      <div class="sc-phase p3">Faza 3 — Scalare &amp; guvernanță</div>
+    </a>
+
+  </div>
+
+  <!-- Overview tabs -->
+  <div class="tabs">
+    <div class="tab active" data-tab="overview">Cum funcționează</div>
+    <div class="tab" data-tab="curriculum">Curriculum (10 săpt.)</div>
+    <div class="tab" data-tab="matrix">Matrice de fluență</div>
+    <div class="tab" data-tab="facilitation">Facilitare &amp; măsurare</div>
+  </div>
+
+  <!-- TAB: Cum funcționează -->
+  <div class="panel active" id="overview">
+    <div class="card">
+      <h2>Formatul unei zile de joi</h2>
+      <table>
+        <tr><th>Bloc</th><th>Durată</th><th>Conținut</th></tr>
+        <tr><td>Tutorial</td><td>60–90 min</td><td>O capabilitate Claude Code prezentată concret: ce e, unde „locuiește" (ce fișier / config), când o folosești și când NU. Demo scurt pe un repo de test, nu teorie.</td></tr>
+        <tr><td>Lucru aplicat</td><td>~90 min</td><td>Fiecare aplică principiul zilei pe repo-ul / task-ul lui real și produce un artefact concret (un fișier care rămâne în repo sau în <code>~/.claude</code>).</td></tr>
+        <tr><td>Schimb de practici</td><td>15–20 min</td><td>Fiecare arată artefactul făcut și spune ce a mers / n-a mers. Se notează în docul partajat „AI Wins &amp; Fails".</td></tr>
+      </table>
     </div>
-    <nav class="hdrnav">
-      <button class="themebtn lift" id="theme-btn" data-action="toggle-theme" aria-label="Comută tema light/dark">◐</button>
-      <button class="hlink" data-action="goto-route" data-route="onboarding">Despre curs</button>
-      <button class="cta lift" data-action="goto-lesson" data-lesson="1.1">Începe de aici</button>
-    </nav>
-  </header>
-
-  <!-- ============ APP BODY ============ -->
-  <div class="app-body">
-
-    <!-- LEFT: COURSE SIDEBAR -->
-    <aside class="sidebar">
-      <div class="sidebar-eyebrow">CURS AI FLUENCY</div>
-
-      <div id="module-list"></div>
-
-      <div class="sidebar-divider"></div>
-      <button class="sidebar-link" data-action="goto-route" data-route="glosar">
-        <span style="width:16px;height:14px;border:1.6px solid var(--faint);border-radius:2px;flex:none;display:block"></span>Glosar de termeni
-      </button>
-      <button class="sidebar-link" data-action="goto-route" data-route="map">
-        <span style="width:16px;height:16px;flex:none;position:relative;display:block"><span style="position:absolute;left:0;top:2px;width:5px;height:5px;border-radius:50%;background:var(--faint)"></span><span style="position:absolute;right:0;top:2px;width:5px;height:5px;border-radius:50%;background:var(--faint)"></span><span style="position:absolute;left:5px;bottom:1px;width:5px;height:5px;border-radius:50%;background:var(--faint)"></span></span>Harta conceptelor
-      </button>
-      <button class="sidebar-link" data-action="goto-route" data-route="resurse">
-        <span style="width:15px;height:15px;border:1.6px solid var(--faint);border-radius:50%;flex:none;display:block"></span>Resurse recomandate
-      </button>
-
-      <div class="newhere">
-        <div class="newhere-hd"><span class="newhere-dot"></span><span class="newhere-title">Nou aici?</span></div>
-        <p>Parcurge ghidul rapid și înțelege cum să folosești platforma.</p>
-        <button class="tlink" data-action="goto-route" data-route="onboarding">Vezi ghidul (2 min) →</button>
-      </div>
-    </aside>
-
-    <!-- CENTER + RIGHT -->
-    <div class="content-row">
-      <main class="scr cmain" id="main-view">
-        <div id="view-lesson"></div>
-        <div id="view-glossary" style="display:none"></div>
-        <div id="view-map" style="display:none"></div>
-        <div id="view-onboarding" style="display:none"></div>
-        <div id="view-resurse" style="display:none"></div>
-      </main>
-
-      <aside class="toc-aside" id="toc-aside">
-        <div class="toc-card">
-          <div class="toc-title">În această lecție</div>
-          <div class="toc-list" id="toc-list"></div>
-          <div class="toc-divider"></div>
-          <div class="toc-help-label">Ai nevoie de ajutor?</div>
-          <span class="toc-help-link" style="cursor:default">Întreabă la sesiunea live</span>
-        </div>
-      </aside>
+    <div class="card">
+      <h2>De ce arată altfel decât programul general</h2>
+      <ul>
+        <li><strong>Presupunem competența AI, o exploatăm.</strong> Nu explicăm ce e un token sau un prompt bun. Plecăm direct de la: „știi să prompt-uiești — hai să transformăm asta în comenzi reutilizabile, verificabile și partajabile."</li>
+        <li><strong>Fiecare săptămână produce cod / config, nu notițe.</strong> La Claude Code, artefactele sunt fișiere reale: <code>CLAUDE.md</code>, un skill, un subagent, un hook, o intrare MCP, un plugin. Ele intră în repo și devin infrastructură de echipă.</li>
+        <li><strong>De la individual la platformă de echipă.</strong> Faza 1 = folosire disciplinată. Faza 2 = îți construiești extensii proprii. Faza 3 = le împachetezi, le guvernezi și le automatizezi pentru toată echipa.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Principii de design ale programului</h2>
+      <ul>
+        <li><strong>Principiul e fix, aplicarea e liberă</strong> — subiectul zilei (ex: „subagents") se predă o singură dată, dar fiecare îl aplică pe repo-ul lui, nu toți pe același proiect.</li>
+        <li><strong>Fiecare artefact ajunge sub control de versiune</strong> — dacă e bun, se comite. Artefactele bune ale unuia devin standardul echipei în Faza 3.</li>
+        <li><strong>Prezentator rotativ după săptămâna 3</strong> — la o echipă senior, cel mai bun conținut vine din practica cuiva care a descoperit un tipar util. Cine descoperă, prezintă.</li>
+        <li><strong>Unealta se mișcă rapid</strong> — Claude Code publică des. <code>/help</code> și docul oficial sunt sursa de adevăr; programul predă principii care rezistă, nu sintaxă care se schimbă săptămânal.</li>
+      </ul>
     </div>
   </div>
+
+  <!-- TAB: Curriculum -->
+  <div class="panel" id="curriculum">
+
+    <div class="phase-title">Faza 1 — Folosire disciplinată (Săpt. 1–3)</div>
+    <div class="card">
+      <div class="week">
+        <div class="week-num"><a href="s0.html" style="color:inherit;text-decoration:none;">S0</a></div>
+        <div>
+          <h3>Kickoff &amp; Diagnostic</h3>
+          <p>Sesiune pre-program de 30 min: setare așteptări, diagnostic nivel echipă pe 9 capabilități, confirmare setup (Claude Code instalat, repo de nisip, doc partajat).</p>
+          <div class="artefact">scor diagnostic 0/1/2 per capabilitate</div>
+          <span class="tag">diagnostic</span><span class="tag">setup</span>
+        </div>
+      </div>
+      <div class="week">
+        <div class="week-num"><a href="s1.html" style="color:inherit;text-decoration:none;">S1</a></div>
+        <div>
+          <h3>Modelul mental &amp; bucla zilnică făcută bine</h3>
+          <p>Tutorial: de ce majoritatea folosesc Claude Code sub potențial. Plan mode vs. execuție directă, gestiunea contextului (<code>/clear</code>, compaction), alegerea model / effort după sarcină, sistemul de permisiuni allow/ask/deny.</p>
+          <p><strong>Lucru aplicat:</strong> fiecare ia o sarcină reală și o duce cap-coadă folosind plan mode + alegere conștientă de model/effort.</p>
+          <div class="artefact">o „rețetă" personală de sesiune: când plan mode, ce model/effort, când /clear</div>
+          <span class="tag">plan mode</span><span class="tag">context</span><span class="tag">model/effort</span>
+        </div>
+      </div>
+      <div class="week">
+        <div class="week-num"><a href="s2.html" style="color:inherit;text-decoration:none;">S2</a></div>
+        <div>
+          <h3>CLAUDE.md — „constituția" repo-ului</h3>
+          <p>Tutorial: <code>CLAUDE.md</code> e sursa de adevăr pe care Claude o citește la fiecare sesiune. Straturile de memorie (personal <code>~/.claude</code> vs. proiect <code>.claude</code>) și precedența lor. Ce pui înăuntru și, la fel de important, ce lași afară.</p>
+          <p><strong>Lucru aplicat:</strong> fiecare scrie sau rescrie <code>CLAUDE.md</code> pentru repo-ul lui.</p>
+          <div class="artefact">un CLAUDE.md real, comis în repo-ul propriu</div>
+          <span class="tag">CLAUDE.md</span><span class="tag">context engineering</span>
+        </div>
+      </div>
+      <div class="week">
+        <div class="week-num"><a href="s3.html" style="color:inherit;text-decoration:none;">S3</a></div>
+        <div>
+          <h3>Slash commands &amp; skills — promptul repetat devine unealtă</h3>
+          <p>Tutorial: comenzile custom și skills sunt acum unificate (ambele se invocă <code>/nume</code>). Când e „doar un template de prompt" vs. când e „logică de domeniu cu fișiere ajutătoare". Argumente, <code>allowed-tools</code>, injectarea de context.</p>
+          <p><strong>Lucru aplicat:</strong> fiecare ia un prompt pe care îl scrie repetat manual și îl transformă într-o comandă reutilizabilă.</p>
+          <div class="artefact">un slash command / skill funcțional (ex: /review, /commit, /pr)</div>
+          <span class="tag">skills</span><span class="tag">slash commands</span>
+        </div>
+      </div>
+      <div class="callout" style="margin:12px 24px 0;">Review de fază (10 min): fiecare are acum un CLAUDE.md + minim un command propriu. Ce se standardizează la nivel de echipă?</div>
+    </div>
+
+    <div class="phase-title">Faza 2 — Îți construiești extensii (Săpt. 4–7)</div>
+    <div class="card">
+      <div class="week">
+        <div class="week-num"><a href="s4.html" style="color:inherit;text-decoration:none;">S4</a></div>
+        <div>
+          <h3>Subagents — izolare de context &amp; paralelism</h3>
+          <p>Tutorial: un subagent e o sesiune Claude separată, cu propriul context window (<code>.claude/agents/</code>). Agenții built-in (Explore read-only, Plan) și când definești unul propriu. Paralelism și tiparul recomandat: subagenți read-only pentru cercetare, Edit/Write rămân la agentul-părinte.</p>
+          <div class="artefact">un subagent propriu (ex: code-reviewer, codebase-explorer)</div>
+          <span class="tag">subagents</span><span class="tag">context isolation</span>
+        </div>
+      </div>
+      <div class="week">
+        <div class="week-num"><a href="s5.html" style="color:inherit;text-decoration:none;">S5</a></div>
+        <div>
+          <h3>Hooks — reguli deterministe, nu speranțe</h3>
+          <p>Tutorial: hooks sunt scripturi care rulează la evenimente din ciclul de viață (<code>PreToolUse</code>, <code>PostToolUse</code>, <code>SessionStart</code> ș.a.). Diferența față de instrucțiuni în prompt: un hook nu halucinează. Coduri de ieșire care blochează/permit o acțiune.</p>
+          <div class="artefact">minim un hook configurat (guardrail sau formatare)</div>
+          <span class="tag">hooks</span><span class="tag">guardrails</span>
+        </div>
+      </div>
+      <div class="week">
+        <div class="week-num"><a href="s6.html" style="color:inherit;text-decoration:none;">S6</a></div>
+        <div>
+          <h3>MCP — Claude Code vorbește cu lumea din afara repo-ului</h3>
+          <p>Tutorial: MCP conectează Claude Code la servicii externe și la tooling-ul intern (API-uri proprii, baze de date, browser automation). <code>claude mcp add</code>, transporturi stdio vs. SSE. Când merită un server MCP vs. când un simplu script/CLI e suficient.</p>
+          <div class="artefact">o configurație MCP funcțională pentru un flux propriu</div>
+          <span class="tag">MCP</span><span class="tag">integrări</span>
+        </div>
+      </div>
+      <div class="week">
+        <div class="week-num"><a href="s7.html" style="color:inherit;text-decoration:none;">S7</a></div>
+        <div>
+          <h3>Plugins — împachetezi tot ca unitate de echipă</h3>
+          <p>Tutorial: un plugin e un bundle versionat care poate livra împreună skills, subagenți, comenzi, hooks, output styles și definiții MCP — instalabil cu o singură comandă <code>/plugin</code>. E modul canonic de a partaja extensii între oameni.</p>
+          <div class="artefact">primul plugin de echipă (chiar minimal), într-un repo</div>
+          <span class="tag">plugins</span><span class="tag">distribuție</span>
+        </div>
+      </div>
+      <div class="callout" style="margin:12px 24px 0;">Review de fază (10 min): avem deja subagenți, hooks, MCP și un început de plugin. Ce devine „standard de casă" și ce rămâne personal?</div>
+    </div>
+
+    <div class="phase-title">Faza 3 — Scalare, automatizare &amp; guvernanță (Săpt. 8–10)</div>
+    <div class="card">
+      <div class="week">
+        <div class="week-num"><a href="s8.html" style="color:inherit;text-decoration:none;">S8</a></div>
+        <div>
+          <h3>Headless &amp; automatizare — Claude Code fără om la tastatură</h3>
+          <p>Tutorial: Claude Code rulează și ca proces one-shot fără TTY — integrarea în CI (GitHub Action), job-uri programate, hook-uri de pre-commit. Sesiuni în background / async, panoul de agenți și Agent SDK.</p>
+          <div class="artefact">un flux automat (CI / pre-commit / job) care rulează fără intervenție</div>
+          <span class="tag">headless</span><span class="tag">CI/CD</span><span class="tag">Agent SDK</span>
+        </div>
+      </div>
+      <div class="week">
+        <div class="week-num"><a href="s9.html" style="color:inherit;text-decoration:none;">S9</a></div>
+        <div>
+          <h3>Securitate, permisiuni, cost &amp; guvernanță</h3>
+          <p>Tutorial: cele cinci straturi de settings și precedența lor. Prompt injection prin conținut citit de tool-uri / MCP, ce date nu ies niciodată din perimetru, igiena cheilor API, GDPR aplicat fluxurilor cu AI.</p>
+          <div class="artefact">o politică de permisiuni (settings.json) + note de threat-model</div>
+          <span class="tag">security</span><span class="tag">permissions</span><span class="tag">GDPR</span><span class="tag">cost</span>
+        </div>
+      </div>
+      <div class="week">
+        <div class="week-num"><a href="s10.html" style="color:inherit;text-decoration:none;">S10</a></div>
+        <div>
+          <h3>Playbook-ul de echipă &amp; standardul de casă</h3>
+          <p>Tutorial: consolidăm tot în două lucruri concrete — un <code>CLAUDE.md</code> „de referință" pentru repo-urile echipei și un plugin de casă (skills + subagenți + hooks + MCP) pe care orice nou-venit îl instalează în ziua 1.</p>
+          <div class="artefact">playbook de echipă + plugin de casă versionat</div>
+          <span class="tag">playbook</span><span class="tag">retro</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">După S10: cadența trece la deep-dive lunar + joia rămâne fixă pentru pairing / office hours, cu prezentator rotativ. Standardul de casă se re-evaluează la fiecare deep-dive.</div>
+  </div>
+
+  <!-- TAB: Matrice de fluență -->
+  <div class="panel" id="matrix">
+    <div class="card">
+      <h2>Ce înseamnă „fluent în Claude Code"</h2>
+      <p class="sub" style="margin-bottom:16px;">Toți din echipă sunt deja ingineri seniori — deci matricea nu măsoară seniority, ci <strong>maturitatea folosirii uneltei</strong>. Cele trei niveluri urmăresc exact fazele programului.</p>
+      <table>
+        <tr><th>Nivel</th><th>Definiție</th><th>Faza</th></tr>
+        <tr>
+          <td><strong>Operator</strong></td>
+          <td>Folosește Claude Code disciplinat ca daily driver: plan mode când trebuie, context curat, alegere conștientă de model/effort, un <code>CLAUDE.md</code> bun și câteva comenzi proprii. Nu îl mai tratează ca pe un chat.</td>
+          <td><span class="badge badge-p1">Faza 1</span></td>
+        </tr>
+        <tr>
+          <td><strong>Constructor</strong></td>
+          <td>Își construiește extensii proprii: subagenți pentru izolare de context, hooks deterministe ca guardrails, integrări MCP. Știe compromisurile și alege corect.</td>
+          <td><span class="badge badge-p2">Faza 2</span></td>
+        </tr>
+        <tr>
+          <td><strong>Arhitect de platformă</strong></td>
+          <td>Împachetează totul în plugins pentru echipă, automatizează în CI / prin SDK, stabilește politica de permisiuni și guvernanță, gândește cost/securitate la nivel de sistem și mentorează restul echipei.</td>
+          <td><span class="badge badge-p3">Faza 3</span></td>
+        </tr>
+      </table>
+      <p style="color:var(--ink-soft);font-size:.93rem;margin-top:16px;">Matricea e un reper, nu o grilă de evaluare. La o echipă senior, mulți intră deja la nivel „Operator" sau chiar „Constructor" pe unele axe.</p>
+    </div>
+  </div>
+
+  <!-- TAB: Facilitare & măsurare -->
+  <div class="panel" id="facilitation">
+    <div class="card">
+      <h2>Calibrare pentru o echipă care știe deja multe</h2>
+      <ul>
+        <li><strong>Diagnostic în S0 (30 min, opțional).</strong> Înainte de S1, o rundă scurtă: cine folosește deja plan mode / CLAUDE.md / subagenți / hooks / MCP. Rezultatul îți spune ce comprimi.</li>
+        <li><strong>Comasare, nu diluare.</strong> Dacă majoritatea sunt deja solizi pe Faza 1, comasează S1–S3 în 1-2 sesiuni și investește timpul câștigat în S7–S9.</li>
+        <li><strong>Traseu „skip-ahead".</strong> Cine e deja Constructor poate sări direct la lucru aplicat și veni cu un artefact mai ambițios.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Cum se măsoară că programul funcționează</h2>
+      <ul>
+        <li>Câte artefacte reale au ajuns sub control de versiune (CLAUDE.md, skills, subagenți, hooks, MCP, plugins) — nu notițe, ci fișiere comise.</li>
+        <li>Cine altcineva decât tine a prezentat un tutorial (semnal de auto-susținere).</li>
+        <li>Cât din „standardul de casă" (plugin + CLAUDE.md de referință) e efectiv instalat și folosit de întreaga echipă la final.</li>
+        <li>Distribuția pe matricea de fluență (Operator / Constructor / Arhitect) la final vs. la început.</li>
+        <li>Câte fluxuri repetitive au fost automatizate (S8) care înainte se făceau manual.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>Note de facilitare</h2>
+      <ul>
+        <li>Ține docul/canalul partajat <strong>„AI Wins &amp; Fails"</strong> — completat la finalul fiecărei joi, plus link la artefactul comis.</li>
+        <li>Rotește prezentatorul din S4 încolo; tu rămâi backup pe sesiunile tehnice grele (S5 hooks, S6 MCP, S8 automatizare, S9 securitate).</li>
+        <li>Lasă partea aplicată deschisă — fiecare aduce repo-ul / task-ul lui; nu impune un singur proiect comun.</li>
+        <li>Ai mereu la îndemână un <strong>repo de test „de nisip"</strong> pentru demo-uri, ca nimeni să nu testeze hooks/permisiuni distructive pe cod real.</li>
+        <li>Unealta se schimbă des: la începutul fiecărei sesiuni, un <code>/help</code> + o privire pe docul oficial ca să prinzi ce s-a schimbat.</li>
+        <li>La finalul fiecărei faze (S3, S7, S10), review scurt de 10 min: ce devine standard de casă, ce rămâne personal.</li>
+      </ul>
+    </div>
+  </div>
+
 </div>
 
-<script src="assets/academy-data.js"></script>
-<script src="assets/academy.js"></script>
+<script src="assets/main.js"></script>
+<script src="assets/glossary.js"></script>
 </body>
 </html>

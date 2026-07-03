@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S0 — Kickoff &amp; Diagnostic · AI Fluency</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">AI Fluency</a>
+  <div class="nav-divider"></div>
+  <div class="nav-sessions">
+    <a href="index.html" class="nav-pill">Acasă</a>
+    <a href="s0.html" class="nav-pill">S0</a>
+    <a href="s1.html" class="nav-pill">S1</a>
+    <a href="s2.html" class="nav-pill">S2</a>
+    <a href="s3.html" class="nav-pill">S3</a>
+    <a href="s4.html" class="nav-pill">S4</a>
+    <a href="s5.html" class="nav-pill">S5</a>
+    <a href="s6.html" class="nav-pill">S6</a>
+    <a href="s7.html" class="nav-pill">S7</a>
+    <a href="s8.html" class="nav-pill">S8</a>
+    <a href="s9.html" class="nav-pill">S9</a>
+    <a href="s10.html" class="nav-pill">S10</a>
+    <div class="nav-divider"></div>
+    <a href="dictionar.html" class="nav-pill">Dicționar</a>
+  </div>
+  <button class="nav-toggle" onclick="toggleTheme()">☾ / ☀</button>
+</nav>
+
+<div class="wrap">
+
+  <div class="session-hero">
+    <span class="kicker">S0 · Pre-program · 30 min</span>
+    <h1>Kickoff &amp; Diagnostic</h1>
+    <div class="meta">
+      <span class="badge badge-p0">Pre-program</span>
+      <span class="tag">diagnostic</span>
+      <span class="tag">setup</span>
+      <span class="tag">calibrare</span>
+    </div>
+    <p style="color:var(--ink-soft);margin-top:12px;max-width:680px;">Sesiune scurtă, <strong>înainte</strong> de S1. Scopul nu e să predai nimic — e să setezi așteptările programului, să afli nivelul real al echipei și să te asiguri că toată lumea are unealta instalată și funcțională.</p>
+  </div>
+
+  <!-- Role switch -->
+  <div class="role-switch">
+    <button class="role-btn active" data-role="facilitator">Ghid facilitare</button>
+    <button class="role-btn" data-role="echipa">Exerciții echipă</button>
+  </div>
+
+  <!-- ══ FACILITATOR PANEL ══ -->
+  <div id="facilitator" class="role-panel active">
+
+    <div class="callout" style="margin-bottom:20px;">
+      <strong>Notă:</strong> Claude Code publică des. Sintaxa exactă (comenzi, flag-uri, keybindings) se poate schimba de la o lună la alta. La începutul fiecărei sesiuni rulează <code>/help</code> și verifică docul oficial. Acest ghid predă <strong>principii care rezistă</strong>, nu sintaxă care se schimbă săptămânal.
+    </div>
+
+    <div class="section-label">Obiective</div>
+    <div class="card">
+      <ul>
+        <li>Toată lumea înțelege că programul e despre Claude Code <strong>ca platformă</strong>, nu despre bazele AI.</li>
+        <li>Ai o hartă a nivelului real al echipei pe fiecare capabilitate.</li>
+        <li>Toți au Claude Code instalat, autentificat și au rulat cel puțin o sesiune.</li>
+        <li>Docul partajat „AI Wins &amp; Fails" există și e accesibil tuturor.</li>
+      </ul>
+    </div>
+
+    <div class="section-label">Agendă</div>
+    <div class="agenda">
+      <div class="agenda-row">
+        <div class="agenda-time">0–5 min</div>
+        <div class="agenda-content"><strong>Cadru.</strong> Explici arcul programului: Faza 1 folosire disciplinată → Faza 2 extensii proprii → Faza 3 platformă de echipă. Fiecare săptămână produce un <strong>artefact real</strong> comis în repo, nu notițe.</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">5–20 min</div>
+        <div class="agenda-content"><strong>Diagnostic.</strong> Rundă rapidă (vezi mai jos). Notezi scoruri pe un tabel vizibil.</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">20–27 min</div>
+        <div class="agenda-content"><strong>Calibrare.</strong> Pe baza rezultatelor, anunți dacă S1–S3 se rulează integral sau se comasează.</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">27–30 min</div>
+        <div class="agenda-content"><strong>Setup &amp; logistică.</strong> Confirmi instalarea, deschizi docul partajat, stabilești prezentatorul rotativ din S4.</div>
+      </div>
+    </div>
+
+    <div class="section-label">Ce le zici — bloc cu bloc</div>
+    <div class="card">
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div>
+          <div style="font-size:.75rem;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;">0–5 min · Cadru</div>
+          <blockquote style="margin:0;padding:10px 14px;border-left:3px solid var(--line);color:var(--ink-soft);font-style:italic;font-size:.95rem;">„Programul ăsta nu e despre AI în general — e despre Claude Code ca unealtă de echipă. Deci nu predăm prompturi frumoase, predăm cum conduci un agent: ce îi dai să vadă, ce îl lași să facă, cum ții costul și riscul sub control. Fiecare joi pleacă cu ceva comis în repo — nu cu notițe, nu cu idei, cu un artefact real. Azi nu producem nimic, azi ne calibrăm."</blockquote>
+        </div>
+        <div>
+          <div style="font-size:.75rem;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;">5–20 min · Diagnostic</div>
+          <blockquote style="margin:0;padding:10px 14px;border-left:3px solid var(--line);color:var(--ink-soft);font-style:italic;font-size:.95rem;">„O să vă pun 9 întrebări rapide. La fiecare, autoevaluare sinceră: 0 dacă n-ai auzit sau n-ai folosit niciodată, 1 dacă ai atins subiectul dar nu sistematic, 2 dacă e parte din rutina ta zilnică. Nu există răspuns greșit — cu cât știu mai bine unde sunteți, cu atât adaptez mai bine programul pentru voi."</blockquote>
+        </div>
+        <div>
+          <div style="font-size:.75rem;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;">20–27 min · Calibrare</div>
+          <p style="font-size:.88rem;color:var(--ink-soft);margin:0 0 6px;font-style:normal;"><em>după ce ai scorurile vizibile pentru toată lumea:</em></p>
+          <blockquote style="margin:0;padding:10px 14px;border-left:3px solid var(--line);color:var(--ink-soft);font-style:italic;font-size:.95rem;">„Pe baza a ce văd, iată cum mergem: [<strong>dacă mediile 1–4 ≥ 1,5</strong>] S1–S3 le comprimăm, punem mai mult timp în Faza 2 și 3. [<strong>dacă scoruri mici la 1–4</strong>] Mergem integral pe Faza 1 — e exact ce trebuie. [<strong>în ambele cazuri</strong>] Cei cu scoruri mari pe 5–9 — voi intrați mai devreme ca prezentatori rotativi."</blockquote>
+        </div>
+        <div>
+          <div style="font-size:.75rem;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;">27–30 min · Setup &amp; logistică</div>
+          <blockquote style="margin:0;padding:10px 14px;border-left:3px solid var(--line);color:var(--ink-soft);font-style:italic;font-size:.95rem;">„Verificați că <code>claude</code> rulează în terminal și că sunteți autentificați — <code>claude auth status</code>. Dacă nu, rezolvați azi, că joi începem direct în unealtă. Am deschis acum docul partajat AI Wins &amp; Fails — linkul e în chat. Din S4, unul dintre voi prezintă la început — stabilim rotația atunci."</blockquote>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Diagnosticul — întrebări pentru rundă</div>
+    <div class="card">
+      <p style="color:var(--ink-soft);font-size:.93rem;margin-bottom:14px;">Pentru fiecare, cere o autoevaluare rapidă: <strong>0 = n-am auzit / n-am folosit</strong>, <strong>1 = am folosit ocazional</strong>, <strong>2 = folosesc curent și conștient</strong>. <a href="diagnostic-s0.xlsx" download style="color:var(--accent);font-size:.88rem;margin-left:8px;">↓ Descarcă tabelul Excel</a></p>
+      <div class="diag-grid">
+        <div class="diag-row">
+          <div class="diag-num">#1</div>
+          <div>Plan mode — folosești modul de planificare înainte de execuție, sau mergi direct?</div>
+          <div class="diag-score">0 / 1 / 2</div>
+        </div>
+        <div class="diag-row">
+          <div class="diag-num">#2</div>
+          <div>Gestiunea contextului — <code>/clear</code>, compaction, ții sesiunile „curate" conștient?</div>
+          <div class="diag-score">0 / 1 / 2</div>
+        </div>
+        <div class="diag-row">
+          <div class="diag-num">#3</div>
+          <div>Alegerea model / effort — schimbi conștient modelul sau nivelul de effort după tipul task-ului?</div>
+          <div class="diag-score">0 / 1 / 2</div>
+        </div>
+        <div class="diag-row">
+          <div class="diag-num">#4</div>
+          <div><code>CLAUDE.md</code> — ai un fișier de „constituție" în repo-urile tale?</div>
+          <div class="diag-score">0 / 1 / 2</div>
+        </div>
+        <div class="diag-row">
+          <div class="diag-num">#5</div>
+          <div>Slash commands / skills — ai comenzi custom proprii?</div>
+          <div class="diag-score">0 / 1 / 2</div>
+        </div>
+        <div class="diag-row">
+          <div class="diag-num">#6</div>
+          <div>Subagents — ai folosit sau definit vreun subagent?</div>
+          <div class="diag-score">0 / 1 / 2</div>
+        </div>
+        <div class="diag-row">
+          <div class="diag-num">#7</div>
+          <div>Hooks — ai configurat vreun hook determinist?</div>
+          <div class="diag-score">0 / 1 / 2</div>
+        </div>
+        <div class="diag-row">
+          <div class="diag-num">#8</div>
+          <div>MCP — ai conectat vreun server MCP (extern sau intern)?</div>
+          <div class="diag-score">0 / 1 / 2</div>
+        </div>
+        <div class="diag-row">
+          <div class="diag-num">#9</div>
+          <div>Permisiuni — știi diferența allow/ask/deny și riscul lui <code>--dangerously-skip-permissions</code>?</div>
+          <div class="diag-score">0 / 1 / 2</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">Cum folosești rezultatele</div>
+    <div class="card">
+      <ul>
+        <li><strong>Medie ≥ 1,5 pe întrebările 1–4</strong> → comasează S1–S3 în 1–2 sesiuni și pune timpul câștigat în Faza 2–3 (plugins, automatizare, guvernanță), unde e cel mai mult de câștigat la scară.</li>
+        <li><strong>Scoruri mari doar la câțiva</strong> → ei devin candidați pentru prezentator rotativ mai devreme; pot intra pe traseu „skip-ahead" (sar la lucru aplicat cu un artefact mai ambițios).</li>
+        <li><strong>Mult 0 pe 5–9</strong> → păstrează Faza 2–3 integral; acolo e nevoia reală.</li>
+      </ul>
+    </div>
+
+    <div class="section-label">Checklist de setup — trimite după S0</div>
+    <div class="card">
+      <p style="color:var(--ink-soft);font-size:.93rem;margin-bottom:12px;">Trimite-l ca „temă de 10 minute" după sesiune:</p>
+      <ul class="checklist">
+        <li>Claude Code instalat (<code>claude</code> rulează în terminal).</li>
+        <li>Autentificat (<code>claude auth status</code> arată sesiune validă).</li>
+        <li>Ai rulat cel puțin o sesiune reală pe un repo propriu.</li>
+        <li>Ai la îndemână un <strong>repo de test „de nisip"</strong> (sandbox), separat de codul real — pe el vom testa în sesiunile următoare lucruri potențial distructive (hooks, permisiuni).</li>
+        <li>Ai acces la docul partajat „AI Wins &amp; Fails".</li>
+      </ul>
+      <p style="font-size:.82rem;color:var(--ink-faint);margin:14px 0 8px;text-transform:uppercase;letter-spacing:.08em;font-family:'DM Mono',monospace;">Opțional — util, nu obligatoriu</p>
+      <ul class="checklist" style="opacity:.8;">
+        <li><strong>VS Code</strong> cu extensia <strong>Claude Code</strong> instalată — sesiune Claude direct din editor, fără să schimbi fereastra.</li>
+        <li><strong>Antigravity</strong> — desktop app alternativ pentru Claude Code; util dacă preferi o interfață dedicată față de terminal.</li>
+      </ul>
+    </div>
+
+    <div class="section-label">Navigare rapidă &amp; comenzi utile</div>
+    <div class="card">
+      <p style="color:var(--ink-soft);font-size:.93rem;margin-bottom:16px;">Referință rapidă — util de arătat sau trimis înainte de S1.</p>
+
+      <h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-family:'DM Mono',monospace;margin:0 0 10px;">Terminal — pornire &amp; autentificare</h4>
+      <table style="width:100%;font-size:.9rem;margin-bottom:20px;">
+        <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>claude</code></td><td style="color:var(--ink-soft);">pornește o sesiune interactivă în folderul curent</td></tr>
+        <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>claude auth status</code></td><td style="color:var(--ink-soft);">verifică dacă ești autentificat</td></tr>
+        <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>claude --version</code></td><td style="color:var(--ink-soft);">versiunea instalată</td></tr>
+        <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>claude -p "prompt"</code></td><td style="color:var(--ink-soft);">rulare one-shot, fără sesiune interactivă (headless)</td></tr>
+      </table>
+
+      <h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-family:'DM Mono',monospace;margin:0 0 10px;">În sesiune — slash commands</h4>
+      <table style="width:100%;font-size:.9rem;margin-bottom:20px;">
+        <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>/help</code></td><td style="color:var(--ink-soft);">lista completă de comenzi disponibile în versiunea curentă</td></tr>
+        <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>/clear</code></td><td style="color:var(--ink-soft);">șterge contextul sesiunii — nou fir de gândire</td></tr>
+        <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>/model</code></td><td style="color:var(--ink-soft);">schimbă modelul (Haiku / Sonnet / Opus)</td></tr>
+        <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>/effort</code></td><td style="color:var(--ink-soft);">ajustează nivelul de raționament</td></tr>
+        <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>/permissions</code></td><td style="color:var(--ink-soft);">vizualizează regulile allow / ask / deny active</td></tr>
+      </table>
+
+      <h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-family:'DM Mono',monospace;margin:0 0 10px;">Navigare cu tastatura</h4>
+      <table style="width:100%;font-size:.9rem;margin-bottom:20px;">
+        <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>Shift+Tab</code></td><td style="color:var(--ink-soft);">ciclează moduri: normal → plan → auto</td></tr>
+        <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>Ctrl+C</code></td><td style="color:var(--ink-soft);">întrerupe execuția în desfășurare</td></tr>
+        <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>Escape</code></td><td style="color:var(--ink-soft);">anulează acțiunea curentă fără să oprești sesiunea</td></tr>
+      </table>
+
+      <h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-family:'DM Mono',monospace;margin:0 0 10px;">Remote &amp; VS Code</h4>
+      <table style="width:100%;font-size:.9rem;">
+        <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;">Extensie VS Code</td><td style="color:var(--ink-soft);">sesiune Claude în sidebar, acces direct la fișierele deschise</td></tr>
+        <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;">VS Code Remote</td><td style="color:var(--ink-soft);">deschizi folderul pe un server remote, Claude Code rulează local dar vede fișierele remote</td></tr>
+        <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;">Antigravity</td><td style="color:var(--ink-soft);">desktop app cu interfață vizuală pentru sesiuni Claude Code — alternativă la terminal</td></tr>
+      </table>
+
+      <div class="callout" style="margin-top:16px;margin-bottom:0;">
+        <strong>Notă sintaxă:</strong> comenzile de mai sus reflectă versiunea curentă — rulează <code>/help</code> la fiecare sesiune nouă pentru a confirma. Flag-urile și shortcut-urile se schimbă frecvent.
+      </div>
+    </div>
+
+  </div><!-- /facilitator -->
+
+  <!-- ══ ECHIPA PANEL ══ -->
+  <div id="echipa" class="role-panel">
+
+    <div class="callout callout-blue">
+      <strong>Proiectul-școală:</strong> o platformă internă de training (LMS) — cursuri → module → lecții, cu înscrieri, progres și quiz-uri; iar la final un „tutor" AI pe baza conținutului lecțiilor. Porniți <strong>doar de la idee</strong> și construiți tot voi — nimeni nu vă dă schema, scaffold-ul sau arhitectura. Ele apar pe parcurs, slice cu slice. În S0 și S1 exersați bucla Claude Code exact acolo unde e cel mai greu: pe teren gol.
+    </div>
+    <div class="callout" style="margin-bottom:20px;">
+      <strong>Regula de siguranță:</strong> nu folosiți <code>--dangerously-skip-permissions</code>. Pe greenfield, unde curg multe <code>npm install</code> și comenzi shell, e cu atât mai important.
+    </div>
+
+    <div class="section-label">Exercițiul S0.1 — Prima sesiune conștientă</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. S0.1</span>
+        <span class="ex-time">≈10 min</span>
+        <span class="ex-trains">Antrenează: ce e un agent vs. un chat</span>
+      </div>
+      <ol>
+        <li>Creează un folder gol pentru proiect și deschide Claude Code în el.</li>
+        <li>Cere-i ceva simplu (ex: „ce ai avea nevoie să știi ca să pornim un LMS?") și observă că e un agent, nu un chat — poate propune acțiuni, poate cere permisiuni.</li>
+      </ol>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Poți spune în ce mod diferă de un chat obișnuit.
+      </div>
+    </div>
+
+    <div class="section-label">Exercițiul S0.2 — Ascute ideea</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. S0.2</span>
+        <span class="ex-time">≈15 min</span>
+        <span class="ex-trains">Antrenează: Claude ca partener de gândire, nu generator de cod</span>
+      </div>
+      <p>Folosește Claude Code ca <strong>partener de gândire</strong>. Scopul azi e <strong>claritatea</strong>, nu codul.</p>
+      <div class="prompt-box">
+        <span class="prompt-box-label">Prompt de pornire</span>
+        „Am ideea asta: o platformă internă unde colegii urmează cursuri — cursuri → module → lecții — cu înscrieri, progres și quiz-uri; iar la final un tutor care răspunde pe baza conținutului lecțiilor. Nu vreau încă design complet, schemă sau cod. Ajută-mă să definesc: (1) viziunea într-o frază, (2) cel mai mic walking skeleton care rulează cap-coadă și demonstrează ideea, (3) 3–5 entități de nivel înalt — fără schemă, fără tabele."
+      </div>
+      <p><strong>Ce urmărești:</strong> rezistă tentației de a-l lăsa să-ți genereze deja tot proiectul. Dacă începe să scrie schemă sau cod, oprește-l — nu e treaba de azi.</p>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Ai o frază de viziune + un walking skeleton clar, pe care l-ai putea construi în S1.
+      </div>
+    </div>
+
+    <div class="section-label">Diagnostic &amp; setup personal</div>
+    <div class="card">
+      <p>Completează-ți scorul (0/1/2) pe cele 9 capabilități din diagnosticul programului — îl recompari la finalul celor 10 săptămâni.</p>
+      <h4>Checklist setup pentru proiect greenfield full-stack</h4>
+      <ul class="checklist">
+        <li><strong>.NET 10 SDK</strong> instalat.</li>
+        <li><strong>Node LTS</strong> instalat.</li>
+        <li><strong>SQL Server 2022</strong> (Developer) accesibil, cu feature-ul <strong>Full-Text Search</strong> activat (contează mai târziu).</li>
+        <li>Un <strong>folder gol</strong> pentru repo + <code>git init</code>.</li>
+        <li>Claude Code rulează în acel folder (<code>claude</code>, autentificat).</li>
+        <li>Acces la docul partajat „AI Wins &amp; Fails".</li>
+      </ul>
+    </div>
+
+  </div><!-- /echipa -->
+
+  <div class="page-nav">
+    <span></span>
+    <a href="s1.html">S1: Modelul mental &amp; bucla zilnică →</a>
+  </div>
+
+</div>
+
+<script src="assets/main.js"></script>
+<script src="assets/glossary.js"></script>
+</body>
+</html>

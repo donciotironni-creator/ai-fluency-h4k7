@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S5 — Hooks · AI Fluency</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">AI Fluency</a>
+  <div class="nav-divider"></div>
+  <div class="nav-sessions">
+    <a href="index.html" class="nav-pill">Acasă</a>
+    <a href="s0.html" class="nav-pill">S0</a>
+    <a href="s1.html" class="nav-pill">S1</a>
+    <a href="s2.html" class="nav-pill">S2</a>
+    <a href="s3.html" class="nav-pill">S3</a>
+    <a href="s4.html" class="nav-pill">S4</a>
+    <a href="s5.html" class="nav-pill">S5</a>
+    <a href="s6.html" class="nav-pill">S6</a>
+    <a href="s7.html" class="nav-pill">S7</a>
+    <a href="s8.html" class="nav-pill">S8</a>
+    <a href="s9.html" class="nav-pill">S9</a>
+    <a href="s10.html" class="nav-pill">S10</a>
+    <div class="nav-divider"></div>
+    <a href="dictionar.html" class="nav-pill">Dicționar</a>
+  </div>
+  <button class="nav-toggle" onclick="toggleTheme()">☾ / ☀</button>
+</nav>
+
+<div class="wrap">
+
+  <div class="session-hero">
+    <span class="kicker">S5 · Faza 2 — Extensii proprii · ~3h</span>
+    <h1>Hooks — reguli deterministe, nu speranțe</h1>
+    <div class="meta">
+      <span class="badge badge-p2">Faza 2</span>
+      <span class="tag">hooks</span>
+      <span class="tag">guardrails</span>
+      <span class="tag">automatizare</span>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent-3);">
+    <h2 style="color:var(--accent-3);font-size:1.1rem;">Conținut în pregătire</h2>
+    <p>Ghidul de facilitare și exercițiile pentru S5 sunt în lucru. Mai jos găsești rezumatul sesiunii din curriculum.</p>
+  </div>
+
+  <div class="card">
+    <h2>Despre această sesiune</h2>
+    <p>Hooks sunt scripturi care rulează la evenimente din ciclul de viață al Claude Code. Diferența față de instrucțiuni în prompt: <strong>un hook nu halucinează</strong>.</p>
+
+    <h3 style="margin-top:16px;">Evenimente disponibile</h3>
+    <table>
+      <tr><th>Eveniment</th><th>Când se declanșează</th></tr>
+      <tr><td><code>PreToolUse</code></td><td>Înainte ca Claude să folosească o unealtă — poate bloca acțiunea</td></tr>
+      <tr><td><code>PostToolUse</code></td><td>După folosirea unei unelte — bun pentru formatare automată</td></tr>
+      <tr><td><code>UserPromptSubmit</code></td><td>La fiecare prompt al utilizatorului</td></tr>
+      <tr><td><code>SessionStart</code></td><td>La începutul sesiunii</td></tr>
+      <tr><td><code>PreCompact</code></td><td>Înainte de compactare — poți adăuga context important</td></tr>
+    </table>
+
+    <h3 style="margin-top:16px;">Cazuri de folosire</h3>
+    <ul>
+      <li>Format automat după <code>Edit</code> (Prettier, dotnet format).</li>
+      <li>Scanare de secrete înainte de <code>Write</code>.</li>
+      <li>Blocarea comenzilor periculoase (<code>rm -rf</code>, <code>DROP TABLE</code>).</li>
+      <li>Notificări la task-uri lungi (notify-send, Slack webhook).</li>
+      <li>Log de audit al acțiunilor Claude.</li>
+    </ul>
+
+    <div class="artefact">minim un hook configurat (guardrail sau formatare)</div>
+  </div>
+
+  <div class="page-nav">
+    <a href="s4.html">← S4: Subagents</a>
+    <a href="s6.html">S6: MCP →</a>
+  </div>
+
+</div>
+
+<script src="assets/main.js"></script>
+<script src="assets/glossary.js"></script>
+</body>
+</html>

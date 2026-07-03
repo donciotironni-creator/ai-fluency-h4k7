@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S4 — Subagents · AI Fluency</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">AI Fluency</a>
+  <div class="nav-divider"></div>
+  <div class="nav-sessions">
+    <a href="index.html" class="nav-pill">Acasă</a>
+    <a href="s0.html" class="nav-pill">S0</a>
+    <a href="s1.html" class="nav-pill">S1</a>
+    <a href="s2.html" class="nav-pill">S2</a>
+    <a href="s3.html" class="nav-pill">S3</a>
+    <a href="s4.html" class="nav-pill">S4</a>
+    <a href="s5.html" class="nav-pill">S5</a>
+    <a href="s6.html" class="nav-pill">S6</a>
+    <a href="s7.html" class="nav-pill">S7</a>
+    <a href="s8.html" class="nav-pill">S8</a>
+    <a href="s9.html" class="nav-pill">S9</a>
+    <a href="s10.html" class="nav-pill">S10</a>
+    <div class="nav-divider"></div>
+    <a href="dictionar.html" class="nav-pill">Dicționar</a>
+  </div>
+  <button class="nav-toggle" onclick="toggleTheme()">☾ / ☀</button>
+</nav>
+
+<div class="wrap">
+
+  <div class="session-hero">
+    <span class="kicker">S4 · Faza 2 — Extensii proprii · ~3h</span>
+    <h1>Subagents — izolare de context &amp; paralelism</h1>
+    <div class="meta">
+      <span class="badge badge-p2">Faza 2</span>
+      <span class="tag">subagents</span>
+      <span class="tag">context isolation</span>
+      <span class="tag">paralelism</span>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent-3);">
+    <h2 style="color:var(--accent-3);font-size:1.1rem;">Conținut în pregătire</h2>
+    <p>Ghidul de facilitare și exercițiile pentru S4 sunt în lucru. Mai jos găsești rezumatul sesiunii din curriculum.</p>
+  </div>
+
+  <div class="card">
+    <h2>Despre această sesiune</h2>
+    <p>Un subagent e o sesiune Claude separată, cu propriul context window. Înveți când izolarea contează și cum să folosești paralelismul fără să pierzi controlul.</p>
+
+    <h3 style="margin-top:16px;">Agenții built-in</h3>
+    <table>
+      <tr><th>Agent</th><th>Ce face</th><th>Când îl folosești</th></tr>
+      <tr><td><code>Explore</code></td><td>Scanare read-only a repo-ului</td><td>Când vrei o hartă a codului fără să atingi nimic</td></tr>
+      <tr><td><code>Plan</code></td><td>Planificare înainte de execuție</td><td>Task-uri cu ramificații, înainte să aprobi</td></tr>
+    </table>
+
+    <h3 style="margin-top:16px;">Tiparul recomandat</h3>
+    <ul>
+      <li>Subagenți <strong>read-only</strong> pentru cercetare și explorare.</li>
+      <li>Edit/Write rămân la agentul-părinte — controlul e centralizat.</li>
+      <li>Compromisul real: un subagent <strong>ascunde context</strong> de agentul principal — folosește-l când izolarea chiar contează.</li>
+    </ul>
+
+    <h3 style="margin-top:16px;">Cum definești un subagent propriu</h3>
+    <p>Creezi un fișier <code>.claude/agents/&lt;nume&gt;.md</code> cu: descriere, ce unealtă are voie, instrucțiuni specifice domeniului.</p>
+
+    <div class="artefact">un subagent propriu (ex: code-reviewer, codebase-explorer)</div>
+  </div>
+
+  <div class="page-nav">
+    <a href="s3.html">← S3: Slash commands &amp; skills</a>
+    <a href="s5.html">S5: Hooks →</a>
+  </div>
+
+</div>
+
+<script src="assets/main.js"></script>
+<script src="assets/glossary.js"></script>
+</body>
+</html>

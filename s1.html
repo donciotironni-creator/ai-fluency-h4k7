@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S1 — Modelul mental &amp; bucla zilnică · AI Fluency</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">AI Fluency</a>
+  <div class="nav-divider"></div>
+  <div class="nav-sessions">
+    <a href="index.html" class="nav-pill">Acasă</a>
+    <a href="s0.html" class="nav-pill">S0</a>
+    <a href="s1.html" class="nav-pill">S1</a>
+    <a href="s2.html" class="nav-pill">S2</a>
+    <a href="s3.html" class="nav-pill">S3</a>
+    <a href="s4.html" class="nav-pill">S4</a>
+    <a href="s5.html" class="nav-pill">S5</a>
+    <a href="s6.html" class="nav-pill">S6</a>
+    <a href="s7.html" class="nav-pill">S7</a>
+    <a href="s8.html" class="nav-pill">S8</a>
+    <a href="s9.html" class="nav-pill">S9</a>
+    <a href="s10.html" class="nav-pill">S10</a>
+    <div class="nav-divider"></div>
+    <a href="dictionar.html" class="nav-pill">Dicționar</a>
+  </div>
+  <button class="nav-toggle" onclick="toggleTheme()">☾ / ☀</button>
+</nav>
+
+<div class="wrap">
+
+  <div class="session-hero">
+    <span class="kicker">S1 · Faza 1 — Folosire disciplinată · ~3h</span>
+    <h1>Modelul mental &amp; bucla zilnică făcută bine</h1>
+    <div class="meta">
+      <span class="badge badge-p1">Faza 1</span>
+      <span class="tag">plan mode</span>
+      <span class="tag">context</span>
+      <span class="tag">model/effort</span>
+      <span class="tag">permisiuni</span>
+    </div>
+    <p style="color:var(--ink-soft);margin-top:12px;max-width:680px;">Premisa: majoritatea folosesc Claude Code <strong>sub potențial</strong> — ca pe un autocomplete deștept sau un chat, nu ca pe un sistem pe care îl conduci deliberat. S1 corectează exact bucla zilnică.</p>
+  </div>
+
+  <!-- Role switch -->
+  <div class="role-switch">
+    <button class="role-btn active" data-role="facilitator">Ghid facilitare</button>
+    <button class="role-btn" data-role="echipa">Exerciții echipă</button>
+  </div>
+
+  <!-- ══ FACILITATOR PANEL ══ -->
+  <div id="facilitator" class="role-panel active">
+
+    <div class="callout" style="margin-bottom:20px;">
+      <strong>Notă:</strong> Claude Code publică des. Sintaxa exactă (comenzi, flag-uri, keybindings) se poate schimba de la o lună la alta. La începutul fiecărei sesiuni rulează <code>/help</code> și verifică docul oficial. Acest ghid predă <strong>principii care rezistă</strong>, nu sintaxă care se schimbă săptămânal.
+    </div>
+
+    <div class="section-label">Obiective de învățare</div>
+    <div class="card">
+      <p style="color:var(--ink-soft);font-size:.93rem;margin-bottom:8px;">La final, fiecare știe:</p>
+      <ul>
+        <li>Când folosește <strong>plan mode</strong> vs. execuție directă.</li>
+        <li>Cum ține contextul unei sesiuni curat și de ce contează.</li>
+        <li>Cum alege conștient <strong>model / effort</strong> după tipul task-ului.</li>
+        <li>Sistemul de <strong>permisiuni</strong> și de ce <code>--dangerously-skip-permissions</code> e o capcană în afara sandbox-ului.</li>
+      </ul>
+    </div>
+
+    <div class="section-label">Structura zilei</div>
+    <div class="agenda">
+      <div class="agenda-row">
+        <div class="agenda-time">60–90 min</div>
+        <div class="agenda-content"><strong>Tutorial</strong> — 4 segmente (vezi mai jos). Demo pe repo-ul de nisip, nu slide-uri.</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">~90 min</div>
+        <div class="agenda-content"><strong>Lucru aplicat</strong> — fiecare pe sarcina lui reală (detalii mai jos).</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">15–20 min</div>
+        <div class="agenda-content"><strong>Schimb de practici</strong> — ~2 min/persoană, notate în „AI Wins &amp; Fails".</div>
+      </div>
+    </div>
+
+    <div class="section-label">Tutorial (60–90 min) — 4 segmente</div>
+
+    <div class="card">
+      <h3>1. Modelul mental — chatbot vs. sistem <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">10 min</span></h3>
+      <p>Ideea centrală: Claude Code nu e un chat cu cod. E un agent care citește repo-ul, rulează comenzi, editează fișiere și cere permisiuni. Diferența dintre folosirea slabă și cea bună <strong>nu</strong> stă în prompt-uri mai lungi, ci în cât de deliberat conduci: ce vede, ce are voie, cu ce model, câtă planificare face înainte.</p>
+      <p style="color:var(--ink-soft);font-size:.93rem;">Un cadru util pentru restul programului: fiecare sesiune adaugă o pârghie de control — azi bucla, apoi contextul persistent (S2), apoi comenzile (S3), apoi izolarea (S4) etc.</p>
+    </div>
+
+    <div class="card">
+      <h3>2. Plan mode vs. execuție directă <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <ul>
+        <li><strong>Ce e:</strong> un mod în care Claude întâi îți propune un plan și explorează, fără să modifice cod, până aprobi. (Comuți modurile cu <code>Shift+Tab</code> în versiunile curente; confirmă cu <code>/help</code>.)</li>
+        <li><strong>Când merită:</strong> task-uri cu ramificații, refactorizări, orice atingi cod pe care nu vrei surprize. Plan mode declanșează des un subagent de tip „Explore" care scanează repo-ul și întoarce o hartă, ținând sesiunea principală curată.</li>
+        <li><strong>Când NU:</strong> editări mici, evidente, unde planul e overhead.</li>
+      </ul>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> ia o cerință cu 2–3 pași pe repo-ul de nisip, intră în plan mode, arată planul propus, ajustează-l în dialog, apoi aprobă execuția. Punctează momentul „aici aș fi lăsat modelul să pornească direct și ar fi luat-o pe alt drum".
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>3. Gestiunea contextului <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <ul>
+        <li><strong>Fereastra de context nu e infinită și nu e gratuită.</strong> Cu cât o umpli cu zgomot (log-uri lungi, fișiere irelevante, istoric vechi), cu atât modelul raționează mai prost și mai scump.</li>
+        <li><code>/clear</code> — repornește sesiunea curată când treci la un task nesuspect de cel anterior.</li>
+        <li><strong>Compaction</strong> — Claude comprimă istoricul când se apropie de limită (automat sau la cerere). Înțelege ce se pierde la compactare și de ce e mai bine să <code>/clear</code> între task-uri decât să lași istoricul să crească.</li>
+        <li>Regula practică: <strong>o sesiune = un fir de gândire.</strong> Task nou → context nou.</li>
+      </ul>
+      <div class="callout" style="margin-top:12px;">
+        <strong>Demo:</strong> arată o sesiune „murdară" (multe task-uri amestecate) vs. una curată pe aceeași cerință, ca să se vadă diferența în calitatea răspunsului.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>4. Model / effort &amp; permisiuni <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <p><strong>Model / effort</strong> — nu folosi același model reflex la orice:</p>
+      <table>
+        <tr><th>Tip task</th><th>Nivel recomandat</th></tr>
+        <tr><td>Explorare / task-uri simple, lookups</td><td>Ieftin/rapid — Haiku</td></tr>
+        <tr><td>Coding zilnic, cost-sensibil</td><td>Mediu — Sonnet</td></tr>
+        <tr><td>Raționament greu, arhitectură, securitate</td><td>Puternic — Opus, effort mare</td></tr>
+        <tr><td>Refactorizări complexe</td><td><code>opusplan</code> — Opus planifică, un model mai ieftin execută</td></tr>
+      </table>
+      <p style="margin-top:12px;">Comenzile: <code>/model</code> și <code>/effort</code>. Numele exacte ale modelelor se schimbă; principiul „potrivește puterea la sarcină" rămâne.</p>
+      <p><strong>Permisiuni</strong> — Claude cere aprobare înainte de acțiuni cu efect. Regulile sunt de tip <strong>allow / ask / deny</strong> în settings (tratăm în profunzime în S9). Punctează clar: <code>--dangerously-skip-permissions</code> sare peste toate confirmările — acceptabil <strong>doar</strong> într-un sandbox izolat, niciodată pe cod real sau cu date sensibile.</p>
+    </div>
+
+    <div class="section-label">Lucru aplicat (~90 min)</div>
+    <div class="card">
+      <p><strong>Brief:</strong> fiecare ia o sarcină reală din munca lui și o duce cap-coadă aplicând bucla din tutorial:</p>
+      <ol>
+        <li>Pornește în <strong>plan mode</strong>, obține și ajustează planul înainte de execuție.</li>
+        <li>Alege <strong>conștient</strong> modelul / effort-ul potrivit tipului de task (și notează de ce).</li>
+        <li>Ține <strong>contextul curat</strong> — <code>/clear</code> între sub-task-uri diferite; observă unde ai fi umflat contextul degeaba.</li>
+        <li>Observă unde apar cererile de permisiune și ce ai aprobat.</li>
+      </ol>
+      <p style="color:var(--ink-soft);font-size:.93rem;">Pe parcurs, fiecare notează 2–3 momente de tipul „aici bucla veche m-ar fi dus prost".</p>
+      <div class="artefact">o „rețetă de sesiune" personală — fișier scurt în <code>~/.claude</code> sau notiță pentru tine</div>
+    </div>
+
+    <div class="section-label">Schimb de practici (15–20 min)</div>
+    <div class="card">
+      <p>Fiecare, ~2 min:</p>
+      <ul>
+        <li>Un moment în care bucla nouă a schimbat rezultatul (bun sau rău).</li>
+        <li>O alegere de model/effort care a contat.</li>
+      </ul>
+      <p style="color:var(--ink-soft);font-size:.93rem;">Se notează în docul „AI Wins &amp; Fails".</p>
+    </div>
+
+    <div class="section-label">Capcane comune</div>
+
+    <div class="warning-card">
+      <h4>„Plan mode e pierdere de timp."</h4>
+      <p style="margin:0;font-size:.93rem;">De obicei vine de la cineva care îl încearcă pe task-uri triviale. Arată-l pe un task cu ramificații reale.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Sesiuni interminabile.</h4>
+      <p style="margin:0;font-size:.93rem;">Semnul clasic de folosire slabă: o singură sesiune uriașă pentru toată ziua. Insistă pe „un fir = o sesiune".</p>
+    </div>
+    <div class="warning-card">
+      <h4>Opus la orice.</h4>
+      <p style="margin:0;font-size:.93rem;">Scump și inutil pentru explorare. Fă vizibil costul alegerii de model.</p>
+    </div>
+    <div class="warning-card">
+      <h4><code>--dangerously-skip-permissions</code> din reflex.</h4>
+      <p style="margin:0;font-size:.93rem;">Dacă cineva îl folosește deja pe cod real, oprește-te aici 2 minute — e cel mai riscant obicei din toată sala.</p>
+    </div>
+
+    <div class="section-label">Prep pentru S2</div>
+    <div class="card">
+      <p>Temă de 5 minute: fiecare adună comenzile de build / lint / test ale unui repo propriu și 2–3 convenții/capcane ale acelui repo. În S2 le transformăm în primul <code>CLAUDE.md</code>.</p>
+    </div>
+
+    <div class="section-label">Notă pentru facilitator</div>
+    <div class="card">
+      <ul>
+        <li><strong>Intenționat nu se dă nicio structură.</strong> Walking skeleton-ul e ținta S1; schema, arhitectura și feature-urile apar în săptămânile următoare, construite de ei. Dacă cineva cere „dă-ne tu scheletul", răspunsul e: tocmai asta exersăm.</li>
+        <li>Ținta S1 e <strong>bucla</strong>, nu livrarea — dacă walking skeleton-ul nu e gata la toți, e ok; contează că au condus deliberat.</li>
+        <li>Claude Code se schimbă des: un <code>/help</code> la începutul sesiunii pentru versiunea curentă (plan mode, permisiuni).</li>
+      </ul>
+    </div>
+
+  </div><!-- /facilitator -->
+
+  <!-- ══ ECHIPA PANEL ══ -->
+  <div id="echipa" class="role-panel">
+
+    <div class="callout callout-blue">
+      <strong>Context:</strong> în S1 exersați bucla exact unde e mai grea — pe greenfield nu există cod care să „ancoreze" modelul, deci fiecare pârghie de control contează mai mult.
+    </div>
+    <div class="callout" style="margin-bottom:24px;">
+      <strong>Regula de siguranță:</strong> nu folosiți <code>--dangerously-skip-permissions</code>. Pe greenfield, unde curg multe <code>npm install</code> și comenzi shell, e cu atât mai important.
+    </div>
+
+    <!-- Ex 1 -->
+    <div class="section-label">Exercițiul 1 — Plan mode pe pânză goală</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 1</span>
+        <span class="ex-time">≈20 min</span>
+        <span class="ex-trains">Antrenează: plan mode vs. execuție directă</span>
+      </div>
+      <div class="prompt-box">
+        <span class="prompt-box-label">Prompt de pornire (în plan mode)</span>
+        „Folder gol. Vreau un <em>walking skeleton</em> pentru LMS: un API .NET 10 cu un endpoint <code>GET /courses</code> (deocamdată cu date în memorie) și o pagină React care le afișează. Fă întâi un plan, fără să scrii cod."
+      </div>
+      <p><strong>Ce urmărești:</strong></p>
+      <ol>
+        <li>Intră în plan mode (<code>Shift+Tab</code> ciclează modurile în versiunile curente; verifică cu <code>/help</code>).</li>
+        <li>Pe greenfield, planul e <strong>plin de presupuneri</strong>: structură de foldere, versiuni, librării, cum pornește fiecare parte. Citește-le <strong>înainte</strong> să aprobi.</li>
+        <li>Ajustează cel puțin o presupunere în dialog (ex: structura de foldere, librăria de UI, cum e organizat repo-ul).</li>
+      </ol>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Ai un plan pe care îl înțelegi complet și ai schimbat conștient cel puțin o decizie pe care Claude o luase implicit.
+      </div>
+    </div>
+
+    <!-- Ex 2 -->
+    <div class="section-label">Exercițiul 2 — Igiena contextului la bootstrap</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 2</span>
+        <span class="ex-time">≈15 min</span>
+        <span class="ex-trains">Antrenează: /clear, compaction</span>
+      </div>
+      <p>Un <strong>pas de bootstrap</strong> = primul pas care generează, din nimic, scheletul gol al unei părți din aplicație: folderele + un proiect care compilează și pornește, dar încă nu face nimic util. E zgomotos, pentru că generează multe fișiere și rulează instalări.</p>
+      <p><strong>Ce faci:</strong></p>
+      <ol>
+        <li>
+          Cere-i lui Claude Code să facă un pas de bootstrap pentru API:
+          <div class="prompt-box" style="margin:8px 0;">„Creează un proiect .NET 10 Web API minimal, care pornește gol, și rulează-l o dată ca să confirmi că merge."</div>
+          Sub capotă rulează <code>dotnet new webapi</code> + <code>dotnet run</code> — tu nu tastezi comenzile, doar aprobi.
+        </li>
+        <li>Dă <code>/clear</code> <strong>înainte</strong> de pasul următor.</li>
+        <li>
+          Cere bootstrap pentru front-end:
+          <div class="prompt-box" style="margin:8px 0;">„Creează un proiect React cu Vite și TypeScript, gol, care pornește."</div>
+          Sub capotă: <code>npm create vite</code> + <code>npm install</code>.
+        </li>
+        <li>Compară cu varianta în care ai fi ținut ambii pași într-o singură sesiune, fără <code>/clear</code> — cât de la obiect rămâne modelul după ce contextul s-a umplut cu output de instalare?</li>
+      </ol>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Poți formula regula ta: „la bootstrap dau <code>/clear</code> când ___".
+      </div>
+    </div>
+
+    <!-- Ex 3 -->
+    <div class="section-label">Exercițiul 3 — Model / effort + o decizie de design LMS</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 3</span>
+        <span class="ex-time">≈20 min</span>
+        <span class="ex-trains">Antrenează: alegerea conștientă de /model și /effort</span>
+      </div>
+      <p>Trei sarcini, rutate deliberat:</p>
+      <table>
+        <tr><th>#</th><th>Sarcină</th><th>Nivel potrivit</th></tr>
+        <tr>
+          <td>a</td>
+          <td>„Ce comandă pornește proiectul React?" (lookup simplu)</td>
+          <td><span class="tag">Haiku — ieftin/rapid</span></td>
+        </tr>
+        <tr>
+          <td>b</td>
+          <td>„Redenumește folderul <code>Api</code> în <code>Backend</code> și actualizează referințele."</td>
+          <td><span class="tag">Sonnet — mediu</span></td>
+        </tr>
+        <tr>
+          <td>c</td>
+          <td><strong>Decizie de design, în zona voastră:</strong> „Un curs poate avea prerechizite (alte cursuri). Cum aș modela relația asta ca să pot găsi <em>tot lanțul</em> de prerechizite al unui curs? Argumentează opțiunile și compromisurile."</td>
+          <td><span class="tag">Opus — effort mare</span></td>
+        </tr>
+      </table>
+      <p style="color:var(--ink-soft);font-size:.93rem;margin-top:10px;"><strong>Contra-exemplu intenționat:</strong> fă (a) pe modelul puternic și (c) pe cel ieftin. Simte diferența de cost/viteză/calitate.</p>
+      <p style="color:var(--ink-soft);font-size:.93rem;"><strong>Notă:</strong> la (c) <strong>nu</strong> implementați nimic azi — doar decizia. (Da, e un recursive CTE care se ascunde acolo — dar întâi decizia, apoi codul.)</p>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Poți spune, pentru fiecare tip de task, ce nivel folosești implicit și de ce.
+      </div>
+    </div>
+
+    <!-- Ex 4 -->
+    <div class="section-label">Exercițiul 4 — Permisiuni la scaffolding</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 4</span>
+        <span class="ex-time">≈15 min</span>
+        <span class="ex-trains">Antrenează: sistemul de permisiuni allow / ask / deny</span>
+      </div>
+      <div class="callout" style="margin-bottom:12px;">
+        <strong>Scaffolding</strong> = generarea automată a structurii de pornire a unui proiect (foldere, fișiere de configurare, un proiect gol care compilează), de obicei cu o comandă gen <code>dotnet new</code> sau <code>npm create</code>. E „schela" de la care pornești, înainte să scrii cod propriu. Practic, e ce faci la pașii de bootstrap din Ex. 2.
+      </div>
+      <p>Greenfield înseamnă multe scrieri de fișiere, <code>npm install</code>, comenzi shell — exact unde „da la tot" e tentant și riscant (un <code>npm install</code> rulează cod arbitrar din pachete).</p>
+      <p><strong>Ce faci:</strong></p>
+      <ol>
+        <li>La un pas de bootstrap, <strong>citește fiecare comandă</strong> înainte s-o aprobi. Ce instalează, de fapt?</li>
+        <li>Creează (dacă nu există) fișierul <code>.claude/settings.json</code> în folderul proiectului cu o regulă <code>deny</code>:
+          <pre><code>{
+  "permissions": {
+    "deny": ["Bash(rm -rf *)"],
+    "ask":  ["Bash(git push *)"],
+    "allow":["Bash(npm run *)"]
+  }
+}</code></pre>
+          <p style="font-size:.88rem;color:var(--ink-soft);margin-top:8px;"><code>Bash</code> e unealta cu care Claude Code rulează comenzi în terminal — adică exact comenzile pe care le-ai scrie tu într-o consolă: <code>npm install</code>, <code>git push</code>, <code>dotnet run</code>, <code>rm -rf</code> etc. Deci <code>Bash(rm -rf *)</code> înseamnă „orice comandă din terminal care începe cu <code>rm -rf</code>" (<code>*</code> = orice urmează). <code>rm -rf</code> șterge fișiere/foldere recursiv și fără confirmare — de-aia e exemplul de comandă distructivă pe care vrei s-o blochezi.</p>
+          <p style="font-size:.88rem;color:var(--ink-soft);">Regulile se evaluează în ordinea <code>deny</code> → <code>ask</code> → <code>allow</code>, deci un <code>deny</code> bate mereu orice <code>allow</code>. Sintaxa evoluează; confirmă cu <code>/permissions</code> sau <code>/help</code>.</p>
+        </li>
+        <li>Cere-i lui Claude Code să ruleze o comandă <code>rm -rf ...</code> pe ceva neimportant din sandbox și verifică faptul că e <strong>refuzată din start</strong>, nu pusă la aprobat.</li>
+      </ol>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Ai văzut diferența concretă ask vs. deny — și n-ai folosit <code>--dangerously-skip-permissions</code> nici la bootstrap.
+      </div>
+    </div>
+
+    <!-- Ex 5 Capstone -->
+    <div class="section-label">Exercițiul 5 (Capstone) — De la gol la walking skeleton</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 5</span>
+        <span class="ex-time">≈25 min</span>
+        <span class="ex-trains">Antrenează: toate cele patru principii împreună</span>
+      </div>
+      <p>Du planul din Ex. 1 la execuție, cap-coadă, conducând deliberat:</p>
+      <ol>
+        <li><strong>Plan mode</strong> pentru a porni, plan ajustat înainte de execuție.</li>
+        <li><strong>Model/effort</strong> ales conștient pe fiecare pas.</li>
+        <li><strong>Context curat</strong> — <code>/clear</code> între pașii de bootstrap diferiți.</li>
+        <li><strong>Permisiuni citite</strong> — nu aprobi orbește.</li>
+      </ol>
+      <p><strong>Țintă:</strong> un API .NET 10 cu <code>GET /courses</code> (date în memorie) + o pagină React care afișează lista. Rulează cap-coadă.</p>
+      <div class="callout callout-green" style="margin:12px 0;">
+        <strong>Extensie (în pereche, dacă ați terminat):</strong> înlocuiește lista din memorie cu o citire reală dintr-o tabelă <code>Courses</code> din SQL Server 2022. Structura tabelei o proiectați voi — nu vă e dată.
+      </div>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Deschizi pagina și vezi cursurile, iar tu ai 2–3 momente „aici bucla veche m-ar fi dus prost" pentru schimbul de practici.
+      </div>
+    </div>
+
+    <!-- Artefact -->
+    <div class="section-label">Artefact — Rețeta mea de sesiune</div>
+    <div class="card">
+      <p>La finalul sesiunii, fiecare scrie un fișier scurt pe care îl păstrează. Completează exact acest template:</p>
+      <div class="template-block">REȚETA MEA DE SESIUNE CLAUDE CODE
+
+Plan mode — îl folosesc când:
+  ...
+Execuție directă — o accept când:
+  ...
+
+Model / effort:
+  Explorare / lookup   →
+  Coding zilnic        →
+  Decizie de design    →
+
+Dau /clear când:
+  ...
+
+Nu aprob niciodată fără să citesc:
+  ...
+
+O capcană a mea pe care vreau s-o rup:
+  ...</div>
+      <p style="color:var(--ink-soft);font-size:.9rem;margin-top:10px;">În S2, această rețetă devine punctul de plecare pentru <code>CLAUDE.md</code>-ul proiectului LMS — același conținut, dar scris ca instrucțiuni pentru Claude, la nivel de repo.</p>
+    </div>
+
+    <!-- Schimb de practici -->
+    <div class="section-label">Schimb de practici &amp; documentul echipei</div>
+    <div class="card">
+      <p>Pe rând (~2 min/persoană), fiecare spune:</p>
+      <ul>
+        <li>Un moment în care bucla nouă (plan mode / context / model / permisiuni) a schimbat rezultatul — în bine sau în rău.</li>
+        <li>O alegere de model/effort care a contat.</li>
+      </ul>
+      <p>Notați în documentul partajat <strong>„AI Wins &amp; Fails"</strong> (pagină de Confluence):</p>
+      <div style="overflow-x:auto;margin-top:8px;">
+        <table>
+          <tr><th>Data</th><th>Cine</th><th>Sesiune</th><th>Win/Fail</th><th>Ce s-a întâmplat</th><th>De reținut</th><th>Candidat standard?</th></tr>
+          <tr style="color:var(--ink-soft);font-size:.85rem;">
+            <td>03.07.2026</td><td>Ionuț</td><td>S1</td><td>Win</td>
+            <td>Plan mode a prins că endpoint-ul atingea și configul de CORS, nu doar controllerul</td>
+            <td>Pe greenfield, mereu plan mode înainte de primul slice</td><td>Da</td>
+          </tr>
+          <tr style="color:var(--ink-soft);font-size:.85rem;">
+            <td>03.07.2026</td><td>Maria</td><td>S1</td><td>Fail</td>
+            <td>Am ținut bootstrap-ul de API și FE în aceeași sesiune; contextul s-a umplut și răspunsurile au devenit vage</td>
+            <td><code>/clear</code> între pașii de bootstrap</td><td>Da</td>
+          </tr>
+        </table>
+      </div>
+      <p style="color:var(--ink-soft);font-size:.88rem;margin-top:8px;">Un rând per practică (nu per persoană). Coloana „Candidat standard?" e cea din care, în Faza 3, alegeți ce intră în <code>CLAUDE.md</code>-ul de referință și în plugin-ul echipei.</p>
+    </div>
+
+  </div><!-- /echipa -->
+
+  <div class="page-nav">
+    <a href="s0.html">← S0: Kickoff &amp; Diagnostic</a>
+    <a href="s2.html">S2: CLAUDE.md →</a>
+  </div>
+
+</div>
+
+<script src="assets/main.js"></script>
+<script src="assets/glossary.js"></script>
+</body>
+</html>
