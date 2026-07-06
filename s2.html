@@ -36,50 +36,274 @@
 <div class="wrap">
 
   <div class="session-hero">
-    <span class="kicker">S2 · Faza 1 — Folosire disciplinată · ~3h</span>
+    <span class="kicker">S2 · Faza 1 — Folosire disciplinată · ~3,5h</span>
     <h1>CLAUDE.md — constituția repo-ului</h1>
     <div class="meta">
       <span class="badge badge-p1">Faza 1</span>
       <span class="tag">CLAUDE.md</span>
       <span class="tag">context engineering</span>
       <span class="tag">memorie persistentă</span>
+      <span class="tag">.claude/</span>
     </div>
+    <p style="color:var(--ink-soft);margin-top:12px;max-width:680px;">S1 a dat fiecăruia o „rețetă de sesiune" personală — cum conduce bucla. S2 mută o parte din acea disciplină din capul omului într-un fișier pe care <strong>Claude îl citește automat</strong>, la fiecare sesiune, fără să i-o repeți. E primul pas de context engineering din program.</p>
   </div>
 
-  <div class="card" style="border-left:3px solid var(--accent-3);">
-    <h2 style="color:var(--accent-3);font-size:1.1rem;">Conținut în pregătire</h2>
-    <p>Ghidul de facilitare și exercițiile pentru S2 sunt în lucru. Mai jos găsești rezumatul sesiunii din curriculum.</p>
+  <!-- Role switch -->
+  <div class="role-switch">
+    <button class="role-btn active" data-role="facilitator">Ghid facilitare</button>
+    <button class="role-btn" data-role="echipa">Exerciții echipă</button>
   </div>
 
-  <div class="card">
-    <h2>Despre această sesiune</h2>
-    <p><code>CLAUDE.md</code> e sursa de adevăr pe care Claude o citește la fiecare sesiune. Înveți straturile de memorie și precedența lor, ce merită scris și ce nu.</p>
+  <!-- ══ FACILITATOR PANEL ══ -->
+  <div id="facilitator" class="role-panel active">
 
-    <h3 style="margin-top:16px;">Straturile de memorie</h3>
-    <table>
-      <tr><th>Fișier</th><th>Scope</th><th>Precedență</th></tr>
-      <tr><td><code>~/.claude/CLAUDE.md</code></td><td>Personal, toate proiectele</td><td>Cel mai jos</td></tr>
-      <tr><td><code>.claude/CLAUDE.md</code></td><td>Proiect</td><td>Mijloc</td></tr>
-      <tr><td><code>.claude/CLAUDE.local.md</code></td><td>Proiect, gitignored</td><td>Cel mai sus</td></tr>
-    </table>
+    <div class="callout" style="margin-bottom:20px;">
+      <strong>Notă:</strong> Claude Code publică des. Sintaxa exactă (comenzi, flag-uri, keybindings) se poate schimba de la o lună la alta. La începutul fiecărei sesiuni rulează <code>/help</code> și verifică docul oficial. Acest ghid predă <strong>principii care rezistă</strong>, nu sintaxă care se schimbă săptămânal.
+    </div>
 
-    <h3 style="margin-top:16px;">Ce pui în CLAUDE.md</h3>
-    <ul>
-      <li>Comenzile de build / lint / test ale repo-ului.</li>
-      <li>Convenții de cod specifice proiectului.</li>
-      <li>Capcanele repo-ului (ce să nu schimbe fără să întrebe).</li>
-      <li>Contextul de domeniu esențial (ce e LMS-ul, entitățile principale).</li>
-    </ul>
+    <div class="callout callout-blue" style="margin-bottom:20px;">
+      <strong>Notă de scop:</strong> S2 e cea mai densă sesiune de până acum — combină conținut conceptual (straturi, anatomie, principii) cu un rezultat concret (scaffold personal + de proiect) pe care vrem ca <strong>fiecare</strong> să-l aibă gata până la finalul zilei. De-asta sesiunea e extinsă la ~3,5h. Dacă timpul tot nu ajunge, tăierea cea mai sigură e segmentul 6 (bootstrap-ul de proiect devine temă individuală, nu demo live).
+    </div>
 
-    <h3 style="margin-top:16px;">Ce NU pui (ca să nu umfli contextul)</h3>
-    <ul>
-      <li>Documentație care există deja în fișiere separate.</li>
-      <li>Instrucțiuni de prompt generic („fii atent", „gândește pas cu pas").</li>
-      <li>Istoricul deciziilor — asta merge în commit messages și ADR-uri.</li>
-    </ul>
+    <div class="section-label">Obiective de învățare</div>
+    <div class="card">
+      <p style="color:var(--ink-soft);font-size:.93rem;margin-bottom:8px;">La final, fiecare știe:</p>
+      <ul>
+        <li>Ce e <code>CLAUDE.md</code> și când/cum îl citește Claude Code.</li>
+        <li>Straturile de memorie (personal vs. proiect vs. local) și precedența lor.</li>
+        <li><strong>Harta completă a folderului <code>.claude/</code></strong> — nu doar <code>CLAUDE.md</code>, ci și ce rol au <code>settings.json</code>, <code>hooks/</code>, <code>agents/</code>, <code>skills/</code>, <code>.mcp.json</code> — și în ce sesiune viitoare se aprofundează fiecare piesă.</li>
+        <li>Ce merită scris în <code>CLAUDE.md</code> — și, la fel de important, ce <strong>nu</strong>, ca să nu umfle contextul degeaba.</li>
+        <li>Diferența dintre <strong>principii comportamentale universale</strong> (seturile Karpathy și Cherny) și <strong>context specific de proiect</strong> — și în ce strat pune fiecare.</li>
+        <li>Cum <strong>generează</strong> (nu scrie de la zero) scaffold-ul <code>.claude/</code> — personal și de proiect — cerându-i lui Claude Code s-o facă, dintr-un prompt-rețetă repetabil.</li>
+      </ul>
+    </div>
 
-    <div class="artefact">un CLAUDE.md real, comis în repo-ul propriu</div>
-  </div>
+    <div class="section-label">Structura zilei</div>
+    <div class="agenda">
+      <div class="agenda-row">
+        <div class="agenda-time">100–130 min</div>
+        <div class="agenda-content"><strong>Tutorial</strong> — 6 segmente (vezi mai jos). Demo pe repo-ul de nisip, nu slide-uri.</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">75–90 min</div>
+        <div class="agenda-content"><strong>Lucru aplicat</strong> — scaffold personal + de proiect, pe repo-ul propriu.</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">15–20 min</div>
+        <div class="agenda-content"><strong>Schimb de practici</strong> — ~2 min/persoană, notate în „AI Wins &amp; Fails".</div>
+      </div>
+    </div>
+
+    <div class="section-label">Tutorial (100–130 min) — 6 segmente</div>
+
+    <div class="card">
+      <h3>1. Ce e CLAUDE.md și de ce contează <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">10–15 min</span></h3>
+      <ul>
+        <li><strong>Ce e:</strong> un fișier Markdown pe care Claude Code îl citește <strong>automat</strong>, la începutul sesiunii, ca parte din context — fără să-l ceri tu explicit de fiecare dată.</li>
+        <li><strong>Legătura cu S1:</strong> rețeta de sesiune din S1 trăia în capul fiecăruia. Problema: nu ajuta pe nimeni altcineva și trebuia „repetată" verbal lui Claude la fiecare sesiune nouă. <code>CLAUDE.md</code> e locul unde regulile stabile ale unui repo devin <strong>memorie persistentă și partajată</strong>.</li>
+        <li><strong>Ce NU e:</strong> nu e documentație pentru oameni (un README), nu e un istoric de decizii, nu e un loc unde „mai bagi ceva, nu strică". Fiecare linie costă tokeni și atenție de model la <strong>fiecare</strong> sesiune.</li>
+      </ul>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> deschide un repo fără <code>CLAUDE.md</code>, dă-i lui Claude o sarcină simplă și arată o presupunere greșită tipică (framework de test greșit, convenție de naming ignorată). Apoi arată același prompt cu un <code>CLAUDE.md</code> minimal care fixează acea presupunere.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>2. Straturile de memorie și precedența lor <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <table>
+        <tr><th>Fișier</th><th>Scope</th><th>Precedență</th></tr>
+        <tr><td><code>~/.claude/CLAUDE.md</code></td><td>Personal, toate proiectele</td><td>Cel mai jos</td></tr>
+        <tr><td><code>CLAUDE.md</code> (sau <code>.claude/CLAUDE.md</code>)</td><td>Proiect, comis în git</td><td>Mijloc</td></tr>
+        <tr><td><code>CLAUDE.local.md</code></td><td>Proiect, <strong>gitignored</strong></td><td>Cel mai sus</td></tr>
+      </table>
+      <ul style="margin-top:12px;">
+        <li>Personalul e pentru preferințele tale de-a lungul tuturor proiectelor (stil de commit, cum răspunzi, ce unelte externe folosești).</li>
+        <li>Proiectul e pentru ce trebuie să știe <strong>oricine</strong> lucrează pe acel repo cu Claude Code — de-asta se comite în git.</li>
+        <li>Local e pentru ce e adevărat doar pe mașina ta (căi locale, porturi, chei de test) — nu ajunge niciodată în commit.</li>
+        <li>Regula practică: când două straturi se contrazic, câștigă cel mai specific (local &gt; proiect &gt; personal).</li>
+      </ul>
+      <div class="callout" style="margin-top:12px;">
+        <strong>Demo:</strong> arată cele trei fișiere pe repo-ul de nisip, unul lângă altul, cu câte o regulă care se suprapune, ca să se vadă precedența în practică.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>3. Anatomia folderului .claude/ — harta completă <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <p><code>CLAUDE.md</code> e <strong>intrarea</strong> în sistem, nu tot sistemul. Merită arătată harta completă acum, ca fiecare să știe unde se duce ce — chiar dacă majoritatea pieselor se construiesc efectiv în sesiuni viitoare.</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <tr><th>Piesă</th><th>Ce e</th><th>Când o aprofundăm</th></tr>
+          <tr><td><code>CLAUDE.md</code> / <code>CLAUDE.local.md</code></td><td>memoria persistentă, citită automat la fiecare sesiune</td><td><strong>azi (S2)</strong></td></tr>
+          <tr><td><code>settings.json</code> / <code>settings.local.json</code></td><td>permisiuni allow/ask/deny, config</td><td>atins în S1, aprofundat în S9</td></tr>
+          <tr><td><code>skills/&lt;nume&gt;/SKILL.md</code></td><td>workflow-uri reutilizabile, invocate cu <code>/nume</code></td><td>S3</td></tr>
+          <tr><td><code>agents/&lt;nume&gt;.md</code></td><td>subagenți specializați, context izolat</td><td>S4</td></tr>
+          <tr><td><code>hooks/</code> (config în <code>settings.json</code>)</td><td>acțiuni deterministe legate de evenimente</td><td>S5</td></tr>
+          <tr><td><code>.mcp.json</code></td><td>conectare la unelte/servicii externe (DB, Figma, Jira)</td><td>S6</td></tr>
+          <tr><td><code>docs/</code></td><td>resurse de referință citite la cerere de skills</td><td>organic, o dată cu S3</td></tr>
+          <tr><td><code>~/.claude/projects/&lt;proiect&gt;/memory/MEMORY.md</code></td><td>auto-memory: index cross-sesiune, machine-local</td><td>menționat azi, se acumulează organic</td></tr>
+        </table>
+      </div>
+      <p style="margin-top:12px;">Regula de fond care leagă tot: <strong>fiecare piesă costă context doar dacă e citită la fiecare sesiune.</strong> <code>CLAUDE.md</code> și <code>settings.json</code> intră mereu; <code>skills/</code> și <code>docs/</code> intră doar la cerere — de-asta „mută-l într-un skill" e răspunsul corect când <code>CLAUDE.md</code> se umflă (revino la asta în S3).</p>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> arată un <code>.claude/</code> matur, real — cu <code>hooks/pre-tool-use.sh</code>, câteva zeci de <code>skills/</code>, un <code>agents/verifier.md</code>, un <code>MEMORY.md</code>. Punctează: nimic din asta nu a apărut într-o zi — fiecare piesă corespunde unei sesiuni din program. Azi construim doar fundația: <code>CLAUDE.md</code> + eventual un <code>settings.json</code> minimal.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>4. Ce pui / ce NU pui în CLAUDE.md <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <div style="overflow-x:auto;">
+        <table>
+          <tr><th>✅ Pui</th><th>❌ Nu pui</th></tr>
+          <tr><td>Comenzi de build/lint/test pe care Claude nu le poate ghici</td><td>Orice Claude poate afla citind codul</td></tr>
+          <tr><td>Convenții de cod care diferă de default-ul limbajului/framework-ului</td><td>Convenții standard pe care Claude le știe deja</td></tr>
+          <tr><td>Instrucțiuni de testare și test runner-ul preferat</td><td>Documentație API detaliată — pui un link, nu conținutul</td></tr>
+          <tr><td>Etichetă de repo (naming de branch-uri, convenții de PR)</td><td>Informație care se schimbă des</td></tr>
+          <tr><td>Decizii arhitecturale specifice proiectului</td><td>Explicații lungi sau tutoriale</td></tr>
+          <tr><td>Ciudățenii de mediu (variabile de env obligatorii)</td><td>Descrieri fișier-cu-fișier ale codebase-ului</td></tr>
+          <tr><td>Capcane sau comportamente ne-evidente</td><td>Practici evidente gen „scrie cod curat"</td></tr>
+        </table>
+      </div>
+      <p style="margin-top:12px;"><strong>Pragul de mărime:</strong> țintă sub ~200 de linii. Pentru fiecare linie, întrebarea de test: <em>„dacă o șterg, Claude greșește ceva anume?"</em> Dacă nu — afară.</p>
+      <p><strong>Trucul pentru fișiere care cresc:</strong> sintaxa <code>@cale/catre/fisier</code> importă alt fișier fără să-l lipești inline (ex: „Vezi <code>@docs/architecture.md</code> pentru context de arhitectură"). Așa ții <code>CLAUDE.md</code> mic și muți detaliul acolo unde se citește doar la nevoie.</p>
+      <p><strong>Cum verifici că a prins:</strong> un <code>CLAUDE.md</code> nu e „gata" pentru că există — e gata când schimbă vizibil comportamentul. Ia 2–3 task-uri rezolvate prost <strong>înainte</strong> de fișier, rulează-le din nou <strong>după</strong>, și compară.</p>
+      <div class="callout" style="margin-top:12px;">
+        <strong>Demo:</strong> ia un <code>CLAUDE.md</code> „umflat" (copy-paste dintr-un README întreg, &gt;200 linii) vs. unul de 15–30 de linii, țintit, și arată diferența de comportament — sau lipsa ei.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>5. Principii universale: de la Karpathy la Cherny <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">25–30 min</span></h3>
+      <p>Nu tot ce pui în <code>CLAUDE.md</code> e specific proiectului. Andrej Karpathy a distilat din tipare comune de eșec ale LLM-urilor la coding patru principii <strong>universale</strong>:</p>
+      <ol>
+        <li><strong>Gândește înainte de a coda</strong> — nu presupune în tăcere, expune compromisurile, întreabă când ceva e ambiguu.</li>
+        <li><strong>Simplitate întâi</strong> — minimul de cod care rezolvă problema, nimic speculativ.</li>
+        <li><strong>Schimbări chirurgicale</strong> — atinge doar ce trebuie; curăță doar propria mizerie.</li>
+        <li><strong>Execuție orientată pe scop</strong> — criteriu de succes verificabil, bucla până se confirmă.</li>
+      </ol>
+      <p><strong>Convergență, nu coincidență:</strong> Boris Cherny (Anthropic) publică independent un <code>CLAUDE.md</code> personal cu 13 reguli de „Workflow Orchestration". Trei dintre ele — <em>Simplicity First</em>, <em>No Laziness</em> (root cause, nu band-aid), <em>Minimal Impact</em> — ajung la aceleași concluzii ca Karpathy, din altă direcție. Semnul: e un tipar real de eșec, observat independent.</p>
+      <p>Ce aduce Cherny <strong>în plus</strong> — mai puțină atitudine, mai multă mecanică de workflow:</p>
+      <ul>
+        <li><strong>Plan mode implicit</strong> pentru orice task cu 3+ pași (leagă direct de S1).</li>
+        <li><strong>Verificare înainte de „gata"</strong> — nicio declarație de succes fără dovadă.</li>
+        <li><strong>Bucla de auto-îmbunătățire</strong> — după orice corecție, se notează ce s-a întâmplat.</li>
+        <li><strong>Subagenți pentru cercetare</strong> care ar polua contextul principal (preview de S4).</li>
+      </ul>
+      <div class="callout callout-blue" style="margin:12px 0;">
+        <strong>Distincția care contează pentru straturi:</strong> regula e universală (strat personal), dar <strong>artefactul</strong> pe care regula îl produce e specific proiectului. „Notează lecția după orice corecție" e o regulă personală; fișierul <code>lessons.md</code> unde o notezi trăiește în <code>.claude/tasks/</code> <strong>al proiectului curent</strong>.
+      </div>
+      <p><strong>Un baseline personal comun</strong> — punctul de plecare propus întregii cohorte, de pus în <code>~/.claude/CLAUDE.md</code>:</p>
+      <div class="template-block">## Workflow
+- Plan mode implicit pentru orice task cu 3+ pași; dacă lucrurile
+  deraiază, oprește-te și re-planifică.
+- „Gata" înseamnă dovedit, nu presupus: rulează testul/comanda/
+  screenshot-ul înainte să declari succes.
+- După orice corecție, notează pe scurt ce s-a întâmplat în
+  .claude/tasks/lessons.md al proiectului curent; citește-le la
+  începutul sesiunii.
+- Pentru cercetare care ar umple contextul principal, folosește
+  subagenți.
+
+## Simplitate &amp; disciplină
+- Cel mai simplu fix care rezolvă problema — nu cel mai deștept.
+- Root cause, nu band-aid. Nu bug-fixuri temporare care revin.
+- Impact minim: atinge doar ce ai fost rugat, fără refactor-uri
+  surpriză.
+- Nu presupune în tăcere: expune compromisurile, întreabă când
+  ceva e ambiguu.</div>
+      <p style="color:var(--ink-soft);font-size:.9rem;margin-top:10px;">E un <strong>punct de plecare comun</strong>, nu un fișier sacru — fiecare îl adaptează pe măsură ce observă ce funcționează pe cazul lui.</p>
+      <p><strong>Regula de separare care rămâne:</strong> <code>CLAUDE.md</code> de proiect = fapte specifice repo-ului. Principii comportamentale universale = strat personal, o singură sursă de adevăr.</p>
+      <div class="callout" style="margin-top:12px;">
+        <strong>Demo:</strong> arată blocul de mai sus intrând în <code>~/.claude/CLAUDE.md</code>, apoi un <code>CLAUDE.md</code> de proiect care rămâne complet liber de aceste reguli — doar fapte specifice repo-ului.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>6. De la template la scaffold: generat cu Claude <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <p>Ținta zilei, concret: la final, fiecare are (a) <code>~/.claude/CLAUDE.md</code> cu blocul de mai sus și (b) un <code>CLAUDE.md</code> de proiect + un <code>.claude/</code> minim (<code>settings.json</code>, <code>tasks/</code>) pe un repo real.</p>
+      <p>Nu construim asta fișier cu fișier, și nu întreținem un script de scaffold separat (bash vs. PowerShell diferă de la o mașină la alta). În schimb, <strong>îi cerem lui Claude Code s-o facă</strong>, ca orice altă sarcină — în plan mode, dintr-un prompt-rețetă reutilizabil.</p>
+      <div class="prompt-box">
+        <span class="prompt-box-label">Pasul 1 — bootstrap personal (o singură dată)</span>
+        „Verifică dacă <code>~/.claude/CLAUDE.md</code> există. Dacă nu, creează-l. Adaugă, fără să ștergi ce există deja, secțiunile <code>## Workflow</code> și <code>## Simplitate &amp; disciplină</code> cu regulile de mai sus."
+      </div>
+      <div class="prompt-box" style="margin-top:12px;">
+        <span class="prompt-box-label">Pasul 2 — bootstrap de proiect (pe fiecare repo unde lucrezi)</span>
+        „Rulează <code>/init</code>. După ce ai <code>CLAUDE.md</code> generat, creează și <code>.claude/settings.json</code> minim cu un <code>deny</code> pe comenzi distructive, plus <code>.claude/tasks/todo.md</code> și <code>.claude/tasks/lessons.md</code>, goale, cu câte un antet de o linie."
+      </div>
+      <p style="margin-top:12px;"><code>/init</code> e comanda built-in care analizează codebase-ul și generează un <code>CLAUDE.md</code> de pornire (build/test/lint detectate automat) — nu înlocuiește gândirea din segmentul 4, dar elimină partea mecanică.</p>
+      <p><strong>„Posibilitatea de îmbunătățire":</strong> scaffold-ul de azi e intenționat minimal — Stage 1 dintr-un model în trepte. Treptele următoare (<code>rules/</code> modulare, <code>skills/</code>, <code>agents/</code>, <code>hooks/</code>) sunt exact hărțile de la segmentul 3, fiecare cu sesiune dedicată. Nu se completează totul azi.</p>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> rulează exact cei doi pași, live, pe repo-ul de nisip — arată diff-ul propus de Claude <strong>înainte</strong> de a-l aproba (legătură directă cu S1: nu aprobi orbește un bootstrap doar pentru că „e doar scaffold").
+      </div>
+    </div>
+
+    <div class="section-label">Lucru aplicat (75–90 min)</div>
+    <div class="card">
+      <p><strong>Brief:</strong> fiecare iese cu scaffold-ul complet — personal + de proiect — pe un repo propriu (LMS-ul din S0–S1, sau alt repo real).</p>
+      <ol>
+        <li><strong>Bootstrap personal</strong> — rulează prompt-ul pasul 1 pe propriul <code>~/.claude/CLAUDE.md</code>. Citește diff-ul <strong>înainte</strong> să aprobi.</li>
+        <li><strong>Bootstrap de proiect</strong> — <code>/init</code> + prompt-ul pasul 2 (<code>settings.json</code>, <code>tasks/todo.md</code>, <code>tasks/lessons.md</code>).</li>
+        <li>Completează <code>CLAUDE.md</code>-ul de proiect generat de <code>/init</code> cu tema de prep (comenzi + 2–3 convenții/capcane) — <code>/init</code> dă un draft, nu un fișier finit. Țintă 15–30 de linii.</li>
+        <li>Alege 2–3 task-uri concrete; rulează-le <strong>înainte</strong> de a activa fișierul și <strong>după</strong> — notează diferența reală.</li>
+        <li>Pe hârtie (nu implementat azi): din harta segmentului 3, ce ai deja / ce lipsește. Nu construiești <code>skills/</code>, <code>hooks/</code> sau <code>.mcp.json</code> acum.</li>
+      </ol>
+      <p style="color:var(--ink-soft);font-size:.93rem;">Pe parcurs, fiecare notează unde a fost tentat să bage ceva care aparținea de fapt la „ce NU pui" — sau un principiu universal care aparținea stratului personal, nu celui de proiect.</p>
+      <div class="artefact">un <code>~/.claude/CLAUDE.md</code> personal, cu blocul de workflow orchestration (baseline comun cohortei)</div>
+      <div class="artefact" style="margin-top:10px;">un <code>CLAUDE.md</code> de proiect + scaffold minim <code>.claude/</code> (settings.json, tasks/), comis în git</div>
+    </div>
+
+    <div class="section-label">Schimb de practici (15–20 min)</div>
+    <div class="card">
+      <p>Fiecare, ~2 min:</p>
+      <ul>
+        <li>O regulă din <code>CLAUDE.md</code> care a schimbat vizibil comportamentul lui Claude pe un task concret.</li>
+        <li>Ceva ce a scris inițial și a scos, pentru că nu ajuta cu nimic (semnal bun — arată calibrare, nu eșec).</li>
+      </ul>
+      <p style="color:var(--ink-soft);font-size:.93rem;">Se notează în docul „AI Wins &amp; Fails".</p>
+    </div>
+
+    <div class="section-label">Capcane comune</div>
+
+    <div class="warning-card">
+      <h4>„Mai bag și asta, nu strică."</h4>
+      <p style="margin:0;font-size:.93rem;">Cel mai comun reflex — <code>CLAUDE.md</code> crește necontrolat. Fiecare linie intră în context la fiecare sesiune, pe bune, nu doar teoretic.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Copy-paste din README.</h4>
+      <p style="margin:0;font-size:.93rem;">Semnul că cineva a confundat documentație-pentru-oameni cu memorie-pentru-model. Cere-i să șteargă tot ce nu schimbă comportamentul lui Claude.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Reguli fără verificare.</h4>
+      <p style="margin:0;font-size:.93rem;">Cineva scrie reguli „bune" fără să le testeze pe un task real. Insistă pe pasul „înainte / după" din lucrul aplicat.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Confuzia straturilor.</h4>
+      <p style="margin:0;font-size:.93rem;">Reguli personale sau principii universale (gen Karpathy) ajunse în <code>CLAUDE.md</code> de proiect, sau invers.</p>
+    </div>
+    <div class="warning-card">
+      <h4>„Hai să construim tot azi."</h4>
+      <p style="margin:0;font-size:.93rem;">Cineva vrea să facă și <code>hooks/</code>, și <code>skills/</code>, și <code>.mcp.json</code> azi. Harta e ca să înțeleagă unde se duce fiecare lucru — artefactul de azi rămâne <code>CLAUDE.md</code> + scaffold minim.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Scaffold aprobat orbește.</h4>
+      <p style="margin:0;font-size:.93rem;">Cineva acceptă tot ce propune <code>/init</code> sau prompt-ul de bootstrap fără să citească diff-ul. Contează — e primul lucru pe care Claude îl va citi de-acum la fiecare sesiune.</p>
+    </div>
+
+    <div class="section-label">Prep pentru S3</div>
+    <div class="card">
+      <p>Temă de 5 minute: fiecare notează un prompt pe care l-a scris <strong>manual, la fel, de cel puțin 2-3 ori</strong> în ultima săptămână (ex: „review-uiește diff-ul curent după convențiile noastre", „scrie un commit message"). Candidat evident, chiar din sesiunea de azi: <strong>prompt-ul de bootstrap</strong> de la segmentul 6 — fiecare îl va rula din nou pe alte repo-uri. În S3 îl transformăm într-un slash command / skill reutilizabil.</p>
+    </div>
+
+  </div><!-- /facilitator -->
+
+  <!-- ══ ECHIPA PANEL ══ -->
+  <div id="echipa" class="role-panel">
+
+    <div class="card" style="border-left:3px solid var(--accent-3);">
+      <h2 style="color:var(--accent-3);font-size:1.1rem;">Exercițiile pentru S2 sunt în lucru</h2>
+      <p>Ghidul de facilitare de mai sus e gata. Exercițiile pentru participanți (aplicate pe proiectul-școală LMS) urmează, pe tiparul celor de la S0–S1.</p>
+    </div>
+
+  </div><!-- /echipa -->
 
   <div class="page-nav">
     <a href="s1.html">← S1: Modelul mental</a>
