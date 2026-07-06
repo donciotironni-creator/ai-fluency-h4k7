@@ -298,9 +298,193 @@
   <!-- ══ ECHIPA PANEL ══ -->
   <div id="echipa" class="role-panel">
 
-    <div class="card" style="border-left:3px solid var(--accent-3);">
-      <h2 style="color:var(--accent-3);font-size:1.1rem;">Exercițiile pentru S2 sunt în lucru</h2>
-      <p>Ghidul de facilitare de mai sus e gata. Exercițiile pentru participanți (aplicate pe proiectul-școală LMS) urmează, pe tiparul celor de la S0–S1.</p>
+    <div class="callout callout-blue">
+      <strong>Context:</strong> în S1 ai ieșit cu o „rețetă de sesiune" în capul tău. În S2 o transformi în ceva pe care <strong>Claude îl citește singur</strong>, la fiecare sesiune. Cele cinci exerciții urmează segmentele din tutorial; al șaselea le adună într-un scaffold complet, funcțional, pe repo-ul tău.
+    </div>
+    <div class="callout" style="margin-bottom:24px;">
+      <strong>Regula de siguranță:</strong> citește diff-ul înainte să aprobi orice — inclusiv la scaffold. E tentant să dai „da la tot" când „e doar un <code>CLAUDE.md</code>", dar exact fișierul ăsta îl va citi Claude la fiecare sesiune de-acum. Un scaffold prost intră în tot ce urmează.
+    </div>
+
+    <div class="callout callout-green" style="margin-bottom:24px;">
+      <strong>Ținta zilei:</strong> la final ai (a) un <code>~/.claude/CLAUDE.md</code> <strong>personal</strong> cu baseline-ul de workflow și (b) un <code>CLAUDE.md</code> de proiect + un <code>.claude/</code> minim, <strong>comise în git</strong>, pe repo-ul LMS — și ai <strong>dovedit</strong> că schimbă comportamentul, nu doar că există.
+    </div>
+
+    <!-- Ex 1 -->
+    <div class="section-label">Exercițiul 1 — Baseline-ul personal</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 1</span>
+        <span class="ex-time">≈15 min</span>
+        <span class="ex-trains">Antrenează: stratul personal + principii universale (Karpathy / Cherny)</span>
+      </div>
+      <p>Regulile de comportament („gândește înainte de a coda", „root cause, nu band-aid", „impact minim") sunt <strong>universale</strong> — valabile pe LMS, pe un repo SQL, pe orice. Deci nu au ce căuta duplicate în fiecare <code>CLAUDE.md</code> de proiect; locul lor e stratul personal, o singură dată.</p>
+      <div class="prompt-box">
+        <span class="prompt-box-label">Prompt de pornire (în plan mode)</span>
+        „Verifică dacă <code>~/.claude/CLAUDE.md</code> există. Dacă nu, creează-l. Adaugă, <strong>fără să ștergi ce există deja</strong>, secțiunile <code>## Workflow</code> și <code>## Simplitate &amp; disciplină</code> cu baseline-ul de mai jos."
+      </div>
+      <p style="margin-top:12px;">Baseline-ul de pornire (îl adaptezi după gustul tău, nu e sacru):</p>
+      <div class="template-block">## Workflow
+- Plan mode implicit pentru orice task cu 3+ pași; dacă lucrurile
+  deraiază, oprește-te și re-planifică.
+- „Gata" înseamnă dovedit, nu presupus: rulează testul/comanda/
+  screenshot-ul înainte să declari succes.
+- După orice corecție, notează pe scurt ce s-a întâmplat în
+  .claude/tasks/lessons.md al proiectului curent.
+- Pentru cercetare care ar umple contextul principal, folosește
+  subagenți.
+
+## Simplitate &amp; disciplină
+- Cel mai simplu fix care rezolvă problema — nu cel mai deștept.
+- Root cause, nu band-aid. Nu bug-fixuri temporare care revin.
+- Impact minim: atinge doar ce ai fost rugat, fără refactor-uri
+  surpriză.
+- Nu presupune în tăcere: expune compromisurile, întreabă când
+  ceva e ambiguu.</div>
+      <p style="margin-top:12px;color:var(--ink-soft);font-size:.93rem;"><strong>Citește diff-ul</strong> propus înainte să aprobi. Verifică mai ales că nu suprascrie reguli personale pe care le aveai deja.</p>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Ai un <code>~/.claude/CLAUDE.md</code> cu baseline-ul, și poți argumenta de ce fiecare regulă e universală (nu specifică LMS-ului).
+      </div>
+    </div>
+
+    <!-- Ex 2 -->
+    <div class="section-label">Exercițiul 2 — /init pe LMS</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 2</span>
+        <span class="ex-time">≈15 min</span>
+        <span class="ex-trains">Antrenează: stratul de proiect + comanda /init</span>
+      </div>
+      <p><code>/init</code> analizează codebase-ul și generează un <code>CLAUDE.md</code> de pornire — detectează singur comenzile de build/test, framework-urile, tiparele. E un <strong>draft</strong>, nu un fișier finit.</p>
+      <p><strong>Ce faci:</strong></p>
+      <ol>
+        <li>Pe repo-ul LMS (walking skeleton-ul din S1), rulează <code>/init</code>.</li>
+        <li>Citește ce a generat. Observă ce a <strong>prins corect</strong> (ex: <code>dotnet run</code>, <code>npm run dev</code>) și ce a <strong>ratat sau umplut degeaba</strong> (descrieri fișier-cu-fișier, evidențe pe care Claude le știa oricum).</li>
+        <li>Nu-l edita încă — doar notează, pe scurt, 2–3 lucruri de scos și 1–2 care lipsesc. Le rezolvi în Ex. 3.</li>
+      </ol>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Ai un <code>CLAUDE.md</code> draft generat și o listă scurtă „de tăiat / de adăugat" — adică ai citit critic, nu ai acceptat orbește.
+      </div>
+    </div>
+
+    <!-- Ex 3 -->
+    <div class="section-label">Exercițiul 3 — Curățenie &amp; calibrare</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 3</span>
+        <span class="ex-time">≈20 min</span>
+        <span class="ex-trains">Antrenează: ce pui / ce NU pui, pragul de mărime</span>
+      </div>
+      <p>Draftul de la <code>/init</code> e aproape mereu prea lung. Aici îl aduci la un fișier care merită fiecare linie.</p>
+      <p><strong>Ce faci:</strong></p>
+      <ol>
+        <li>Pornind de la lista din Ex. 2 și de la tema de prep (comenzile + 2–3 convenții/capcane LMS), rescrie <code>CLAUDE.md</code>-ul de proiect. Țintă: <strong>15–30 de linii</strong>.</li>
+        <li>Aplică testul liniei, pe fiecare rând: <em>„dacă șterg linia asta, Claude greșește ceva anume pe LMS?"</em> Dacă nu — afară.</li>
+        <li>Adaugă contextul de domeniu <strong>ireductibil</strong>: ce e LMS-ul, entitățile principale (curs, prerechizite, sesiune), stack-ul (React+Vite+TS / .NET 10 / SQL Server 2022) — dar <strong>fără</strong> să explici lucruri pe care Claude le deduce citind codul.</li>
+        <li>Dacă ai un fișier care documentează arhitectura, nu-l lipi inline — pune un pointer: <code>Vezi @docs/architecture.md pentru context de arhitectură</code>.</li>
+      </ol>
+      <div class="callout" style="margin:12px 0;">
+        <strong>Contra-exemplu intenționat:</strong> păstrează, temporar, o versiune „umflată" (draftul brut de la <code>/init</code>, netăiat). O folosești în Ex. 4 pentru comparație.
+      </div>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Ai un <code>CLAUDE.md</code> sub 30 de linii în care poți justifica <strong>fiecare</strong> rând — și niciun rând nu e o regulă universală (aia e în personal, din Ex. 1).
+      </div>
+    </div>
+
+    <!-- Ex 4 -->
+    <div class="section-label">Exercițiul 4 — Dovada: înainte / după</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 4</span>
+        <span class="ex-time">≈20 min</span>
+        <span class="ex-trains">Antrenează: verificarea empirică — un CLAUDE.md e „gata" doar când schimbă comportamentul</span>
+      </div>
+      <p>Un <code>CLAUDE.md</code> nu contează pentru că există, ci pentru că modifică vizibil ce face Claude. Aici măsori asta pe bune.</p>
+      <p><strong>Ce faci:</strong></p>
+      <ol>
+        <li>Alege 2–3 task-uri concrete pe LMS — de preferat lucruri unde Claude a greșit deja în S1 (ex: „adaugă un endpoint nou după tiparul existent", „scrie un test pentru <code>GET /courses</code>", „adaugă o componentă React în structura noastră").</li>
+        <li>Rulează-le <strong>fără</strong> <code>CLAUDE.md</code> activ (sesiune curată, fișier redenumit temporar sau pe o copie) și notează presupunerile greșite.</li>
+        <li>Rulează-le <strong>cu</strong> <code>CLAUDE.md</code>-ul din Ex. 3 activ. Compară.</li>
+        <li><strong>Bonus (opțional):</strong> rulează un task și cu versiunea „umflată" din Ex. 3. De multe ori umflarea <strong>nu</strong> ajută cu nimic — sau chiar strică, pentru că regula bună se pierde în zgomot. E cel mai bun argument împotriva reflexului „mai bag ceva, nu strică".</li>
+      </ol>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Poți arăta o diferență concretă „înainte/după" pe cel puțin un task — și ai o poziție empirică despre versiunea umflată, nu doar teoretică.
+      </div>
+    </div>
+
+    <!-- Ex 5 -->
+    <div class="section-label">Exercițiul 5 — Scaffold-ul minim de proiect</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 5</span>
+        <span class="ex-time">≈15 min</span>
+        <span class="ex-trains">Antrenează: anatomia .claude/, generarea cu Claude, nu manuală</span>
+      </div>
+      <p><code>CLAUDE.md</code> e intrarea, nu tot sistemul. Acum pui fundația <code>.claude/</code> peste care se construiește restul programului (skills în S3, agenți în S4, hooks în S5, MCP în S6) — dar <strong>doar</strong> fundația.</p>
+      <div class="prompt-box">
+        <span class="prompt-box-label">Prompt de pornire</span>
+        „Creează <code>.claude/settings.json</code> minim, cu un <code>deny</code> pe comenzi distructive (ex: <code>Bash(rm -rf *)</code>). Creează și <code>.claude/tasks/todo.md</code> și <code>.claude/tasks/lessons.md</code>, goale, fiecare cu un antet de o linie."
+      </div>
+      <p style="margin-top:12px;"><strong>Ce mai faci:</strong></p>
+      <ol>
+        <li>Verifică că <code>lessons.md</code> există — e fișierul unde baseline-ul personal (Ex. 1) spune să notezi lecțiile după corecții. Regula e universală (personal), dar <strong>artefactul</strong> trăiește în proiect. Aici se leagă cele două straturi.</li>
+        <li><strong>Pe hârtie, nu implementat azi:</strong> din harta din tutorial (segmentul 3), notează ce ai deja în <code>.claude/</code> și ce urmează — <code>skills/</code> (S3), <code>agents/</code> (S4), <code>hooks/</code> (S5), <code>.mcp.json</code> (S6). Nu construi nimic din astea acum.</li>
+      </ol>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Ai un <code>.claude/</code> cu <code>CLAUDE.md</code> + <code>settings.json</code> + <code>tasks/</code> și o hartă clară a ce urmează — fără să fi construit prematur skills/hooks/MCP.
+      </div>
+    </div>
+
+    <!-- Ex 6 Capstone -->
+    <div class="section-label">Exercițiul 6 (Capstone) — Scaffold complet, comis</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 6</span>
+        <span class="ex-time">≈15 min</span>
+        <span class="ex-trains">Antrenează: toate cele cinci împreună, cap-coadă</span>
+      </div>
+      <p><strong>Ce faci:</strong></p>
+      <ol>
+        <li>Verifică că ai, coerent, tot lanțul:
+          <ul style="margin-top:6px;">
+            <li><code>~/.claude/CLAUDE.md</code> personal cu baseline-ul (Ex. 1).</li>
+            <li><code>CLAUDE.md</code> de proiect, sub 30 de linii, calibrat și <strong>dovedit</strong> (Ex. 3–4).</li>
+            <li><code>.claude/settings.json</code> + <code>.claude/tasks/</code> (Ex. 5).</li>
+          </ul>
+        </li>
+        <li><strong>Comite</strong> scaffold-ul de proiect în git, cu un mesaj descriptiv (<code>chore: add project CLAUDE.md and .claude scaffold</code>). Fișierul personal (<code>~/.claude/</code>) <strong>nu</strong> se comite — e al tău, pe toate proiectele.</li>
+        <li>Notează pentru schimbul de practici: care regulă a schimbat cel mai vizibil comportamentul, și ce ai scos pentru că nu ajuta.</li>
+      </ol>
+      <div class="callout callout-green" style="margin:12px 0;">
+        <strong>Extensie (în pereche, dacă ați terminat):</strong> comparați două <code>CLAUDE.md</code>-uri de proiect făcute independent pe același repo. Ce a scris unul și altul nu? Care diferență e reală (context util) și care e doar zgomot personal strecurat în stratul de proiect? Prima materie primă pentru „standardul de casă" din Faza 3.
+      </div>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Oricine din echipă poate clona repo-ul LMS și, din prima sesiune Claude Code, beneficiază de context — iar tu ai 2–3 momente „aici s-a văzut diferența" pentru schimbul de practici.
+      </div>
+    </div>
+
+    <!-- Artefact -->
+    <div class="section-label">Artefacte — deja produse în exerciții</div>
+    <div class="card">
+      <p>Nu mai scrii nimic separat — le ai deja:</p>
+      <div class="artefact"><code>~/.claude/CLAUDE.md</code> personal cu baseline-ul de workflow</div>
+      <div class="artefact" style="margin-top:10px;"><code>CLAUDE.md</code> de proiect + scaffold <code>.claude/</code> minim, comis în git pe LMS</div>
+    </div>
+
+    <!-- Schimb de practici -->
+    <div class="section-label">Schimb de practici &amp; documentul echipei</div>
+    <div class="card">
+      <p>Pe rând (~2 min/persoană), fiecare spune:</p>
+      <ul>
+        <li>O regulă din <code>CLAUDE.md</code> care a schimbat vizibil comportamentul lui Claude pe un task concret (cu exemplul „înainte/după" din Ex. 4).</li>
+        <li>Ceva ce a scris inițial și a scos, pentru că nu ajuta cu nimic — semnal bun, arată calibrare, nu eșec.</li>
+      </ul>
+      <p>Notați în documentul partajat <strong>„AI Wins &amp; Fails"</strong>. Coloana „Candidat standard?" e cea din care, în Faza 3, alegeți ce reguli intră în <code>CLAUDE.md</code>-ul de referință al echipei.</p>
     </div>
 
   </div><!-- /echipa -->
