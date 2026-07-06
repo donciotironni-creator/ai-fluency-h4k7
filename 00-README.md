@@ -8,19 +8,26 @@ Program de 10 săptămâni (workshop-uri de joi) pentru o echipă senior de SQL 
 
 ---
 
-## Fișiere (în ordinea recomandată)
+## Structura repo-ului
 
-1. **01-program-10-saptamani.html** — programul complet: formatul unei zile de joi, curriculumul pe 10 săptămâni în 3 faze, matricea de fluență și notele de facilitare. Se deschide în browser.
-2. **02-ghid-facilitare-S0-S1.md** — *pentru tine (facilitator):* cum conduci S0 (kickoff + diagnostic + setup) și S1 (modelul mental & bucla zilnică), cu timing, conținutul tutorialului și capcanele comune.
-3. **03-exercitii-S0-S1-LMS.md** — *pentru participanți:* exercițiile de S0 și S1 aplicate pe LMS, plus template-ul „Rețeta mea de sesiune" și template-ul „AI Wins & Fails" (de pus în Confluence).
+Site static (HTML/CSS/JS simplu, fără build) plus materialele de facilitare în markdown.
+
+- **`index.html`** — pagina de start: prezentarea programului, curriculumul pe 10 săptămâni în 3 faze, matricea de fluență și notele de facilitare.
+- **`s0.html`–`s10.html`** — câte o pagină per sesiune. Fiecare pagină de sesiune are două panouri comutabile: **Ghid facilitare** (pentru tine) și **Exerciții echipă** (pentru participanți).
+- **`dictionar.html`** — dicționarul de termeni.
+- **`ghiduri/`** — sursele markdown din care se construiesc paginile:
+  - `02-ghid-facilitare-S{0,1,2}.md` — ghidurile de facilitare (timing, conținutul tutorialului, capcane).
+  - `03-exercitii-S{0,1,2}.md` — fișele de exerciții aplicate pe LMS.
+  - `AI-Wins-Fails.md` — template-ul documentului partajat de echipă.
+- **`01-program-10-saptamani.html`** — pagină orfană (nelinkuită), varianta veche a programului. Nu se atinge fără cerere explicită.
 
 ---
 
 ## Cum se folosesc împreună
 
-- Fișierul (1) e contextul de ansamblu — îl citești o dată, la început.
-- La fiecare sesiune: **tu** conduci după ghidul de facilitare (2), iar **participanții** lucrează după fișa de exerciții (3).
-- S0 și S1 sunt gata. Pasul următor firesc e **S2** (construirea `CLAUDE.md`-ului proiectului), pe același tipar: un ghid de facilitare + o fișă de exerciții.
+- `index.html` e contextul de ansamblu — îl citești o dată, la început.
+- La fiecare sesiune: **tu** conduci după panoul „Ghid facilitare", iar **participanții** lucrează după panoul „Exerciții echipă" (ambele pe aceeași pagină `sN.html`).
+- **S0, S1 și S2 sunt gata** (ghid + exerciții). Pasul următor firesc e **S3** (slash commands & skills), pe același tipar.
 
 ---
 
