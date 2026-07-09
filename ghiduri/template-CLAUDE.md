@@ -43,21 +43,23 @@ Nu executa fără confirmare în mesajul curent, indiferent de mod:
 - Merge în main / develop / master.
 Dacă e nevoie de una: oprește-te, descrie comanda, cere confirmare. Nu încerca o variantă echivalentă.
 
+## Principii de lucru (Karpathy)
+- Gândește înainte de a coda: nu presupune în tăcere, expune compromisurile,
+  întreabă când ceva e ambiguu.
+- Simplitate întâi: minimul de cod care rezolvă problema — nimic speculativ,
+  nicio abstracție „pentru mai târziu".
+- Schimbări chirurgicale: atinge doar ce trebuie, nu „îmbunătăți" cod adiacent;
+  curăță doar propria mizerie (importurile pe care le-ai lăsat tu neutilizate).
+  Nu șterge dead code pre-existent — menționează-l.
+- Execuție orientată pe scop: „gata" înseamnă dovedit, nu presupus — rulează
+  testul/comanda/build-ul înainte să declari succes; bucla până se confirmă.
+
 ## Workflow
 - Plan mode implicit pentru task-uri cu 3+ pași, care ating 2+ layere
   (BE+FE, DB+API), sau care schimbă schemă DB / contracte API / auth.
-- „Gata" înseamnă dovedit, nu presupus: rulează testul/comanda/build-ul
-  înainte să declari succes.
+- Root cause, nu band-aid — fără fix-uri temporare care revin.
 - Raportează onest: dacă un pas eșuează sau un test nu acoperă comportamentul
   real, spune-o explicit și oprește-te. Nu raporta „done" pe ceva parțial.
-
-## Simplitate & disciplină
-- Cel mai simplu fix care rezolvă problema — nimic speculativ.
-- Root cause, nu band-aid.
-- Impact minim: atinge doar ce ai fost rugat, fără refactor-uri surpriză.
-- Nu presupune în tăcere: expune compromisurile, întreabă când e ambiguu.
-- Nu șterge dead code pre-existent — menționează-l. Șterge doar
-  importurile/variabilele pe care le-ai lăsat tu neutilizate.
 ```
 
 **Ce pui / ce NU:** aici merg reguli valabile pe **orice** repo. Nu pune nimic despre un proiect anume, nici căi de pe mașina ta (alea sunt în `CLAUDE.local.md`). Ține-l scurt — se încarcă la fiecare sesiune, pe orice proiect.
