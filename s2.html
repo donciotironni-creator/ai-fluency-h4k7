@@ -251,6 +251,129 @@
       <div class="artefact" style="margin-top:10px;">un <code>CLAUDE.md</code> de proiect + scaffold minim <code>.claude/</code> (settings.json, tasks/), comis în git</div>
     </div>
 
+    <div class="section-label">Template-uri de referință — cele trei fișiere CLAUDE</div>
+    <div class="card">
+      <p>Livrabilul concret cu care pleacă fiecare: câte un template per strat de memorie, gata de copy-paste. <strong>Adaptează-le, nu le lăsa ca atare</strong> — regula de aur rămâne testul liniei: <em>„dacă o șterg, Claude greșește ceva anume?"</em>.</p>
+      <div style="overflow-x:auto;margin:12px 0;">
+        <table>
+          <tr><th>Fișier</th><th>Scope</th><th>În git?</th><th>Conține</th></tr>
+          <tr><td><code>~/.claude/CLAUDE.md</code></td><td>Personal, <strong>toate</strong> proiectele</td><td>❌ nu</td><td>Reguli de comportament + siguranță universale</td></tr>
+          <tr><td><code>CLAUDE.md</code></td><td>Proiectul curent</td><td>✅ <strong>da</strong></td><td>Fapte specifice repo-ului: stack, comenzi, convenții, capcane</td></tr>
+          <tr><td><code>CLAUDE.local.md</code></td><td>Proiect, doar mașina ta</td><td>❌ nu (gitignored)</td><td>Override-uri personale + specifice mașinii, pentru acest proiect</td></tr>
+        </table>
+      </div>
+      <p style="color:var(--ink-soft);font-size:.9rem;">Precedența când se contrazic: <code>CLAUDE.local.md</code> &gt; <code>CLAUDE.md</code> &gt; <code>~/.claude/CLAUDE.md</code>. Fișierul complet, cu note per secțiune: <code>ghiduri/template-CLAUDE.md</code>.</p>
+    </div>
+
+    <div class="card">
+      <h3>1. <code>~/.claude/CLAUDE.md</code> — personal, toate proiectele <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">necomis</span></h3>
+      <p>Doar ce e <strong>universal</strong> — reguli de comportament și siguranță valabile pe orice repo. Zero fapte de proiect.</p>
+      <div class="template-block"># Instrucțiuni personale — toate proiectele
+
+## Limbă &amp; comunicare
+- Răspunde în română când scriu în română.
+- Commit messages în engleză, format conventional: feat / fix /
+  docs / refactor / test / chore.
+
+## Oprire la secrete (halt-on-secrets)
+Dacă detectezi în ce urmează să afișezi, să scrii sau să comiți:
+connection string SQL, API key / token (sk-…, JWT), parolă în clar
+sau alt credential — OPREȘTE-TE, raportează ce ai găsit și cere
+confirmare explicită. Nu masca automat, nu continua.
+
+## Limite pe operații distructive (cer confirmare explicită)
+Nu executa fără confirmare în mesajul curent, indiferent de mod:
+- DROP TABLE, TRUNCATE, DELETE fără WHERE pe orice bază.
+- ALTER / CREATE OR ALTER PROCEDURE pe baze marcate prod.
+- Migrări de schemă (EF etc.) pe baze cu date reale.
+- git push --force, git reset --hard pe branch shared.
+- Merge în main / develop / master.
+Dacă e nevoie de una: oprește-te, descrie comanda, cere confirmare.
+
+## Workflow
+- Plan mode implicit pentru task-uri cu 3+ pași, care ating 2+
+  layere (BE+FE, DB+API), sau care schimbă schemă DB / API / auth.
+- „Gata" înseamnă dovedit, nu presupus: rulează testul/comanda/
+  build-ul înainte să declari succes.
+- Raportează onest: dacă un pas eșuează, spune-o explicit și
+  oprește-te. Nu raporta „done" pe ceva parțial.
+
+## Simplitate &amp; disciplină
+- Cel mai simplu fix care rezolvă problema — nimic speculativ.
+- Root cause, nu band-aid.
+- Impact minim: atinge doar ce ai fost rugat, fără refactor-uri
+  surpriză.
+- Nu presupune în tăcere: expune compromisurile, întreabă când
+  e ambiguu.
+- Nu șterge dead code pre-existent — menționează-l. Șterge doar
+  importurile pe care le-ai lăsat tu neutilizate.</div>
+    </div>
+
+    <div class="card">
+      <h3>2. <code>CLAUDE.md</code> — proiect <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">comis în git</span></h3>
+      <p>„Constituția" repo-ului, o citește toată echipa. Structura utilă: <strong>CE</strong> (stack, hartă), <strong>DE CE</strong> (scop), <strong>CUM</strong> (comenzi, convenții). Exemplu pe LMS:</p>
+      <div class="template-block"># LMS — platformă internă de training
+
+Aplicație de învățare: cursuri cu prerechizite, sesiuni, participanți
+și progres. Construită greenfield; structura apare slice cu slice.
+
+## Stack
+- Front-end: React + Vite + TypeScript (`frontend/`)
+- API: .NET 10 Web API (`backend/`)
+- DB: SQL Server 2022
+- (Faza finală) RAG clasic: full-text + embeddings + cosine
+
+## Comenzi
+- Front-end dev: `npm run dev` (în `frontend/`)
+- Front-end build: `npm run build`
+- API: `dotnet run` (în `backend/`)
+- Teste API: `dotnet test`
+
+## Convenții
+- Endpoint-urile REST urmează tiparul din `backend/Controllers/` —
+  uită-te la unul existent înainte să adaugi altul.
+- Componentele React noi: `frontend/src/components/`, folder per
+  componentă, cu fișier de stil alături.
+- Tabele SQL la singular, PascalCase (`Course`, `Prerequisite`).
+- Migrările DB se scriu de mână — vezi `backend/Migrations/`.
+
+## Capcane
+- Prerechizitele unui curs sunt un graf; „tot lanțul" = recursive
+  CTE, nu un simplu JOIN.
+- Configul de CORS e în `backend/Program.cs` — un endpoint nou
+  apelat din front-end poate cere o ajustare acolo.
+- Nu adăuga date reale de participanți în seed-uri sau teste.
+
+## Context suplimentar
+- Vezi @docs/architecture.md pentru deciziile de arhitectură.</div>
+    </div>
+
+    <div class="card">
+      <h3>3. <code>CLAUDE.local.md</code> — proiect, doar mașina ta <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">gitignored</span></h3>
+      <p>Override-uri și specificuri de mașină pentru <strong>acest</strong> proiect.</p>
+      <div class="callout" style="margin-bottom:12px;">
+        <strong>Atenție — nu e auto-gitignored.</strong> Trebuie să-l adaugi tu în <code>.gitignore</code>, altfel îți urci preferințele personale în repo-ul echipei.
+      </div>
+      <div class="template-block"># LMS — note locale (doar mașina mea, nu se comite)
+
+## Override-uri personale
+- Echipa folosește npm; eu rulez local cu pnpm.
+  Comenzile mele: `pnpm dev`, `pnpm build`.
+
+## Mediu local
+- API local pe portul 5080; front-end pe 5173.
+- SQL local: instanța `.\SQLEXPRESS`, baza `LMS_dev`.
+  (NU pune connection string cu parolă aici — ține-l în
+   user-secrets / variabile de mediu și referă-l.)
+
+## Note personale de lucru
+- Testele E2E cer Docker pornit local.
+- TODO personal: de refăcut seed-ul de cursuri după merge-ul din feature/x.</div>
+      <p style="margin-top:12px;"><strong>Pas obligatoriu</strong> — adaugă-l în <code>.gitignore</code>:</p>
+      <div class="template-block">CLAUDE.local.md</div>
+      <p style="color:var(--ink-soft);font-size:.9rem;margin-top:10px;"><strong>Niciodată secrete în clar</strong> — chiar dacă fișierul e gitignored, ține credențialele în user-secrets / env și doar referă-le.</p>
+    </div>
+
     <div class="section-label">Schimb de practici (15–20 min)</div>
     <div class="card">
       <p>Fiecare, ~2 min:</p>
