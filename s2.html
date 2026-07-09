@@ -29,6 +29,9 @@
     <a href="s10.html" class="nav-pill">S10</a>
     <div class="nav-divider"></div>
     <a href="dictionar.html" class="nav-pill">Dicționar</a>
+    <a href="cheatsheet.html" class="nav-pill">Cheatsheet</a>
+    <a href="artefacte.html" class="nav-pill">Artefacte</a>
+    <a href="schimbari.html" class="nav-pill">Schimbări</a>
   </div>
   <button class="nav-toggle" onclick="toggleTheme()">☾ / ☀</button>
 </nav>
@@ -434,6 +437,10 @@ Aplicație de învățare: cursuri cu prerechizite, sesiuni, participanți
       <strong>Ținta zilei:</strong> la final ai (a) un <code>~/.claude/CLAUDE.md</code> <strong>personal</strong> cu baseline-ul de workflow și (b) un <code>CLAUDE.md</code> de proiect + un <code>.claude/</code> minim, <strong>comise în git</strong>, pe repo-ul LMS — și ai <strong>dovedit</strong> că schimbă comportamentul, nu doar că există.
     </div>
 
+    <div class="callout callout-blue" style="margin-bottom:24px;">
+      <strong>Recuperare rapidă (ai lipsit / intri târziu):</strong> minimul ca să poți intra în S3 e (a) un <code>~/.claude/CLAUDE.md</code> personal cu baseline-ul de workflow și (b) un <code>CLAUDE.md</code> de proiect comis în repo-ul tău. Dacă nu le ai, fă doar <strong>Ex. 1</strong> (baseline personal) + <strong>Ex. 2–3</strong> (<code>/init</code> + calibrare) pe un repo real. Restul (dovada înainte/după, scaffold-ul <code>.claude/</code>) le poți relua ulterior.
+    </div>
+
     <!-- Ex 1 -->
     <div class="section-label">Exercițiul 1 — Baseline-ul personal</div>
     <div class="exercise">
@@ -614,6 +621,61 @@ Aplicație de învățare: cursuri cu prerechizite, sesiuni, participanți
 
   </div><!-- /echipa -->
 
+  <section class="selfcheck">
+    <div class="section-label">Verifică-te</div>
+    <div class="card">
+      <div class="sc-q" data-correct="2">
+        <p class="sc-question"><strong>1.</strong> Când două straturi de memorie se contrazic pe aceeași regulă, care câștigă?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt"><code>~/.claude/CLAUDE.md</code> personal — e baza tuturor proiectelor</button>
+          <button type="button" class="sc-opt"><code>CLAUDE.md</code> de proiect — e comis în git, deci e „oficial"</button>
+          <button type="button" class="sc-opt"><code>CLAUDE.local.md</code> — cel mai specific strat</button>
+        </div>
+        <div class="sc-explain">Precedența e local &gt; proiect &gt; personal: câștigă cel mai specific. <code>CLAUDE.local.md</code> (mașina ta, gitignored) bate proiectul, care bate personalul. Faptul că un fișier e „oficial"/comis nu-i dă prioritate — specificitatea o dă.</div>
+      </div>
+
+      <div class="sc-q" data-correct="1">
+        <p class="sc-question"><strong>2.</strong> Ce NU are ce căuta într-un <code>CLAUDE.md</code> de proiect?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Comanda de test pe care Claude nu o poate ghici din cod</button>
+          <button type="button" class="sc-opt">Conținutul README-ului copiat integral, ca „context complet"</button>
+          <button type="button" class="sc-opt">O capcană ne-evidentă (ex: CORS-ul se configurează într-un singur loc)</button>
+        </div>
+        <div class="sc-explain">README copiat = confuzie între documentație-pentru-oameni și memorie-pentru-model. Umflă contextul la fiecare sesiune fără să schimbe comportamentul. Pui doar ce Claude nu poate deduce singur din cod: comenzi, convenții care diferă de default, capcane.</div>
+      </div>
+
+      <div class="sc-q" data-correct="0">
+        <p class="sc-question"><strong>3.</strong> Care e „testul liniei" pe care îl aplici fiecărui rând înainte să-l lași în <code>CLAUDE.md</code>?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">„Dacă șterg linia asta, Claude greșește ceva anume?" — dacă nu, afară</button>
+          <button type="button" class="sc-opt">„E scrisă gramatical corect și în română?"</button>
+          <button type="button" class="sc-opt">„Ar fi utilă pentru un coleg nou care citește repo-ul?"</button>
+        </div>
+        <div class="sc-explain">Criteriul e comportamental, nu stilistic sau documentar: o linie merită tokenii pe care-i costă la fiecare sesiune doar dacă absența ei produce o greșeală concretă. „Ar ajuta un om" e exact capcana care umflă fișierul — aia e treabă de README, nu de <code>CLAUDE.md</code>.</div>
+      </div>
+
+      <div class="sc-q" data-correct="1">
+        <p class="sc-question"><strong>4.</strong> Principiile universale Karpathy (gândește-nainte-de-a-coda, simplitate, schimbări chirurgicale) — în ce strat le pui?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">În <code>CLAUDE.md</code> de proiect, ca să le vadă toată echipa pe fiecare repo</button>
+          <button type="button" class="sc-opt">În stratul personal (<code>~/.claude/CLAUDE.md</code>) — o singură sursă de adevăr</button>
+          <button type="button" class="sc-opt">În <code>CLAUDE.local.md</code>, ca override specific mașinii</button>
+        </div>
+        <div class="sc-explain">Sunt reguli de comportament universale — valabile pe orice repo. Duplicat în fiecare <code>CLAUDE.md</code> de proiect = zgomot repetat. Locul lor e stratul personal, o dată. Regula de separare: proiect = fapte specifice repo-ului; principii universale = personal.</div>
+      </div>
+
+      <div class="sc-q" data-correct="2">
+        <p class="sc-question"><strong>5.</strong> Când e semnalul că o procedură din <code>CLAUDE.md</code> ar trebui „mutată într-un skill"?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Imediat ce ai scris-o — orice procedură e mai bună ca skill</button>
+          <button type="button" class="sc-opt">Când conține o comandă distructivă care cere confirmare</button>
+          <button type="button" class="sc-opt">Când crește și ai nevoie de ea doar la anumite task-uri, nu la fiecare sesiune</button>
+        </div>
+        <div class="sc-explain"><code>CLAUDE.md</code> se citește la <strong>fiecare</strong> sesiune, deci fiecare linie costă context mereu. <code>skills/</code> se încarcă doar la cerere. Când o procedură crește și e relevantă doar ocazional, o muți în skill ca s-o scoți din context-ul permanent (se aprofundează în S3).</div>
+      </div>
+    </div>
+  </section>
+
   <div class="page-nav">
     <a href="s1.html">← S1: Modelul mental</a>
     <a href="s3.html">S3: Slash commands &amp; skills →</a>
@@ -623,5 +685,6 @@ Aplicație de învățare: cursuri cu prerechizite, sesiuni, participanți
 
 <script src="assets/main.js"></script>
 <script src="assets/glossary.js"></script>
+<script src="assets/selfcheck.js"></script>
 </body>
 </html>

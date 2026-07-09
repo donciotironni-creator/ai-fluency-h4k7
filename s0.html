@@ -29,6 +29,9 @@
     <a href="s10.html" class="nav-pill">S10</a>
     <div class="nav-divider"></div>
     <a href="dictionar.html" class="nav-pill">Dicționar</a>
+    <a href="cheatsheet.html" class="nav-pill">Cheatsheet</a>
+    <a href="artefacte.html" class="nav-pill">Artefacte</a>
+    <a href="schimbari.html" class="nav-pill">Schimbări</a>
   </div>
   <button class="nav-toggle" onclick="toggleTheme()">☾ / ☀</button>
 </nav>
@@ -239,6 +242,14 @@
     <div class="callout callout-blue">
       <strong>Proiectul-școală:</strong> o platformă internă de training (LMS) — cursuri → module → lecții, cu înscrieri, progres și quiz-uri; iar la final un „tutor" AI pe baza conținutului lecțiilor. Porniți <strong>doar de la idee</strong> și construiți tot voi — nimeni nu vă dă schema, scaffold-ul sau arhitectura. Ele apar pe parcurs, slice cu slice. În S0 și S1 exersați bucla Claude Code exact acolo unde e cel mai greu: pe teren gol.
     </div>
+    <div class="callout callout-blue">
+      <strong>Recuperare rapidă (ai lipsit / intri târziu):</strong> minimul ca să fii pregătit pentru S1 — restul îl prinzi din mers.
+      <ul style="margin:8px 0 0;">
+        <li>Claude Code <strong>instalat și autentificat</strong> (<code>claude</code> rulează, <code>claude auth status</code> arată sesiune validă).</li>
+        <li>Un <strong>folder gol</strong> cu <code>git init</code> — proiectul greenfield pornește de aici.</li>
+        <li>Acces la docul partajat <strong>„AI Wins &amp; Fails"</strong>.</li>
+      </ul>
+    </div>
     <div class="callout" style="margin-bottom:20px;">
       <strong>Regula de siguranță:</strong> nu folosiți <code>--dangerously-skip-permissions</code>. Pe greenfield, unde curg multe <code>npm install</code> și comenzi shell, e cu atât mai important.
     </div>
@@ -295,6 +306,61 @@
 
   </div><!-- /echipa -->
 
+  <section class="selfcheck">
+    <div class="section-label">Verifică-te</div>
+    <div class="card">
+      <div class="sc-q" data-correct="2">
+        <p class="sc-question"><strong>1.</strong> Ce deosebește Claude Code (un agent) de un chat obișnuit?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Dă răspunsuri mai lungi și mai detaliate.</button>
+          <button type="button" class="sc-opt">Rulează în terminal, nu în browser.</button>
+          <button type="button" class="sc-opt">Poate citi repo-ul, rula comenzi și edita fișiere — propune acțiuni și cere permisiuni, nu doar text.</button>
+        </div>
+        <div class="sc-explain">Un agent acționează asupra mediului: citește fișiere, rulează comenzi, editează cod, cere aprobări. Un chat doar produce text. Interfața (terminal vs. browser) nu e diferența de fond — capacitatea de a acționa este.</div>
+      </div>
+
+      <div class="sc-q" data-correct="1">
+        <p class="sc-question"><strong>2.</strong> În diagnostic, ce înseamnă scorul <code>1</code> la o capabilitate?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">N-am auzit / n-am folosit niciodată.</button>
+          <button type="button" class="sc-opt">Am folosit ocazional, dar nu sistematic.</button>
+          <button type="button" class="sc-opt">O folosesc curent și conștient, e în rutina zilnică.</button>
+        </div>
+        <div class="sc-explain">Scala e 0 = n-am auzit / n-am folosit, 1 = am atins subiectul ocazional dar nu sistematic, 2 = parte din rutina zilnică. <code>1</code> e zona de mijloc: ai atins-o, dar nu e reflex.</div>
+      </div>
+
+      <div class="sc-q" data-correct="2">
+        <p class="sc-question"><strong>3.</strong> De ce proiectul-școală pornește „doar de la idee" (greenfield), fără schemă sau scaffold dat?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Ca sesiunile să fie mai scurte și mai ușor de facilitat.</button>
+          <button type="button" class="sc-opt">Pentru că Claude Code nu poate lucra pe cod existent.</button>
+          <button type="button" class="sc-opt">Pentru că pe teren gol nu există cod care să „ancoreze" modelul — deci fiecare pârghie de control (plan, context, permisiuni) contează mai mult.</button>
+        </div>
+        <div class="sc-explain">Greenfield e intenționat cel mai greu context: fără cod existent, modelul umple golurile cu presupuneri. Exact acolo se antrenează bucla deliberată. Claude Code lucrează foarte bine și pe cod existent — nu asta e motivul.</div>
+      </div>
+
+      <div class="sc-q" data-correct="0">
+        <p class="sc-question"><strong>4.</strong> De ce NU folosești <code>--dangerously-skip-permissions</code> pe proiectul greenfield?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Pe greenfield curg multe <code>npm install</code> și comenzi shell — cod arbitrar din pachete rulează fără să-l vezi; a sări peste confirmări e cu atât mai riscant.</button>
+          <button type="button" class="sc-opt">Pentru că flag-ul nu funcționează pe foldere goale.</button>
+          <button type="button" class="sc-opt">Pentru că încetinește sesiunea la fiecare comandă.</button>
+        </div>
+        <div class="sc-explain">Flag-ul sare peste toate confirmările. Pe greenfield, unde un <code>npm install</code> execută cod arbitrar din pachete, tocmai aprobarea conștientă e plasa de siguranță. Acceptabil doar într-un sandbox izolat, niciodată pe cod real.</div>
+      </div>
+
+      <div class="sc-q" data-correct="1">
+        <p class="sc-question"><strong>5.</strong> Care e scopul walking skeleton-ului pe care îl definești în S0?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Un document de arhitectură complet, cu schema bazei de date.</button>
+          <button type="button" class="sc-opt">Cel mai mic parcurs care rulează cap-coadă și demonstrează ideea — punctul de plecare pe care îl construiești în S1.</button>
+          <button type="button" class="sc-opt">Un prototip de UI finalizat, gata de livrare.</button>
+        </div>
+        <div class="sc-explain">Walking skeleton = minimul care merge cap-coadă și dovedește că ideea stă în picioare, nu design complet, schemă sau cod finit. În S0 doar îl definești (plus viziunea într-o frază); îl construiești în S1.</div>
+      </div>
+    </div>
+  </section>
+
   <div class="page-nav">
     <span></span>
     <a href="s1.html">S1: Modelul mental &amp; bucla zilnică →</a>
@@ -304,5 +370,6 @@
 
 <script src="assets/main.js"></script>
 <script src="assets/glossary.js"></script>
+<script src="assets/selfcheck.js"></script>
 </body>
 </html>

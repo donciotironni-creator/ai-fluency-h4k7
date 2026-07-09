@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cheatsheet — Claude Code · AI Fluency</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo"><span class="nav-logo-mark"><span class="nav-logo-ring"></span></span>AI Fluency</a>
+  <div class="nav-divider"></div>
+  <div class="nav-sessions">
+    <a href="index.html" class="nav-pill">Acasă</a>
+    <a href="s0.html" class="nav-pill">S0</a>
+    <a href="s1.html" class="nav-pill">S1</a>
+    <a href="s2.html" class="nav-pill">S2</a>
+    <a href="s3.html" class="nav-pill">S3</a>
+    <a href="s4.html" class="nav-pill">S4</a>
+    <a href="s5.html" class="nav-pill">S5</a>
+    <a href="s6.html" class="nav-pill">S6</a>
+    <a href="s7.html" class="nav-pill">S7</a>
+    <a href="s8.html" class="nav-pill">S8</a>
+    <a href="s9.html" class="nav-pill">S9</a>
+    <a href="s10.html" class="nav-pill">S10</a>
+    <div class="nav-divider"></div>
+    <a href="dictionar.html" class="nav-pill">Dicționar</a>
+    <a href="cheatsheet.html" class="nav-pill active">Cheatsheet</a>
+    <a href="artefacte.html" class="nav-pill">Artefacte</a>
+    <a href="schimbari.html" class="nav-pill">Schimbări</a>
+  </div>
+  <button class="nav-toggle" onclick="toggleTheme()">☾ / ☀</button>
+</nav>
+
+<div class="wrap">
+
+  <div class="session-hero">
+    <span class="kicker">Referință rapidă · daily driver</span>
+    <h1>Cheatsheet — Claude Code</h1>
+    <div class="meta">
+      <span class="tag">comenzi</span>
+      <span class="tag">arbori de decizie</span>
+      <span class="tag">model/effort</span>
+      <span class="tag">permisiuni</span>
+    </div>
+    <p style="color:var(--ink-soft);margin-top:12px;max-width:680px;">Pagina pe care o ții deschisă zilnic. Adună într-un singur loc referințele și arborii de decizie pe care cursul îi predă împrăștiat prin sesiuni — comenzi, plan mode, model/effort, CLAUDE.md vs skill, <code>/clear</code>, permisiuni.</p>
+  </div>
+
+  <div class="callout" style="margin-bottom:20px;">
+    <strong>Sintaxa se schimbă, principiile rezistă.</strong> Claude Code publică des — comenzile, flag-urile și shortcut-urile de mai jos reflectă versiunea curentă. La începutul fiecărei sesiuni rulează <code>/help</code> și confirmă. Ce e marcat <em>„de confirmat cu /help"</em> e cel mai probabil să difere de la o versiune la alta.
+  </div>
+
+  <!-- ══ REFERINȚĂ COMENZI ══ -->
+  <div class="section-label">Referință comenzi</div>
+
+  <div class="card">
+    <h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);font-family:ui-monospace,Menlo,monospace;margin:0 0 10px;">Terminal — pornire &amp; autentificare</h4>
+    <table style="margin-bottom:22px;">
+      <tr><td style="white-space:nowrap;"><code>claude</code></td><td style="color:var(--ink-soft);">pornește o sesiune interactivă în folderul curent</td></tr>
+      <tr><td style="white-space:nowrap;"><code>claude auth status</code></td><td style="color:var(--ink-soft);">verifică dacă ești autentificat</td></tr>
+      <tr><td style="white-space:nowrap;"><code>claude --version</code></td><td style="color:var(--ink-soft);">versiunea instalată</td></tr>
+      <tr><td style="white-space:nowrap;"><code>claude -p "prompt"</code></td><td style="color:var(--ink-soft);">rulare one-shot, fără sesiune interactivă (headless)</td></tr>
+    </table>
+
+    <h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);font-family:ui-monospace,Menlo,monospace;margin:0 0 10px;">În sesiune — slash commands</h4>
+    <table style="margin-bottom:22px;">
+      <tr><td style="white-space:nowrap;"><code>/help</code></td><td style="color:var(--ink-soft);">lista completă de comenzi din versiunea curentă — rulează-l primul</td></tr>
+      <tr><td style="white-space:nowrap;"><code>/clear</code></td><td style="color:var(--ink-soft);">șterge contextul sesiunii — nou fir de gândire</td></tr>
+      <tr><td style="white-space:nowrap;"><code>/model</code></td><td style="color:var(--ink-soft);">schimbă modelul (Haiku / Sonnet / Opus)</td></tr>
+      <tr><td style="white-space:nowrap;"><code>/effort</code></td><td style="color:var(--ink-soft);">ajustează nivelul de raționament</td></tr>
+      <tr><td style="white-space:nowrap;"><code>/permissions</code></td><td style="color:var(--ink-soft);">vizualizează regulile allow / ask / deny active</td></tr>
+    </table>
+
+    <h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);font-family:ui-monospace,Menlo,monospace;margin:0 0 10px;">Comenzile tale (slash commands / skills)</h4>
+    <p style="color:var(--ink-soft);font-size:.9rem;margin-bottom:10px;">Comenzile custom și skills-urile s-au unificat — ambele se invocă <code>/nume</code>, numele vine din numele fișierului/folderului. Un skill se poate declanșa și automat de Claude (prin <code>description</code>). Exemple tipice pe care le construiești în S3:</p>
+    <table style="margin-bottom:6px;">
+      <tr><td style="white-space:nowrap;"><code>/commit</code></td><td style="color:var(--ink-soft);">commit în formatul echipei — acțiune cu efect, deci <code>disable-model-invocation: true</code></td></tr>
+      <tr><td style="white-space:nowrap;"><code>/review</code></td><td style="color:var(--ink-soft);">review pe diff-ul curent după convențiile repo-ului</td></tr>
+      <tr><td style="white-space:nowrap;"><code>/pr</code></td><td style="color:var(--ink-soft);">deschide un PR cu template-ul echipei</td></tr>
+    </table>
+    <p style="color:var(--ink-soft);font-size:.85rem;margin-top:8px;"><em>Numele comenzilor de mai sus sunt exemple din curs, nu comenzi built-in.</em></p>
+
+    <h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);font-family:ui-monospace,Menlo,monospace;margin:22px 0 10px;">Navigare cu tastatura <span style="text-transform:none;letter-spacing:0;color:var(--ink-mute);">— de confirmat cu <code>/help</code></span></h4>
+    <table>
+      <tr><td style="white-space:nowrap;"><code>Shift+Tab</code></td><td style="color:var(--ink-soft);">ciclează moduri: normal → plan → auto</td></tr>
+      <tr><td style="white-space:nowrap;"><code>Ctrl+C</code></td><td style="color:var(--ink-soft);">întrerupe execuția în desfășurare</td></tr>
+      <tr><td style="white-space:nowrap;"><code>Escape</code></td><td style="color:var(--ink-soft);">anulează acțiunea curentă fără să oprești sesiunea</td></tr>
+    </table>
+  </div>
+
+  <!-- ══ PLAN MODE VS EXECUȚIE ══ -->
+  <div class="section-label">Plan mode vs. execuție directă</div>
+  <div class="card">
+    <p style="color:var(--ink-soft);font-size:.93rem;margin-bottom:16px;">Întrebarea: <strong>atingi cod unde o surpriză te-ar costa?</strong> Comuți modurile cu <code>Shift+Tab</code> <span style="color:var(--ink-mute);">(de confirmat cu <code>/help</code>)</span>.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="border:1px solid color-mix(in srgb, var(--info) 30%, transparent);background:var(--info-soft);border-radius:var(--radius-lg);padding:14px 18px;">
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--info);margin-bottom:8px;">→ Plan mode</div>
+        <ul style="margin:0;">
+          <li>task cu ramificații / mai mulți pași</li>
+          <li>refactorizări</li>
+          <li>orice cod unde nu vrei surprize</li>
+          <li>primul slice pe greenfield (planul e plin de presupuneri — citește-le)</li>
+        </ul>
+      </div>
+      <div style="border:1px solid var(--line);background:var(--paper-2);border-radius:var(--radius-lg);padding:14px 18px;">
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin-bottom:8px;">→ Execuție directă</div>
+        <ul style="margin:0;">
+          <li>editări mici, evidente</li>
+          <li>lookups, o singură modificare clară</li>
+          <li>unde planul ar fi doar overhead</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout callout-blue" style="margin-top:14px;margin-bottom:0;">Plan mode declanșează des un subagent „Explore" care scanează repo-ul și întoarce o hartă, ținând sesiunea principală curată. Citește planul <strong>înainte</strong> să aprobi și ajustează măcar o presupunere.</div>
+  </div>
+
+  <!-- ══ MODEL / EFFORT ══ -->
+  <div class="section-label">Ce model / effort pentru ce task</div>
+  <div class="card">
+    <table>
+      <tr><th>Tip task</th><th>Nivel recomandat</th></tr>
+      <tr><td>Explorare / task-uri simple, lookups</td><td>Ieftin/rapid — <strong>Haiku</strong></td></tr>
+      <tr><td>Coding zilnic, cost-sensibil</td><td>Mediu — <strong>Sonnet</strong></td></tr>
+      <tr><td>Raționament greu, arhitectură, securitate</td><td>Puternic — <strong>Opus</strong>, effort mare</td></tr>
+      <tr><td>Refactorizări complexe</td><td><code>opusplan</code> — Opus planifică, un model mai ieftin execută</td></tr>
+    </table>
+    <p style="color:var(--ink-soft);font-size:.9rem;margin-top:12px;">Comenzile: <code>/model</code> și <code>/effort</code>. Numele exacte ale modelelor se schimbă; principiul <strong>„potrivește puterea la sarcină"</strong> rămâne. Anti-tipar: Opus la orice — scump și inutil pentru explorare.</p>
+  </div>
+
+  <!-- ══ FAPT VS PROCEDURĂ ══ -->
+  <div class="section-label">Fapt → CLAUDE.md &nbsp;·&nbsp; Procedură → skill</div>
+  <div class="card">
+    <p style="color:var(--ink-soft);font-size:.93rem;margin-bottom:16px;">Un singur criteriu, repetat: <strong>e un fapt stabil despre repo, sau o procedură pe care o repeți?</strong></p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div style="border:1px solid color-mix(in srgb, var(--accent) 30%, transparent);background:var(--accent-soft);border-radius:var(--radius-lg);padding:14px 18px;">
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:8px;">Fapt → <code>CLAUDE.md</code></div>
+        <p style="font-size:.9rem;margin:0 0 8px;">„așa e proiectul" — stabil, adevărat mereu.</p>
+        <ul style="margin:0;font-size:.9rem;">
+          <li>„stack-ul e React + Vite + TS"</li>
+          <li>„testele rulează cu <code>dotnet test</code>"</li>
+          <li>„nu atinge <code>RemainingDays</code> fără review"</li>
+        </ul>
+        <p style="font-size:.85rem;color:var(--ink-soft);margin:10px 0 0;">Se citește la <strong>fiecare</strong> sesiune → costă context mereu.</p>
+      </div>
+      <div style="border:1px solid color-mix(in srgb, var(--gold) 35%, transparent);background:var(--gold-soft);border-radius:var(--radius-lg);padding:14px 18px;">
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--gold-dark);margin-bottom:8px;">Procedură → skill</div>
+        <p style="font-size:.9rem;margin:0 0 8px;">„pași de urmat" — o repeți de 2-3 ori.</p>
+        <ul style="margin:0;font-size:.9rem;">
+          <li>„când review-uiesc un diff, fac pașii ăștia patru"</li>
+          <li>„când scriu un commit, urmez formatul ăsta"</li>
+          <li>„când deschid un PR, folosesc template-ul"</li>
+        </ul>
+        <p style="font-size:.85rem;color:var(--ink-soft);margin:10px 0 0;">Se încarcă <strong>doar când o folosești</strong> → reference-ul lung costă aproape nimic până ai nevoie.</p>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:14px;">
+      <strong>Semnul că ai greșit stratul:</strong> o secțiune din <code>CLAUDE.md</code> care sună a „pași de urmat", nu a „așa e proiectul" — aia voia să fie skill.
+    </div>
+    <p style="color:var(--ink-soft);font-size:.9rem;margin:12px 0 0;"><strong>Când NU faci skill:</strong> e un fapt (→ <code>CLAUDE.md</code>); l-ai făcut o singură dată și n-ai motiv să-l repeți (→ doar un prompt); e ceva ce Claude face oricum bine fără instrucțiuni (→ doar adaugi zgomot).</p>
+  </div>
+
+  <!-- ══ CÂND /CLEAR ══ -->
+  <div class="section-label">Când dau <code>/clear</code></div>
+  <div class="card">
+    <p style="font-size:1.05rem;margin-bottom:12px;"><strong>Regula: o sesiune = un fir de gândire. Task nou → context nou.</strong></p>
+    <ul>
+      <li><code>/clear</code> când treci la un task <strong>nesuspect</strong> de cel anterior.</li>
+      <li><code>/clear</code> <strong>între pașii de bootstrap</strong> diferiți (ex: bootstrap API, apoi bootstrap front-end) — instalările umplu contextul cu zgomot.</li>
+      <li>Fereastra de context nu e infinită și nu e gratuită: cu cât o umpli cu log-uri lungi și istoric vechi, cu atât modelul raționează mai prost și mai scump.</li>
+    </ul>
+    <div class="callout callout-blue" style="margin-bottom:0;"><strong>Compaction</strong> comprimă istoricul când te apropii de limită — dar pierzi din detaliu. Mai bine <code>/clear</code> deliberat între task-uri decât să lași istoricul să crească până se compactează singur.</div>
+  </div>
+
+  <!-- ══ PERMISIUNI ══ -->
+  <div class="section-label">Ordinea permisiunilor: deny → ask → allow</div>
+  <div class="card">
+    <p style="color:var(--ink-soft);font-size:.93rem;margin-bottom:16px;">Regulile se evaluează în ordine. <strong>Un <code>deny</code> bate mereu orice <code>allow</code>.</strong></p>
+    <div style="display:flex;gap:8px;align-items:stretch;flex-wrap:wrap;margin-bottom:16px;">
+      <div style="flex:1;min-width:150px;border:1px solid color-mix(in srgb, var(--danger) 30%, transparent);background:var(--danger-soft);border-radius:var(--radius-lg);padding:12px 16px;">
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--danger);font-weight:600;margin-bottom:4px;">1 · deny</div>
+        <div style="font-size:.9rem;color:var(--ink-soft);">refuzată din start, nici măcar nu se cere aprobare</div>
+      </div>
+      <div style="flex:1;min-width:150px;border:1px solid color-mix(in srgb, var(--warning) 35%, transparent);background:var(--warning-soft);border-radius:var(--radius-lg);padding:12px 16px;">
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--warning);font-weight:600;margin-bottom:4px;">2 · ask</div>
+        <div style="font-size:.9rem;color:var(--ink-soft);">se cere confirmarea ta înainte de execuție</div>
+      </div>
+      <div style="flex:1;min-width:150px;border:1px solid color-mix(in srgb, var(--success) 35%, transparent);background:var(--success-soft);border-radius:var(--radius-lg);padding:12px 16px;">
+        <div style="font-family:ui-monospace,Menlo,monospace;font-size:12px;color:var(--success);font-weight:600;margin-bottom:4px;">3 · allow</div>
+        <div style="font-size:.9rem;color:var(--ink-soft);">rulează fără să te întrebe</div>
+      </div>
+    </div>
+    <pre><code>{
+  "permissions": {
+    "deny": ["Bash(rm -rf *)"],
+    "ask":  ["Bash(git push *)"],
+    "allow":["Bash(npm run *)"]
+  }
+}</code></pre>
+    <p style="color:var(--ink-soft);font-size:.9rem;margin-top:10px;">Fișierul: <code>.claude/settings.json</code> în folderul proiectului. Sintaxa evoluează; confirmă cu <code>/permissions</code> sau <code>/help</code>.</p>
+    <div class="warning-card" style="margin-top:14px;margin-bottom:0;">
+      <h4><code>--dangerously-skip-permissions</code></h4>
+      <p style="margin:0;font-size:.93rem;">Sare peste toate confirmările. Acceptabil <strong>doar</strong> într-un sandbox izolat — niciodată pe cod real sau cu date sensibile.</p>
+    </div>
+  </div>
+
+  <div class="page-nav">
+    <a href="index.html">← Acasă</a>
+    <a href="dictionar.html">Dicționar →</a>
+  </div>
+
+</div>
+
+<script src="assets/main.js"></script>
+<script src="assets/glossary.js"></script>
+</body>
+</html>

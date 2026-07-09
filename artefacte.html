@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Artefacte · AI Fluency</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo"><span class="nav-logo-mark"><span class="nav-logo-ring"></span></span>AI Fluency</a>
+  <div class="nav-divider"></div>
+  <div class="nav-sessions">
+    <a href="index.html" class="nav-pill">Acasă</a>
+    <a href="s0.html" class="nav-pill">S0</a>
+    <a href="s1.html" class="nav-pill">S1</a>
+    <a href="s2.html" class="nav-pill">S2</a>
+    <a href="s3.html" class="nav-pill">S3</a>
+    <a href="s4.html" class="nav-pill">S4</a>
+    <a href="s5.html" class="nav-pill">S5</a>
+    <a href="s6.html" class="nav-pill">S6</a>
+    <a href="s7.html" class="nav-pill">S7</a>
+    <a href="s8.html" class="nav-pill">S8</a>
+    <a href="s9.html" class="nav-pill">S9</a>
+    <a href="s10.html" class="nav-pill">S10</a>
+    <div class="nav-divider"></div>
+    <a href="dictionar.html" class="nav-pill">Dicționar</a>
+    <a href="cheatsheet.html" class="nav-pill">Cheatsheet</a>
+    <a href="artefacte.html" class="nav-pill">Artefacte</a>
+    <a href="schimbari.html" class="nav-pill">Schimbări</a>
+  </div>
+  <button class="nav-toggle" onclick="toggleTheme()">☾ / ☀</button>
+</nav>
+
+<div class="wrap">
+
+  <span class="kicker">Referință · gata de copy-paste</span>
+  <h1>Artefacte — șabloane gata de folosit</h1>
+  <p class="sub">Fiecare artefact de aici a fost extras dintr-o sesiune a cursului. Îl copiezi, îl adaptezi la repo-ul tău, îl vezi lucrând. Nu e material de citit — e material de folosit.</p>
+
+  <div class="callout">
+    <strong>Astea sunt punctele de plecare din curs — adaptează-le, nu le lăsa ca atare.</strong> Regula de aur rămâne cea din S2: fiecare linie trece testul <em>„dacă o șterg, Claude greșește ceva anume?"</em>. Ce nu trece — afară.
+  </div>
+
+  <!-- ══════════════ GRUP 1 — STRATURI CLAUDE.md ══════════════ -->
+  <div class="phase-title">Straturi CLAUDE.md</div>
+  <p style="color:var(--ink-soft);margin-bottom:8px;">Trei fișiere, un strat de memorie fiecare. Precedența când se contrazic: <code>CLAUDE.local.md</code> &gt; <code>CLAUDE.md</code> &gt; <code>~/.claude/CLAUDE.md</code>.</p>
+
+  <div class="card">
+    <div class="section-label">~/.claude/CLAUDE.md — personal, toate proiectele</div>
+    <p style="margin-bottom:6px;">Reguli de comportament și de siguranță universale — zero fapte de proiect. Se încarcă la fiecare sesiune, pe orice repo.</p>
+    <div style="margin-bottom:10px;">
+      <span class="tag">~/.claude/CLAUDE.md</span>
+      <span class="tag">toate proiectele</span>
+      <span class="tag">NU se comite</span>
+    </div>
+    <div class="template-block"># Instrucțiuni personale — toate proiectele
+
+## Limbă &amp; comunicare
+- Răspunde în română când scriu în română.
+- Commit messages în engleză, format conventional: feat / fix / docs /
+  refactor / test / chore.
+
+## Oprire la secrete (halt-on-secrets)
+Dacă detectezi în ce urmează să afișezi, să scrii într-un fișier sau să comiți:
+connection string SQL, API key / token (sk-…, JWT), parolă în clar, sau alt
+credential — OPREȘTE-TE, raportează ce ai găsit și cere confirmare explicită.
+Nu masca automat, nu continua.
+
+## Limite pe operații distructive (cer confirmare explicită)
+Nu executa fără confirmare în mesajul curent, indiferent de mod:
+- DROP TABLE, TRUNCATE, DELETE fără WHERE pe orice bază.
+- ALTER / CREATE OR ALTER PROCEDURE pe baze marcate prod.
+- Migrări de schemă (EF etc.) pe baze cu date reale.
+- git push --force, git reset --hard pe branch shared.
+- Merge în main / develop / master.
+Dacă e nevoie de una: oprește-te, descrie comanda, cere confirmare. Nu încerca o variantă echivalentă.
+
+## Principii de lucru (Karpathy)
+- Gândește înainte de a coda: nu presupune în tăcere, expune compromisurile,
+  întreabă când ceva e ambiguu.
+- Simplitate întâi: minimul de cod care rezolvă problema — nimic speculativ,
+  nicio abstracție „pentru mai târziu".
+- Schimbări chirurgicale: atinge doar ce trebuie, nu „îmbunătăți" cod adiacent;
+  curăță doar propria mizerie (importurile pe care le-ai lăsat tu neutilizate).
+  Nu șterge dead code pre-existent — menționează-l.
+- Execuție orientată pe scop: „gata" înseamnă dovedit, nu presupus — rulează
+  testul/comanda/build-ul înainte să declari succes; bucla până se confirmă.
+
+## Workflow
+- Plan mode implicit pentru task-uri cu 3+ pași, care ating 2+ layere
+  (BE+FE, DB+API), sau care schimbă schemă DB / contracte API / auth.
+- Root cause, nu band-aid — fără fix-uri temporare care revin.
+- Raportează onest: dacă un pas eșuează sau un test nu acoperă comportamentul
+  real, spune-o explicit și oprește-te. Nu raporta „done" pe ceva parțial.</div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">CLAUDE.md — proiect (comis în git)</div>
+    <p style="margin-bottom:6px;">„Constituția" repo-ului, citită de toată echipa. Structura: <strong>CE</strong> (stack, hartă), <strong>DE CE</strong> (scopul), <strong>CUM</strong> (comenzi, convenții). Țintă sub ~30 de linii. Exemplu pe proiectul-școală LMS.</p>
+    <div style="margin-bottom:10px;">
+      <span class="tag">CLAUDE.md</span>
+      <span class="tag">proiectul curent</span>
+      <span class="tag">se comite în git</span>
+    </div>
+    <div class="template-block"># LMS — platformă internă de training
+
+Aplicație de învățare: cursuri cu prerechizite, sesiuni, participanți și
+progres. Construită greenfield de echipă; structura apare slice cu slice.
+
+## Stack
+- Front-end: React + Vite + TypeScript (`frontend/`)
+- API: .NET 10 Web API (`backend/`)
+- DB: SQL Server 2022
+- (Faza finală) RAG clasic: full-text + embeddings + cosine
+
+## Comenzi
+- Front-end dev: `npm run dev` (în `frontend/`)
+- Front-end build: `npm run build`
+- API: `dotnet run` (în `backend/`)
+- Teste API: `dotnet test`
+
+## Convenții
+- Endpoint-urile REST urmează tiparul din `backend/Controllers/` —
+  uită-te la unul existent înainte să adaugi altul.
+- Componentele React noi: `frontend/src/components/`, folder per
+  componentă, cu fișier de stil alături.
+- Tabele SQL la singular, PascalCase (`Course`, `Prerequisite`).
+- Migrările DB se scriu de mână — vezi `backend/Migrations/`.
+
+## Capcane
+- Prerechizitele unui curs sunt un graf; „tot lanțul" = recursive CTE,
+  nu un simplu JOIN.
+- Configul de CORS e în `backend/Program.cs` — un endpoint nou apelat din
+  front-end poate cere o ajustare acolo.
+- Nu adăuga date reale de participanți în seed-uri sau teste.
+
+## Context suplimentar
+- Vezi @docs/architecture.md pentru deciziile de arhitectură (dacă există).</div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">CLAUDE.local.md — proiect, doar mașina ta</div>
+    <p style="margin-bottom:6px;">Override-uri personale pentru <strong>acest</strong> proiect. NU e auto-gitignored — trebuie să-l adaugi tu în <code>.gitignore</code>. Niciodată secrete în clar aici.</p>
+    <div style="margin-bottom:10px;">
+      <span class="tag">CLAUDE.local.md</span>
+      <span class="tag">acest proiect · doar mașina ta</span>
+      <span class="tag">gitignored (manual)</span>
+    </div>
+    <div class="template-block"># LMS — note locale (doar mașina mea, nu se comite)
+
+## Override-uri personale
+- Echipa folosește npm; eu rulez local cu pnpm. Comenzile mele: `pnpm dev`,
+  `pnpm build`.
+
+## Mediu local
+- API local pe portul 5080; front-end pe 5173.
+- SQL local: instanța `.\SQLEXPRESS`, baza `LMS_dev`.
+  (NU pune aici connection string cu parolă — ține-l în user-secrets /
+   variabile de mediu și referă-l: vezi `dotnet user-secrets`.)
+
+## Note personale de lucru
+- Rularea testelor E2E cere Docker pornit local.
+- TODO personal: de refăcut seed-ul de cursuri după merge-ul din feature/x.</div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">.gitignore — pasul obligatoriu pentru CLAUDE.local.md</div>
+    <p style="margin-bottom:6px;">Fără linia asta, îți urci preferințele personale în repo-ul echipei. Adaug-o imediat ce creezi <code>CLAUDE.local.md</code>.</p>
+    <div style="margin-bottom:10px;">
+      <span class="tag">.gitignore</span>
+      <span class="tag">rădăcina repo-ului</span>
+      <span class="tag">se comite în git</span>
+    </div>
+    <div class="template-block">CLAUDE.local.md</div>
+  </div>
+
+  <!-- ══════════════ GRUP 2 — PERMISIUNI & SETTINGS ══════════════ -->
+  <div class="phase-title">Permisiuni &amp; settings</div>
+
+  <div class="card">
+    <div class="section-label">.claude/settings.json — deny / ask / allow</div>
+    <p style="margin-bottom:6px;">Un scaffold minim de permisiuni pe proiect. Regulile se evaluează în ordinea <code>deny</code> → <code>ask</code> → <code>allow</code>, deci un <code>deny</code> bate mereu orice <code>allow</code>. Sintaxa evoluează — confirmă cu <code>/permissions</code> sau <code>/help</code>.</p>
+    <div style="margin-bottom:10px;">
+      <span class="tag">.claude/settings.json</span>
+      <span class="tag">proiectul curent</span>
+      <span class="tag">se comite în git</span>
+    </div>
+    <div class="template-block">{
+  "permissions": {
+    "deny": ["Bash(rm -rf *)"],
+    "ask":  ["Bash(git push *)"],
+    "allow":["Bash(npm run *)"]
+  }
+}</div>
+  </div>
+
+  <!-- ══════════════ GRUP 3 — SKILLS ══════════════ -->
+  <div class="phase-title">Skills</div>
+
+  <div class="card">
+    <div class="section-label">SKILL.md — un skill minimal (summarize-changes)</div>
+    <p style="margin-bottom:6px;">Forma minimă a unui skill: un singur fișier cu <strong>frontmatter YAML</strong> (spune <em>când</em> se folosește) + <strong>corp Markdown</strong> (spune <em>ce</em> să facă). Numele comenzii — <code>/summarize-changes</code> — vine din numele folderului. Linia <code>!`git diff HEAD`</code> rulează înainte ca modelul să vadă skill-ul și îi injectează diff-ul real.</p>
+    <div style="margin-bottom:10px;">
+      <span class="tag">.claude/skills/summarize-changes/SKILL.md</span>
+      <span class="tag">proiectul curent</span>
+      <span class="tag">se comite în git</span>
+    </div>
+    <div class="template-block">---
+description: Rezumă modificările necomise și semnalează ce e riscant. Folosește când userul întreabă ce s-a schimbat, vrea un commit message, sau cere review pe diff.
+---
+
+## Modificările curente
+
+!`git diff HEAD`
+
+## Instrucțiuni
+
+Rezumă modificările de mai sus în 2-3 puncte, apoi listează riscurile pe care le observi.</div>
+    <p style="color:var(--ink-soft);font-size:.9rem;margin-top:10px;">Skill de <strong>acțiune</strong> (scrie / comite / trimite)? Adaugă <code>disable-model-invocation: true</code> în frontmatter, ca să-l poți invoca doar tu, nu Claude automat.</p>
+  </div>
+
+  <!-- ══════════════ GRUP 4 — RUTINA PERSONALĂ ══════════════ -->
+  <div class="phase-title">Rutina personală</div>
+
+  <div class="card">
+    <div class="section-label">Rețeta mea de sesiune (artefactul din S1)</div>
+    <p style="margin-bottom:6px;">Un fișier scurt, personal, despre cum conduci bucla. În S2 devine punctul de plecare pentru <code>CLAUDE.md</code>-ul proiectului — același conținut, dar scris ca instrucțiuni pentru Claude. Completează exact template-ul.</p>
+    <div style="margin-bottom:10px;">
+      <span class="tag">al tău · unde vrei</span>
+      <span class="tag">nu e pentru repo</span>
+    </div>
+    <div class="template-block">REȚETA MEA DE SESIUNE CLAUDE CODE
+
+Plan mode — îl folosesc când:
+  ...
+Execuție directă — o accept când:
+  ...
+
+Model / effort:
+  Explorare / lookup   →
+  Coding zilnic        →
+  Decizie de design    →
+
+Dau /clear când:
+  ...
+
+Nu aprob niciodată fără să citesc:
+  ...
+
+O capcană a mea pe care vreau s-o rup:
+  ...</div>
+  </div>
+
+  <div class="page-nav">
+    <a href="s2.html">← S2: CLAUDE.md (sursa template-urilor)</a>
+    <div class="spacer"></div>
+    <a href="dictionar.html">Dicționar →</a>
+  </div>
+
+</div>
+
+<script src="assets/main.js"></script>
+<script src="assets/glossary.js"></script>
+</body>
+</html>

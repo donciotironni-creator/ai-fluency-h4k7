@@ -29,6 +29,9 @@
     <a href="s10.html" class="nav-pill">S10</a>
     <div class="nav-divider"></div>
     <a href="dictionar.html" class="nav-pill">Dicționar</a>
+    <a href="cheatsheet.html" class="nav-pill">Cheatsheet</a>
+    <a href="artefacte.html" class="nav-pill">Artefacte</a>
+    <a href="schimbari.html" class="nav-pill">Schimbări</a>
   </div>
   <button class="nav-toggle" onclick="toggleTheme()">☾ / ☀</button>
 </nav>
@@ -43,36 +46,537 @@
       <span class="tag">skills</span>
       <span class="tag">slash commands</span>
       <span class="tag">reutilizare</span>
+      <span class="tag">progressive disclosure</span>
     </div>
+    <p style="color:var(--ink-soft);margin-top:12px;max-width:680px;">În S2 ai mutat <strong>faptele</strong> stabile ale repo-ului într-un fișier citit automat. În S3 muți <strong>procedurile</strong> repetate — promptul pe care l-ai scris manual, la fel, de 2-3 ori — într-un skill: încărcat doar la nevoie, invocat cu <code>/nume</code> sau declanșat automat de Claude. E al doilea pas de context engineering.</p>
   </div>
 
-  <div class="card" style="border-left:3px solid var(--accent-3);">
-    <h2 style="color:var(--accent-3);font-size:1.1rem;">Conținut în pregătire</h2>
-    <p>Ghidul de facilitare și exercițiile pentru S3 sunt în lucru. Mai jos găsești rezumatul sesiunii din curriculum.</p>
+  <!-- Role switch -->
+  <div class="role-switch">
+    <button class="role-btn active" data-role="facilitator">Ghid facilitare</button>
+    <button class="role-btn" data-role="echipa">Exerciții echipă</button>
   </div>
 
-  <div class="card">
-    <h2>Despre această sesiune</h2>
-    <p>Comenzile custom și skills sunt acum unificate — ambele se invocă cu <code>/nume</code>. Înveți când e „doar un template de prompt" vs. când e „logică de domeniu cu fișiere ajutătoare".</p>
+  <!-- ══ FACILITATOR PANEL ══ -->
+  <div id="facilitator" class="role-panel active">
 
-    <h3 style="margin-top:16px;">Slash command vs. Skill</h3>
-    <table>
-      <tr><th>Slash command</th><th>Skill</th></tr>
-      <tr><td>Un fișier <code>.md</code> cu un prompt template</td><td>Un folder <code>.claude/skills/&lt;nume&gt;/</code> cu <code>SKILL.md</code> + fișiere ajutătoare</td></tr>
-      <tr><td>Bun pentru: <code>/review</code>, <code>/commit</code>, <code>/pr</code></td><td>Bun pentru logică de domeniu complexă, cu context suplimentar</td></tr>
-      <tr><td>Simplu, rapid de creat</td><td>Mai structurat, mai ușor de evoluat</td></tr>
-    </table>
+    <div class="callout" style="margin-bottom:20px;">
+      <strong>Notă: sintaxa se schimbă.</strong> Claude Code publică des. Câmpurile de frontmatter, substituțiile și flag-urile se pot schimba de la o lună la alta. La începutul fiecărei sesiuni rulează <code>/help</code> și verifică docul oficial (<code>code.claude.com/docs/en/skills</code>). Ghidul predă <strong>principii care rezistă</strong>, nu sintaxă săptămânală.
+    </div>
 
-    <h3 style="margin-top:16px;">Capabilități avansate</h3>
-    <ul>
-      <li><strong>Argumente:</strong> <code>/review --strict</code> — valorile vin în <code>$ARGUMENTS</code>.</li>
-      <li><strong><code>allowed-tools</code>:</strong> restricționezi ce unealtă poate folosi skill-ul.</li>
-      <li><strong>Injectare de context:</strong> <code>!`git log --oneline -10`</code> injectează output de comandă; <code>@fișier.md</code> injectează un fișier.</li>
-    </ul>
+    <div class="callout callout-blue" style="margin-bottom:20px;">
+      <strong>Două lucruri s-au schimbat în 2026</strong> (verificat pe docul oficial, iulie 2026) față de cum le știai poate din 2025 — fixează-le explicit:
+      <ul style="margin:8px 0 0;">
+        <li><strong>Comenzile custom și skills sunt același lucru</strong> — s-au unificat. Nu mai alegi „command vs skill".</li>
+        <li><strong>Argumentele poziționale sunt 0-based</strong> — <code>$0</code> e primul, nu <code>$1</code>.</li>
+      </ul>
+    </div>
 
-    <div class="artefact">un slash command / skill funcțional (ex: /review, /commit, /pr)</div>
-    <div class="callout" style="margin-top:12px;">Review de fază după S3 (10 min): fiecare are acum un CLAUDE.md + minim un command propriu. Ce se standardizează la nivel de echipă?</div>
-  </div>
+    <div class="section-label">Legătura cu S2 — distincția care ține toată ziua</div>
+    <div class="card">
+      <p>Un singur criteriu separă cele două straturi, și e testul pe care-l repeți toată ziua:</p>
+      <ul>
+        <li><strong>Fapt → <code>CLAUDE.md</code>.</strong> „Stack-ul e React+Vite+TS", „testele rulează cu <code>dotnet test</code>", „nu atinge <code>RemainingDays</code> fără review". Se citește la <strong>fiecare</strong> sesiune, costă context mereu.</li>
+        <li><strong>Procedură → un skill.</strong> „Când review-uiesc un diff, fac pașii ăștia patru", „când scriu un commit, urmez formatul ăsta". Se încarcă <strong>doar când o folosești</strong>, deci reference-ul lung costă aproape nimic până când chiar ai nevoie de el.</li>
+      </ul>
+      <p style="margin-top:12px;">Docul oficial pune exact acest criteriu: fă un skill când tot copiezi aceleași instrucțiuni în chat, sau când o secțiune din <code>CLAUDE.md</code> a crescut într-o <strong>procedură</strong>, nu într-un fapt. Momentul „mută-l într-un skill" promis în S2 (segmentul 4, când <code>CLAUDE.md</code> se umfla) — aici îl încasăm.</p>
+    </div>
+
+    <div class="section-label">Obiective de învățare</div>
+    <div class="card">
+      <p style="color:var(--ink-soft);font-size:.93rem;margin-bottom:8px;">La final, fiecare știe:</p>
+      <ul>
+        <li>Ce e un skill, concret: un folder cu un <code>SKILL.md</code> = <strong>frontmatter YAML</strong> (spune <em>când</em> se folosește) + <strong>corp Markdown</strong> (spune <em>ce</em> să facă).</li>
+        <li>Că <strong>slash command custom = skill</strong> — s-au unificat. <code>.claude/commands/review.md</code> și <code>.claude/skills/review/SKILL.md</code> produc amândouă <code>/review</code>. Skill-ul e forma mai bogată a aceluiași lucru.</li>
+        <li>Diferența dintre <strong>forma minimă</strong> (un singur <code>.md</code>) și <strong>forma completă</strong> (folder cu fișiere ajutătoare) — și când sari de la una la alta.</li>
+        <li><strong>Cine invocă</strong> — tu (<code>/nume</code>), Claude (automat, prin <code>description</code>), sau amândoi — și cum controlezi cu <code>disable-model-invocation</code> și <code>user-invocable</code>.</li>
+        <li>Cum trece <strong>argumente</strong> (<code>$ARGUMENTS</code>, poziționale <code>$0</code>/<code>$1</code> <strong>0-based</strong>, argumente numite) și cum documentezi cu <code>argument-hint</code>.</li>
+        <li>Cum <strong>injectează context dinamic</strong> — <code>!`comanda`</code> rulează înainte ca modelul să vadă skill-ul — și de ce e o suprafață de securitate (<code>disableSkillShellExecution</code>).</li>
+        <li>Ce înseamnă <strong>progressive disclosure</strong>: <code>description</code> e mereu în context, corpul se încarcă la invocare, fișierele ajutătoare doar când skill-ul le cere.</li>
+        <li>Cum <strong>verifică</strong> empiric că un skill (a) se declanșează pe prompturile potrivite și (b) produce ce trebuie — aceeași buclă „înainte/după" din S2.</li>
+        <li>Cum <strong>generează</strong> un skill cerându-i lui Claude, pornind de la promptul repetat din prep.</li>
+      </ul>
+    </div>
+
+    <div class="callout callout-blue" style="margin-bottom:20px;">
+      <strong>Notă de scop:</strong> S3 e mai ușoară conceptual decât S2, dar are o capcană de sintaxă (0-based args) și una de model mental (unificarea command/skill) pe care merită să le fixezi bine. Miezul zilei e <strong>segmentul 6</strong> (transformarea promptului repetat în skill) plus dovada „înainte/după". Dacă timpul strânge, comprimă segmentul 5 (fișiere ajutătoare + <code>allowed-tools</code> devin demo scurt) și protejează segmentele 3 (cine invocă) și 6.
+    </div>
+
+    <div class="section-label">Structura zilei</div>
+    <div class="agenda">
+      <div class="agenda-row">
+        <div class="agenda-time">90–110 min</div>
+        <div class="agenda-content"><strong>Tutorial</strong> — 6 segmente (vezi mai jos). Demo pe repo-ul de nisip, nu slide-uri.</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">70–85 min</div>
+        <div class="agenda-content"><strong>Lucru aplicat</strong> — un skill funcțional, comis, din propriul prompt repetat.</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">15–20 min</div>
+        <div class="agenda-content"><strong>Schimb de practici</strong> — ~2 min/persoană, notate în „AI Wins &amp; Fails".</div>
+      </div>
+    </div>
+
+    <div class="section-label">Tutorial (90–110 min) — 6 segmente</div>
+
+    <div class="card">
+      <h3>1. De ce skills — promptul repetat devine unealtă <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">10–15 min</span></h3>
+      <ul>
+        <li><strong>Punctul de plecare:</strong> promptul notat în prep-ul S2 — ceva scris manual, la fel, de 2-3 ori. Candidatul evident chiar din S2: promptul de bootstrap (<code>~/.claude/CLAUDE.md</code> + scaffold), pe care fiecare îl va rula din nou pe alte repo-uri. Alți candidați: „review-uiește diff-ul curent după convențiile noastre", „scrie un commit message în formatul nostru", „deschide un PR cu template-ul echipei".</li>
+        <li><strong>De ce contează:</strong> un prompt repetat manual e (a) inconsistent — de fiecare dată îl formulezi altfel, (b) needocumentat — trăiește în capul tău, (c) neversionat. Exact problemele pe care <code>CLAUDE.md</code> le-a rezolvat pentru <strong>fapte</strong> în S2; skill-ul le rezolvă pentru <strong>proceduri</strong>.</li>
+        <li><strong>Criteriul (repetat toată ziua):</strong> fapt stabil despre repo → rămâne în <code>CLAUDE.md</code>; procedură pe care o repeți → devine skill. Semnul clasic că ai greșit stratul: o secțiune din <code>CLAUDE.md</code> care sună a „pași de urmat", nu a „așa e proiectul".</li>
+      </ul>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> ia un prompt lung scris de mai multe ori (de preferat bootstrap-ul din S2), arată-l ca text brut colat în chat, apoi anunță: „la finalul zilei, ăsta e <code>/nume</code> — și Claude îl poate declanșa și singur."
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>2. Anatomia unui skill — și de ce „command" și „skill" sunt același lucru <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <p>Un skill e un folder cu un fișier <code>SKILL.md</code>:</p>
+      <div class="template-block">.claude/skills/summarize-changes/
+└── SKILL.md          # obligatoriu: frontmatter + instrucțiuni</div>
+      <p style="margin-top:12px;"><code>SKILL.md</code> are două părți:</p>
+      <div class="template-block">---
+description: Rezumă modificările necomise și semnalează ce e riscant.
+  Folosește când userul întreabă ce s-a schimbat, vrea un commit
+  message, sau cere review pe diff.
+---
+
+## Modificările curente
+
+!`git diff HEAD`
+
+## Instrucțiuni
+
+Rezumă modificările de mai sus în 2-3 puncte, apoi listează
+riscurile pe care le observi.</div>
+      <ul style="margin-top:12px;">
+        <li><strong>Frontmatter YAML</strong> (între <code>---</code>) — metadatele. Singurul câmp <em>recomandat</em> e <code>description</code>: spune lui Claude <em>când</em> să folosească skill-ul. Numele comenzii (<code>/summarize-changes</code>) vine din <strong>numele folderului</strong>, nu din frontmatter.</li>
+        <li><strong>Corpul Markdown</strong> — instrucțiunile pe care Claude le urmează când skill-ul rulează.</li>
+      </ul>
+
+      <div class="callout callout-green" style="margin-top:12px;">
+        <strong>Unificarea — schimbarea din 2026 pe care trebuie s-o știe toți.</strong> Comenzile custom au fost <strong>contopite</strong> cu skills. <code>.claude/commands/review.md</code> și <code>.claude/skills/review/SKILL.md</code> produc <strong>amândouă</strong> <code>/review</code> și se comportă identic. Fișierele vechi din <code>.claude/commands/</code> funcționează în continuare. Skill-ul aduce în plus, opțional: un <strong>folder</strong> pentru fișiere ajutătoare, <strong>frontmatter</strong> care controlează cine-l invocă, și <strong>auto-declanșarea</strong> de către Claude.
+      </div>
+
+      <p style="margin-top:12px;">Deci nu mai gândi „aleg între command și skill". Gândește <strong>forma minimă vs. forma completă a aceluiași lucru</strong>:</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <tr><th>Forma minimă</th><th>Forma completă</th></tr>
+          <tr><td>Un singur fișier <code>.md</code> (în <code>commands/</code> sau <code>skills/&lt;nume&gt;/SKILL.md</code>)</td><td>Un folder <code>skills/&lt;nume&gt;/</code> cu <code>SKILL.md</code> + fișiere ajutătoare</td></tr>
+          <tr><td>Bun pentru un prompt-template scurt: <code>/commit</code>, <code>/review</code>, <code>/pr</code></td><td>Bun când ai nevoie de reference lung, scripturi, sau exemple care se încarcă la cerere</td></tr>
+          <tr><td>Rapid de creat</td><td>Se scalează — muți detaliul greu în fișiere separate</td></tr>
+        </table>
+      </div>
+      <p style="margin-top:12px;">Începi mereu cu forma minimă. Treci la folder <strong>doar când</strong> ai ceva ce merită încărcat la cerere (un reference de 200 de linii, un script). Nu construi folder cu subfoldere „ca să fie" — e reflexul „mai bag ceva, nu strică" din S2, mutat un nivel mai sus.</p>
+
+      <p style="margin-top:12px;"><strong>Unde trăiesc skills-urile și cine le vede</strong> (paralel direct cu straturile <code>CLAUDE.md</code> din S2):</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <tr><th>Locație</th><th>Cale</th><th>Se aplică la</th></tr>
+          <tr><td>Personal</td><td><code>~/.claude/skills/&lt;nume&gt;/SKILL.md</code></td><td>toate proiectele tale</td></tr>
+          <tr><td>Proiect</td><td><code>.claude/skills/&lt;nume&gt;/SKILL.md</code></td><td>doar acest repo, <strong>comis în git</strong></td></tr>
+          <tr><td>Plugin</td><td><code>&lt;plugin&gt;/skills/&lt;nume&gt;/SKILL.md</code></td><td>unde e activat pluginul (namespace <code>plugin:nume</code>)</td></tr>
+        </table>
+      </div>
+      <p style="margin-top:12px;">Precedență când numele se repetă: <strong>enterprise &gt; personal &gt; proiect</strong>, iar orice skill cu numele unui skill built-in îl suprascrie. Dacă un skill și un command au același nume, <strong>skill-ul câștigă</strong>.</p>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> creează live <code>~/.claude/skills/summarize-changes/SKILL.md</code>, fă o mică modificare într-un fișier, apoi arată-l invocat în <strong>două feluri</strong>: (a) tastând <code>/summarize-changes</code>, (b) întrebând natural „ce am schimbat?" — și lasă-l pe Claude să-l declanșeze singur. Punctează: același fișier, două căi de intrare.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>3. Cine invocă — și de ce e cea mai importantă decizie <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <p>Miezul conceptual al zilei. Un skill are, implicit, <strong>două uși de intrare</strong>: o poți deschide tu (<code>/nume</code>) sau o poate deschide Claude (automat, când <code>description</code>-ul se potrivește cu ce ceri).</p>
+      <div class="callout callout-green" style="margin:12px 0;">
+        <code>description</code> <strong>nu e documentație — e interfața de auto-declanșare.</strong> E singurul lucru din skill care stă <strong>mereu</strong> în context (ca modelul să știe că skill-ul există); corpul se încarcă doar la invocare. Un <code>description</code> prost = skill care nu se declanșează când trebuie, sau se declanșează când nu trebuie. Regula practică: pune cazul principal de folosire <strong>primul</strong> și include cuvintele pe care le-ai spune natural („când vrei un commit message", „când review-uiești un diff").
+      </div>
+      <p>Două câmpuri de frontmatter controlează ușile:</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <tr><th>Frontmatter</th><th>Poți invoca tu</th><th>Poate invoca Claude</th><th>Când e bun</th></tr>
+          <tr><td><em>(implicit)</em></td><td>Da</td><td>Da</td><td>cunoștințe + acțiuni fără efecte periculoase</td></tr>
+          <tr><td><code>disable-model-invocation: true</code></td><td>Da</td><td><strong>Nu</strong></td><td>acțiuni cu efecte: <code>/commit</code>, <code>/deploy</code>, <code>/send-slack</code>. Nu vrei ca Claude să decidă singur că e momentul de deploy.</td></tr>
+          <tr><td><code>user-invocable: false</code></td><td><strong>Nu</strong></td><td>Da</td><td>context de fundal care nu e o „comandă": „cum funcționează sistemul legacy X". <code>/legacy-context</code> n-are sens ca acțiune.</td></tr>
+        </table>
+      </div>
+      <p style="margin-top:12px;"><strong>Distincția care contează pentru siguranță:</strong> un skill cu efecte laterale (scrie, comite, trimite, deployuiește) primește aproape mereu <code>disable-model-invocation: true</code>. Legătura cu regula din S1/S2: nu vrei ca modelul să declanșeze o acțiune ireversibilă pentru că „codul pare gata". Tu ții degetul pe trăgaci.</p>
+      <p><strong>Costul de context (leagă de pragul de mărime din S2):</strong> <code>description</code>-ul intră în context la fiecare sesiune (ca liniile din <code>CLAUDE.md</code>), corpul doar la invocare. Deci ai un buget: dacă ai zeci de skills, descrierile lor concurează pentru spațiu. Consecință: <code>description</code> scurt și țintit, corp sub ~500 de linii, reference-ul greu în fișiere ajutătoare (segmentul 5).</p>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> ia skill-ul de la segmentul 2 și adaugă-i <code>disable-model-invocation: true</code>. Arată că <code>/summarize-changes</code> merge în continuare, dar întrebarea naturală „ce am schimbat?" nu-l mai declanșează. Apoi un al doilea skill de tip „acțiune cu efect" (un <code>/commit</code> schițat) și explică de ce <strong>acela</strong> primește flag-ul obligatoriu.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>4. Argumente și injectare de context <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <p>Un skill devine unealtă adevărată când primește input.</p>
+      <p style="margin-top:8px;"><strong>Argumente:</strong></p>
+      <ul>
+        <li><code>$ARGUMENTS</code> — tot ce urmează după numele skill-ului, ca text brut. <code>/fix-issue 123</code> → în corp, <code>$ARGUMENTS</code> devine <code>123</code>.</li>
+        <li><strong>Poziționale, 0-based</strong> — <code>$ARGUMENTS[0]</code> (sau scurt <code>$0</code>) = <strong>primul</strong> argument, <code>$1</code> = al doilea, ș.a.m.d.</li>
+      </ul>
+      <div class="warning-card">
+        <h4>⚠️ Capcană de sintaxă, corectată în 2026: e 0-based.</h4>
+        <p style="margin:0;font-size:.93rem;"><code>$0</code> e primul, nu <code>$1</code>. Dacă ai văzut prin tutoriale mai vechi „<code>$1</code> = primul argument", e depășit. Verifică pe docul curent.</p>
+      </div>
+      <div class="template-block" style="margin-top:12px;">Migrează componenta $0 din $1 în $2, păstrând comportamentul existent.</div>
+      <p style="margin-top:8px;"><code>/migrate-component SearchBar React Vue</code> → <code>$0</code>=<code>SearchBar</code>, <code>$1</code>=<code>React</code>, <code>$2</code>=<code>Vue</code>. Valorile cu spații se pun în ghilimele: <code>/skill "hello world" second</code> → <code>$0</code>=<code>hello world</code>.</p>
+      <ul style="margin-top:8px;">
+        <li><strong>Argumente numite</strong> — declari <code>arguments: [issue, branch]</code> în frontmatter și folosești <code>$issue</code>, <code>$branch</code> în corp (mapate pe poziții, în ordine). Mai lizibil decât <code>$0</code>/<code>$1</code> când ai mai multe.</li>
+        <li><code>argument-hint: [issue-number]</code> — text de autocomplete, ca userul să știe ce să tasteze. Pur documentativ.</li>
+      </ul>
+
+      <p style="margin-top:12px;"><strong>Injectare de context dinamic — <code>!`comanda`</code>:</strong></p>
+      <p>Sintaxa <code>!`comanda`</code> rulează o comandă de shell <strong>înainte</strong> ca skill-ul să ajungă la model, și înlocuiește locul cu output-ul. Claude nu vede comanda — vede rezultatul, ca text deja inserat.</p>
+      <div class="template-block">## Context PR
+- Diff: !`gh pr diff`
+- Comentarii: !`gh pr view --comments`</div>
+      <p style="margin-top:8px;">E <strong>preprocesare</strong>, nu ceva ce execută Claude. De asta e util: skill-ul ajunge la model deja „hrănit" cu starea reală (diff-ul curent, statusul git), nu cu presupuneri. Pentru comenzi pe mai multe linii, folosești un bloc <code>```!</code>.</p>
+      <div class="warning-card">
+        <h4>⚠️ Suprafață de securitate.</h4>
+        <p style="margin:0;font-size:.93rem;">Aceste comenzi rulează automat, fără să le aprobi de fiecare dată. Un skill dintr-un repo în care ai încredere scăzută poate rula orice la deschidere. Două apărări: (1) <code>allowed-tools</code> pentru skills de proiect intră în vigoare doar <strong>după</strong> ce accepți dialogul de trust al folderului — citește skill-urile înainte să ai încredere într-un repo; (2) setarea <code>disableSkillShellExecution: true</code> (ideal în managed settings) oprește complet execuția. Legătură cu S2: la fel cum citeai diff-ul de scaffold înainte de aprobare, citești un skill de proiect înainte să te încrezi în el.</p>
+      </div>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> transformă un prompt static într-unul cu <code>$ARGUMENTS</code> (ex. <code>/fix-issue</code>), apoi adaugă o linie <code>!`git diff HEAD`</code> și arată că skill-ul „știe" diff-ul curent fără ca tu să-l colezi.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>5. Fișiere ajutătoare &amp; pre-aprobarea uneltelor <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <p>Aici forma minimă devine forma completă — dar doar când merită.</p>
+      <p style="margin-top:8px;"><strong>Progressive disclosure cu fișiere ajutătoare:</strong></p>
+      <div class="template-block">my-skill/
+├── SKILL.md         # overview + navigare (mereu, la invocare)
+├── reference.md     # detalii lungi — încărcate DOAR când SKILL.md trimite la ele
+└── scripts/
+    └── helper.py    # executat, nu încărcat în context</div>
+      <p style="margin-top:8px;">Referi fișierele din <code>SKILL.md</code> cu link-uri Markdown, ca modelul să știe ce conțin și <strong>când</strong> să le încarce:</p>
+      <div class="template-block">- Pentru detalii complete de API, vezi [reference.md](reference.md)</div>
+      <p style="margin-top:8px;">Ideea (aceeași economie de context din S2): un reference de 300 de linii n-are ce căuta în context la fiecare rulare. Îl pui într-un fișier separat; se încarcă doar când skill-ul chiar are nevoie. <code>SKILL.md</code> rămâne scurt (țintă: sub 500 de linii). Scripturile (<code>.py</code>, <code>.sh</code>) nu se încarcă deloc în context — Claude le <strong>execută</strong>, folosind <code>${CLAUDE_SKILL_DIR}</code> ca să le găsească indiferent de directorul curent.</p>
+
+      <p style="margin-top:12px;"><strong>Pre-aprobarea uneltelor — <code>allowed-tools</code>:</strong></p>
+      <div class="template-block">---
+name: commit
+description: Stage și commit pe modificările curente
+disable-model-invocation: true
+allowed-tools: Bash(git add *) Bash(git commit *) Bash(git status *)
+---</div>
+      <p style="margin-top:8px;"><code>allowed-tools</code> dă voie skill-ului să folosească acele unelte <strong>fără să-ți ceară aprobare</strong> de fiecare dată, cât e activ. <strong>Nu restricționează</strong> — restul uneltelor rămân disponibile, guvernate de permisiunile tale normale (S1). Invers, <code>disallowed-tools</code> <strong>scoate</strong> unelte din bazin cât e skill-ul activ (util pentru skills autonome).</p>
+      <div class="callout callout-green" style="margin-top:12px;">
+        <strong>Preview de S4 (leagă sesiunile):</strong> un skill poate rula într-un <strong>subagent izolat</strong> cu <code>context: fork</code> — corpul skill-ului devine promptul subagentului, care nu vede istoricul conversației tale. Cu <code>agent: Explore</code> rulezi cercetare grea fără să poluezi contextul principal. Nu construim asta azi — doar arătăm câmpul, ca fitil pentru S4 (subagenți).
+      </div>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> ia <code>/commit</code>-ul schițat la segmentul 3, adaugă-i <code>allowed-tools</code> cu comenzile git și arată că rulează fără să mai ceară aprobare la fiecare <code>git add</code>. Menționează <code>context: fork</code> fără să-l implementezi.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>6. De la prompt la skill, generat cu Claude — și cum verifici că a prins <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <p>Ținta zilei, concret: fiecare pleacă cu <strong>cel puțin un skill funcțional, comis</strong>, făcut din promptul lui repetat. Nu-l scriem manual, câmp cu câmp. Îi cerem lui Claude — el știe sintaxa curentă mai bine decât o ținem noi minte.</p>
+      <div class="prompt-box">
+        <span class="prompt-box-label">Pasul 1 — generează skill-ul dintr-un prompt existent</span>
+        „Am promptul ăsta pe care-l rulez des: [colează promptul repetat din prep]. Fă-l skill în <code>.claude/skills/</code>. Pune un <code>description</code> bun pentru auto-declanșare. Dacă are efecte laterale (scrie/comite/trimite), adaugă <code>disable-model-invocation: true</code>. Unde are sens un argument, folosește <code>$ARGUMENTS</code> sau poziționale. Arată-mi <code>SKILL.md</code> înainte să-l scrii."
+      </div>
+      <div class="prompt-box" style="margin-top:12px;">
+        <span class="prompt-box-label">Pasul 2 — verifică că se declanșează când trebuie</span>
+        Testează în două feluri: (a) <code>/nume</code> direct; (b) o frază naturală care ar trebui să-l cheme automat. Dacă nu se declanșează pe fraza naturală, problema e aproape mereu <code>description</code>-ul — nu corpul.
+      </div>
+      <p style="margin-top:12px;"><strong>Pasul 3 — dovada „înainte/după" (aceeași buclă empirică din S2).</strong> A vedea skill-ul declanșându-se îți spune doar că Claude l-a găsit, nu că face ce voiai. Se măsoară <strong>două lucruri separat</strong>:</p>
+      <ol>
+        <li><strong>Se declanșează</strong> pe prompturile pe care ar trebui (și nu pe cele pe care n-ar trebui)? → reglezi <code>description</code>.</li>
+        <li><strong>Produce</strong> ce te aștepți când se declanșează? → reglezi corpul.</li>
+      </ol>
+      <p>Metoda pentru ambele: rulează 2-3 prompturi realiste într-o sesiune curată, o dată <strong>cu</strong> skill-ul și o dată <strong>fără</strong> (dezactivat), și compară. Sesiunea curată contează — contextul rămas de la scrierea skill-ului maschează golurile din instrucțiuni. (Opțional, automat: pluginul <code>skill-creator</code> rulează bucla A/B și scoate un raport.)</p>
+      <div class="callout" style="margin-top:12px;">
+        <strong>Când NU faci skill</strong> (la fel de important ca „când faci"):
+        <ul style="margin:8px 0 0;">
+          <li>E un <em>fapt</em>, nu o procedură → rămâne în <code>CLAUDE.md</code>.</li>
+          <li>L-ai făcut o singură dată și n-ai motiv să-l repeți → doar un prompt, nu merită un fișier.</li>
+          <li>E ceva ce Claude face oricum bine fără instrucțiuni → nu-l „ajuta" cu un skill care doar adaugă zgomot.</li>
+        </ul>
+      </div>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> rulează exact cei trei pași, live, pe repo-ul de nisip, pornind de la bootstrap-ul din S2 sau de la un <code>/review</code>. Arată <code>SKILL.md</code>-ul propus de Claude <strong>înainte</strong> de a-l accepta (regula din S1/S2: nu aprobi orbește), apoi dovada „înainte/după" pe un prompt.
+      </div>
+    </div>
+
+    <div class="section-label">Lucru aplicat (70–85 min)</div>
+    <div class="card">
+      <p><strong>Brief:</strong> fiecare iese cu cel puțin un skill funcțional, comis în git pe repo-ul LMS (din S0–S2), făcut din propriul prompt repetat — și cu <strong>dovada</strong> că se declanșează și că schimbă rezultatul.</p>
+      <ol>
+        <li><strong>Alege promptul</strong> — cel din prep-ul S2 (scris manual de 2-3 ori). Dacă n-ai unul bun, candidați siguri: <code>/commit</code> (format de commit), <code>/review</code> (review pe diff după convențiile LMS), sau bootstrap-ul de <code>.claude/</code>.</li>
+        <li><strong>Generează skill-ul</strong> — promptul de la segmentul 6, pasul 1. Citește <code>SKILL.md</code>-ul propus <strong>înainte</strong> să-l accepți: are <code>description</code> care conține cuvintele pe care le-ai spune natural? Are <code>disable-model-invocation</code> dacă are efecte laterale?</li>
+        <li><strong>Adaugă input</strong> — dacă skill-ul ar beneficia, pune un <code>$ARGUMENTS</code> sau un pozițional (<code>$0</code>/<code>$1</code>), și eventual o linie <code>!`git ...`</code> care-i injectează starea curentă. Verifică pe hârtie că ai numerotat 0-based.</li>
+        <li><strong>Verifică declanșarea</strong> — testează <code>/nume</code> <strong>și</strong> o frază naturală. Dacă nu pornește automat pe frază, reglează <code>description</code>-ul, nu corpul.</li>
+        <li><strong>Dovada înainte/după</strong> — rulează 2-3 prompturi realiste cu skill-ul activ vs. fără (sesiune curată). Notează diferența <strong>reală</strong>, nu presupusă.</li>
+        <li><strong>Comite</strong> skill-ul de proiect (<code>chore: add /nume skill</code>). Skill-urile personale (<code>~/.claude/skills/</code>) <strong>nu</strong> se comit — sunt ale tale, pe toate repo-urile.</li>
+      </ol>
+      <p><strong>Extensie (dacă ai terminat):</strong> ia un skill care a crescut prea mult și <strong>sparge-l</strong> — mută reference-ul lung într-un <code>reference.md</code> separat, referit din <code>SKILL.md</code>. Simte diferența de context (progressive disclosure). Sau: adaugă <code>allowed-tools</code> la un skill de acțiune și vezi cum dispar prompturile de aprobare.</p>
+      <div class="artefact">cel puțin un skill funcțional în <code>.claude/skills/</code> (sau <code>.claude/commands/</code>) pe repo-ul LMS, cu <code>description</code> care declanșează corect și cu dovada „înainte/după" pe un prompt concret</div>
+    </div>
+
+    <div class="section-label">Schimb de practici (15–20 min)</div>
+    <div class="card">
+      <p>Fiecare, ~2 min:</p>
+      <ul>
+        <li>Skill-ul pe care l-a făcut, din ce prompt repetat a venit, și dacă e user-only sau auto-declanșabil (și de ce).</li>
+        <li>Un moment „aici s-a văzut diferența" — fie declanșarea (a pornit singur pe fraza corectă), fie rezultatul (înainte/după).</li>
+      </ul>
+      <p style="color:var(--ink-soft);font-size:.93rem;">Se notează în docul „AI Wins &amp; Fails", la coloana „Candidat standard?" — de-aici alegeți, în Faza 3, ce skills intră în setul de referință al echipei.</p>
+    </div>
+
+    <div class="section-label">Capcane comune</div>
+
+    <div class="warning-card">
+      <h4>„Command sau skill?" — întrebarea greșită.</h4>
+      <p style="margin:0;font-size:.93rem;">S-au unificat: alege între <em>forma minimă</em> (un <code>.md</code>) și <em>forma completă</em> (folder), nu între două unelte. Cine încă gândește „command vs skill" pierde faptul că sunt același <code>/nume</code>.</p>
+    </div>
+    <div class="warning-card">
+      <h4><code>$1</code> = primul argument.</h4>
+      <p style="margin:0;font-size:.93rem;">Cel mai probabil bug de sintaxă al zilei. E <strong>0-based</strong>: <code>$0</code> e primul. Vine din tutoriale vechi. Pune pe toată lumea să verifice numerotarea pe un skill cu 2+ argumente.</p>
+    </div>
+    <div class="warning-card">
+      <h4><code>description</code> tratat ca documentație.</h4>
+      <p style="margin:0;font-size:.93rem;">Cineva scrie un <code>description</code> vag („helper pentru git") și se miră că skill-ul nu se declanșează. <code>description</code>-ul e <strong>interfața de auto-invocare</strong> — pune cazul de folosire și cuvintele naturale în el.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Skill de acțiune fără <code>disable-model-invocation</code>.</h4>
+      <p style="margin:0;font-size:.93rem;">Un <code>/deploy</code> sau <code>/commit</code> pe care Claude îl poate declanșa singur = risc. Acțiunile cu efecte laterale primesc aproape mereu flag-ul care le face user-only.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Fapt împachetat ca skill (sau invers).</h4>
+      <p style="margin:0;font-size:.93rem;">Cineva face skill dintr-un fapt stabil („stack-ul e X") care voia să fie în <code>CLAUDE.md</code>; sau lasă în <code>CLAUDE.md</code> o procedură de 5 pași care voia să fie skill. Testul: <em>fapt stabil → <code>CLAUDE.md</code>; procedură repetată → skill.</em></p>
+    </div>
+    <div class="warning-card">
+      <h4>Folder prematur.</h4>
+      <p style="margin:0;font-size:.93rem;">„Fac skill, deci îmi trebuie folder cu <code>reference.md</code> și <code>scripts/</code>." Nu. Începe cu forma minimă (un <code>.md</code>); folder doar când chiar ai ceva de încărcat la cerere. Reflexul „mai bag ceva, nu strică" din S2, urcat un nivel.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Skill declarat „gata" pentru că se declanșează.</h4>
+      <p style="margin:0;font-size:.93rem;">Declanșarea ≠ rezultat corect. Insistă pe pasul „înainte/după" — un skill contează doar când schimbă vizibil rezultatul.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Încredere oarbă în skills de proiect.</h4>
+      <p style="margin:0;font-size:.93rem;">Un skill dintr-un repo poate rula <code>!`comenzi`</code> la invocare și-și poate acorda <code>allowed-tools</code>. Citește-l înainte să te încrezi în repo — exact ca diff-ul de scaffold din S2.</p>
+    </div>
+
+    <div class="section-label">Prep pentru S4</div>
+    <div class="card">
+      <p>Temă de 5 minute: fiecare notează o sarcină pe care ar vrea s-o dea lui Claude <strong>fără să-i polueze contextul principal</strong> — o cercetare grea (ex: „unde e definită logica de X în tot codebase-ul?"), o verificare paralelă, o analiză a unui fișier mare. Ai văzut deja fitilul azi: câmpul <code>context: fork</code> + <code>agent:</code> din segmentul 5 rulează un skill într-un <strong>subagent izolat</strong>. În S4 luăm asta în serios — subagenți dedicați, cu context propriu, care fac munca grea și întorc doar concluzia.</p>
+    </div>
+
+  </div><!-- /facilitator -->
+
+  <!-- ══ ECHIPA PANEL ══ -->
+  <div id="echipa" class="role-panel">
+
+    <div class="callout callout-blue">
+      <strong>Context:</strong> în S2 ai mutat <strong>faptele</strong> repo-ului în <code>CLAUDE.md</code>. Azi transformi o <strong>procedură</strong> pe care o repeți — promptul notat în prep-ul S2 — într-un skill: invocat cu <code>/nume</code> sau declanșat automat de Claude. Exercițiile urmează pașii de lucru aplicat din tutorial.
+    </div>
+    <div class="callout" style="margin-bottom:24px;">
+      <strong>Sursa exercițiilor:</strong> setul de mai jos e derivat direct din secțiunea „lucru aplicat" a ghidului de facilitare S3 — cadrul corect de urmat azi. Fișele cu criterii de reușită șlefuite per pas se publică separat, pe măsură ce sesiunea se rulează.
+    </div>
+    <div class="callout callout-green" style="margin-bottom:24px;">
+      <strong>Ținta zilei:</strong> la final ai <strong>cel puțin un skill funcțional, comis în git</strong> pe repo-ul LMS, făcut din propriul prompt repetat — și ai <strong>dovedit</strong> că se declanșează corect și că schimbă rezultatul, nu doar că există.
+    </div>
+
+    <!-- Ex 1 -->
+    <div class="section-label">Exercițiul 1 — Alege promptul repetat</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 1</span>
+        <span class="ex-time">≈10 min</span>
+        <span class="ex-trains">Antrenează: criteriul fapt→CLAUDE.md vs. procedură→skill</span>
+      </div>
+      <p>Pornești de la promptul notat în prep-ul S2 — ceva scris manual, la fel, de 2-3 ori. Dacă n-ai unul bun, candidați siguri: <code>/commit</code> (formatul vostru de commit), <code>/review</code> (review pe diff după convențiile LMS), sau bootstrap-ul de <code>.claude/</code>.</p>
+      <p style="margin-top:8px;">Aplică testul înainte să scrii orice: e o <strong>procedură</strong> pe care o repeți (→ skill), sau un <strong>fapt</strong> stabil despre repo (→ rămâne în <code>CLAUDE.md</code>)? Dacă sună a „pași de urmat", e skill.</p>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Ai ales un prompt care e clar o procedură repetată, și poți spune de ce nu aparține în <code>CLAUDE.md</code>.
+      </div>
+    </div>
+
+    <!-- Ex 2 -->
+    <div class="section-label">Exercițiul 2 — Generează skill-ul (forma minimă întâi)</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 2</span>
+        <span class="ex-time">≈20 min</span>
+        <span class="ex-trains">Antrenează: anatomia SKILL.md, forma minimă vs. completă, description bun</span>
+      </div>
+      <p>Nu-l scrii manual — îi ceri lui Claude, ca orice altă sarcină. Începe cu <strong>forma minimă</strong> (un singur <code>.md</code>); folder doar dacă chiar ai ceva de încărcat la cerere.</p>
+      <div class="prompt-box">
+        <span class="prompt-box-label">Prompt de pornire</span>
+        „Am promptul ăsta pe care-l rulez des: [colează promptul din Ex. 1]. Fă-l skill în <code>.claude/skills/</code>. Pune un <code>description</code> bun pentru auto-declanșare, cu cazul principal primul și cuvintele pe care le-aș spune natural. Dacă are efecte laterale (scrie/comite/trimite), adaugă <code>disable-model-invocation: true</code>. Arată-mi <code>SKILL.md</code> înainte să-l scrii."
+      </div>
+      <p style="margin-top:12px;"><strong>Citește <code>SKILL.md</code>-ul propus înainte să-l accepți</strong> — regula din S1/S2, nu aprobi orbește. Verifică:</p>
+      <ul>
+        <li><code>description</code>-ul conține cuvintele pe care le-ai spune natural („când vreau un commit message")? El e <strong>interfața de auto-declanșare</strong>, nu documentație.</li>
+        <li>Are <code>disable-model-invocation: true</code> dacă skill-ul are efecte laterale (commit, deploy, trimite)?</li>
+        <li>Corpul e scurt și clar? (Detaliul greu merge în fișiere separate — abia mai târziu, dacă e cazul.)</li>
+      </ul>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Ai un <code>SKILL.md</code> în forma minimă, cu un <code>description</code> pe care-l poți justifica, și flag-ul corect pentru efecte laterale.
+      </div>
+    </div>
+
+    <!-- Ex 3 -->
+    <div class="section-label">Exercițiul 3 — Verifică declanșarea</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 3</span>
+        <span class="ex-time">≈15 min</span>
+        <span class="ex-trains">Antrenează: cine invocă (/nume vs. auto prin description)</span>
+      </div>
+      <p>Un skill are două uși de intrare. Testează-le pe amândouă:</p>
+      <ol>
+        <li><strong>Direct:</strong> tastează <code>/nume</code>. Ar trebui să pornească imediat.</li>
+        <li><strong>Auto:</strong> scrie o frază naturală care ar trebui să-l cheme (ex: „ce am schimbat?" pentru un skill de rezumat de diff). Lasă-l pe Claude să-l declanșeze singur.</li>
+      </ol>
+      <div class="callout" style="margin:12px 0;">
+        <strong>Dacă nu pornește automat pe frază</strong>, problema e aproape mereu <code>description</code>-ul — <strong>nu corpul</strong>. Reglează descrierea: pune cazul principal primul, include cuvintele naturale.
+      </div>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Skill-ul pornește și pe <code>/nume</code>, și pe o frază naturală relevantă — sau, dacă e <code>disable-model-invocation</code>, doar pe <code>/nume</code>, și înțelegi de ce.
+      </div>
+    </div>
+
+    <!-- Ex 4 -->
+    <div class="section-label">Exercițiul 4 — Dovada: înainte / după</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 4</span>
+        <span class="ex-time">≈20 min</span>
+        <span class="ex-trains">Antrenează: verificarea empirică — un skill contează doar când schimbă rezultatul</span>
+      </div>
+      <p>A vedea skill-ul declanșându-se îți spune doar că Claude l-a găsit, nu că face ce voiai. Sunt <strong>două lucruri separate</strong>: se declanșează pe prompturile corecte (reglezi <code>description</code>), și produce ce te aștepți (reglezi corpul).</p>
+      <p style="margin-top:8px;"><strong>Ce faci:</strong></p>
+      <ol>
+        <li>Alege 2-3 prompturi realiste pe LMS.</li>
+        <li>Rulează-le <strong>fără</strong> skill (dezactivat, sesiune curată) și notează rezultatul.</li>
+        <li>Rulează-le <strong>cu</strong> skill-ul activ. Compară — notează diferența <strong>reală</strong>, nu presupusă.</li>
+      </ol>
+      <div class="callout" style="margin:12px 0;">
+        <strong>Sesiunea curată contează.</strong> Contextul rămas de la scrierea skill-ului maschează golurile din instrucțiuni — de-asta testezi într-o sesiune nouă.
+      </div>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Poți arăta o diferență concretă „înainte/după" pe cel puțin un prompt — dovadă că skill-ul schimbă rezultatul, nu doar că se declanșează.
+      </div>
+    </div>
+
+    <!-- Ex 5 -->
+    <div class="section-label">Exercițiul 5 (opțional) — Argumente &amp; injectare de context</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 5</span>
+        <span class="ex-time">≈15 min</span>
+        <span class="ex-trains">Antrenează: $ARGUMENTS, poziționale 0-based, !`comanda`</span>
+      </div>
+      <p>Dacă skill-ul ar beneficia de input, fă-l unealtă adevărată:</p>
+      <ul>
+        <li>Adaugă <code>$ARGUMENTS</code> (tot textul de după nume) sau poziționale <code>$0</code>/<code>$1</code>. <strong>Verifică pe hârtie că ai numerotat 0-based</strong> — <code>$0</code> e primul.</li>
+        <li>Opțional, injectează starea curentă cu o linie <code>!`git diff HEAD`</code> sau <code>!`git status`</code> — skill-ul ajunge la model deja „hrănit" cu diff-ul, fără să-l colezi tu.</li>
+      </ul>
+      <div class="callout" style="margin:12px 0;">
+        <strong>Atenție la securitate:</strong> <code>!`comanda`</code> rulează automat la invocare. Într-un repo în care ai încredere scăzută, citește skill-ul înainte să te încrezi în el.
+      </div>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Skill-ul primește un argument corect numerotat (0-based) și/sau „știe" starea curentă a repo-ului fără input manual.
+      </div>
+    </div>
+
+    <!-- Ex 6 -->
+    <div class="section-label">Exercițiul 6 — Comite artefactul</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 6</span>
+        <span class="ex-time">≈10 min</span>
+        <span class="ex-trains">Antrenează: skill de proiect vs. personal, versionare</span>
+      </div>
+      <p><strong>Ce faci:</strong></p>
+      <ol>
+        <li><strong>Comite</strong> skill-ul de proiect în git, cu un mesaj descriptiv (<code>chore: add /nume skill</code>).</li>
+        <li>Skill-urile <strong>personale</strong> (<code>~/.claude/skills/</code>) <strong>nu</strong> se comit — sunt ale tale, pe toate repo-urile.</li>
+        <li>Notează pentru schimbul de practici: din ce prompt repetat a venit, dacă e user-only sau auto-declanșabil (și de ce), și un moment „aici s-a văzut diferența".</li>
+      </ol>
+      <div class="callout callout-green" style="margin:12px 0;">
+        <strong>Extensie (dacă ai terminat):</strong> ia un skill care a crescut prea mult și <strong>sparge-l</strong> — mută reference-ul lung într-un <code>reference.md</code> separat, referit din <code>SKILL.md</code>. Simte diferența de context (progressive disclosure). Sau adaugă <code>allowed-tools</code> la un skill de acțiune și vezi cum dispar prompturile de aprobare.
+      </div>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Oricine din echipă poate clona repo-ul LMS și beneficia de skill-ul tău din prima sesiune — și ai un moment „înainte/după" pentru schimbul de practici.
+      </div>
+    </div>
+
+    <!-- Artefact -->
+    <div class="section-label">Artefactul sesiunii</div>
+    <div class="card">
+      <div class="artefact">cel puțin un skill funcțional în <code>.claude/skills/</code> (sau <code>.claude/commands/</code>), comis în git pe repo-ul LMS, cu <code>description</code> care declanșează corect și cu dovada „înainte/după" pe un prompt concret</div>
+    </div>
+
+  </div><!-- /echipa -->
+
+  <!-- ══ SELF-CHECK ══ -->
+  <section class="selfcheck">
+    <div class="section-label">Verifică-te</div>
+    <div class="card">
+      <div class="sc-q" data-correct="2">
+        <p class="sc-question"><strong>1.</strong> Ai un fișier <code>.claude/commands/review.md</code> și un skill <code>.claude/skills/review/SKILL.md</code>. Ce se întâmplă?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Sunt unelte diferite: command-ul e un prompt-template, skill-ul e logică de domeniu — nu au legătură.</button>
+          <button type="button" class="sc-opt">Command-ul are prioritate pentru că e mai vechi; skill-ul e ignorat.</button>
+          <button type="button" class="sc-opt">Amândouă produc <code>/review</code> — command-urile custom și skills s-au unificat; sunt același lucru, iar la conflict de nume skill-ul câștigă.</button>
+        </div>
+        <div class="sc-explain">Din 2026, comenzile custom și skills sunt <strong>același mecanism</strong>. Ambele produc <code>/review</code> și se comportă identic. Nu mai alegi „command vs skill" — alegi între forma minimă (un <code>.md</code>) și forma completă (folder). La conflict de nume, skill-ul câștigă.</div>
+      </div>
+
+      <div class="sc-q" data-correct="1">
+        <p class="sc-question"><strong>2.</strong> Skill-ul are în corp linia <code>Migrează $0 din $1 în $2</code>. Rulezi <code>/migrate SearchBar React Vue</code>. Cu ce se înlocuiește <code>$0</code>?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt"><code>React</code> — <code>$0</code> e al doilea argument, numărătoarea începe de la 1.</button>
+          <button type="button" class="sc-opt"><code>SearchBar</code> — argumentele poziționale sunt 0-based, deci <code>$0</code> e primul.</button>
+          <button type="button" class="sc-opt">Tot textul <code>SearchBar React Vue</code> — <code>$0</code> e echivalent cu <code>$ARGUMENTS</code>.</button>
+        </div>
+        <div class="sc-explain">Corectat în 2026: argumentele poziționale sunt <strong>0-based</strong>. <code>$0</code> = primul (<code>SearchBar</code>), <code>$1</code> = al doilea (<code>React</code>), <code>$2</code> = al treilea (<code>Vue</code>). „<code>$1</code> = primul" vine din tutoriale vechi și e depășit. <code>$ARGUMENTS</code> e separat — e tot textul brut.</div>
+      </div>
+
+      <div class="sc-q" data-correct="0">
+        <p class="sc-question"><strong>3.</strong> Vrei ca Claude să știe că „stack-ul e React + Vite + TypeScript". Unde pui informația?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">În <code>CLAUDE.md</code> — e un <strong>fapt</strong> stabil despre repo, valabil la fiecare sesiune.</button>
+          <button type="button" class="sc-opt">Într-un skill cu <code>description</code> bun — orice informație despre repo merge într-un skill.</button>
+          <button type="button" class="sc-opt">Într-un skill cu <code>disable-model-invocation: true</code>, ca să nu se declanșeze din greșeală.</button>
+        </div>
+        <div class="sc-explain">Testul care ține toată ziua: <strong>fapt stabil → <code>CLAUDE.md</code></strong> (citit la fiecare sesiune); <strong>procedură repetată → skill</strong> (încărcat doar la nevoie). Stack-ul e un fapt, nu o procedură. Un skill dintr-un fapt e exact capcana „fapt împachetat ca skill".</div>
+      </div>
+
+      <div class="sc-q" data-correct="2">
+        <p class="sc-question"><strong>4.</strong> Ce este, de fapt, câmpul <code>description</code> dintr-un skill?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Documentație pentru echipă — explică ce face skill-ul, ca un README.</button>
+          <button type="button" class="sc-opt">Un câmp opțional, pur cosmetic; skill-ul funcționează identic fără el.</button>
+          <button type="button" class="sc-opt">Interfața de auto-declanșare — singurul lucru din skill mereu în context, pe baza căruia Claude decide când să-l invoce singur.</button>
+        </div>
+        <div class="sc-explain"><code>description</code> nu e documentație, e <strong>interfața de auto-declanșare</strong>. E singura parte a skill-ului care stă mereu în context (corpul se încarcă doar la invocare). Un <code>description</code> vag = skill care nu pornește când trebuie. Pune cazul principal primul și cuvintele pe care le-ai spune natural.</div>
+      </div>
+
+      <div class="sc-q" data-correct="1">
+        <p class="sc-question"><strong>5.</strong> Când treci un skill de la forma minimă (un <code>.md</code>) la forma completă (folder cu fișiere ajutătoare)?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Mereu de la început — un folder cu <code>reference.md</code> și <code>scripts/</code> e structura „corectă" a oricărui skill.</button>
+          <button type="button" class="sc-opt">Doar când ai ceva ce merită încărcat la cerere — un reference lung, un script — ca <code>SKILL.md</code> să rămână scurt (progressive disclosure).</button>
+          <button type="button" class="sc-opt">Când skill-ul are efecte laterale — acelea cer obligatoriu folder.</button>
+        </div>
+        <div class="sc-explain">Începi mereu cu forma minimă. Treci la folder <strong>doar când</strong> ai un reference greu sau un script de încărcat la cerere — atunci <code>SKILL.md</code> rămâne scurt (sub ~500 de linii) și detaliul se încarcă doar la nevoie. Folder „ca să fie" e capcana „folder prematur". Efectele laterale se rezolvă cu <code>disable-model-invocation</code>, nu cu un folder.</div>
+      </div>
+    </div>
+  </section>
 
   <div class="page-nav">
     <a href="s2.html">← S2: CLAUDE.md</a>
@@ -83,5 +587,6 @@
 
 <script src="assets/main.js"></script>
 <script src="assets/glossary.js"></script>
+<script src="assets/selfcheck.js"></script>
 </body>
 </html>

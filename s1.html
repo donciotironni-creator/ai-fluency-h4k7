@@ -29,6 +29,9 @@
     <a href="s10.html" class="nav-pill">S10</a>
     <div class="nav-divider"></div>
     <a href="dictionar.html" class="nav-pill">Dicționar</a>
+    <a href="cheatsheet.html" class="nav-pill">Cheatsheet</a>
+    <a href="artefacte.html" class="nav-pill">Artefacte</a>
+    <a href="schimbari.html" class="nav-pill">Schimbări</a>
   </div>
   <button class="nav-toggle" onclick="toggleTheme()">☾ / ☀</button>
 </nav>
@@ -196,6 +199,15 @@
   <!-- ══ ECHIPA PANEL ══ -->
   <div id="echipa" class="role-panel">
 
+    <div class="callout callout-blue">
+      <strong>Recuperare rapidă (ai lipsit / intri târziu):</strong> minimul ca să fii gata pentru S2 —
+      <ul style="margin:8px 0 0;">
+        <li>Ai un <strong>walking skeleton</strong> care rulează, fie și minimal (API cu <code>GET /courses</code> pe date în memorie + o pagină care le afișează).</li>
+        <li>Ai scris <strong>„Rețeta mea de sesiune"</strong> — artefactul S1 — pentru că S2 pornește direct de la ea (devine baza pentru <code>CLAUDE.md</code>).</li>
+        <li>Dacă n-ai skeleton, fă măcar <strong>Ex. 1</strong> (plan mode) și <strong>Ex. 5</strong> (capstone) pe repo-ul tău, ca să treci o dată prin bucla completă.</li>
+        <li>Reține cele patru pârghii pe care le exersăm azi: plan mode, context curat, model/effort, permisiuni.</li>
+      </ul>
+    </div>
     <div class="callout callout-blue">
       <strong>Context:</strong> în S1 exersați bucla exact unde e mai grea — pe greenfield nu există cod care să „ancoreze" modelul, deci fiecare pârghie de control contează mai mult.
     </div>
@@ -407,6 +419,57 @@ O capcană a mea pe care vreau s-o rup:
 
   </div><!-- /echipa -->
 
+  <section class="selfcheck">
+    <div class="section-label">Verifică-te</div>
+    <div class="card">
+      <div class="sc-q" data-correct="0">
+        <p class="sc-question"><strong>1.</strong> Când merită plan mode și când e doar overhead?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Merită la task-uri cu ramificații sau refactorizări; e overhead la editări mici, evidente.</button>
+          <button type="button" class="sc-opt">Merită mereu — orice task e mai sigur dacă începi cu un plan.</button>
+          <button type="button" class="sc-opt">Merită doar când lucrezi pe cod existent, niciodată pe greenfield.</button>
+        </div>
+        <div class="sc-explain">Plan mode plătește pe task-uri cu ramificații, unde nu vrei surprize. Pe o editare trivială, ceremonia planului e cost fără câștig. Pe greenfield e chiar util — planul face vizibile presupunerile pe care modelul le-ar lua tacit.</div>
+      </div>
+      <div class="sc-q" data-correct="2">
+        <p class="sc-question"><strong>2.</strong> Ce faci cu <code>/clear</code> între doi pași de bootstrap (ex: API, apoi front-end) și de ce?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Nu dai <code>/clear</code> — contextul comun ajută modelul să lege cele două părți.</button>
+          <button type="button" class="sc-opt">Dai <code>/clear</code> doar la final, ca să nu pierzi istoricul instalărilor.</button>
+          <button type="button" class="sc-opt">Dai <code>/clear</code> înainte de pasul următor, ca output-ul zgomotos de instalare să nu umple contextul și să tocească răspunsurile.</button>
+        </div>
+        <div class="sc-explain">Un pas de bootstrap generează multe fișiere și rulează instalări — output zgomotos care nu ajută pasul următor. <code>/clear</code> între pași repornește curat; altfel contextul se umple și modelul devine vag. Pașii de bootstrap sunt fire de gândire diferite.</div>
+      </div>
+      <div class="sc-q" data-correct="1">
+        <p class="sc-question"><strong>3.</strong> Ce model / effort alegi pentru un lookup simplu vs. o decizie de design (arhitectură)?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Opus effort mare la ambele — vrei calitate maximă indiferent de task.</button>
+          <button type="button" class="sc-opt">Lookup simplu → model ieftin/rapid (Haiku); decizie de design → model puternic, effort mare (Opus).</button>
+          <button type="button" class="sc-opt">Haiku la ambele — e cel mai rapid și mai ieftin.</button>
+        </div>
+        <div class="sc-explain">Potrivești puterea la sarcină. Un lookup nu are nevoie de raționament greu — Opus acolo e scump și inutil. O decizie de arhitectură merită effort mare. Reflexul „același model la orice" e exact ce corectăm.</div>
+      </div>
+      <div class="sc-q" data-correct="0">
+        <p class="sc-question"><strong>4.</strong> Ce spune regula „un fir = o sesiune"?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Un task nou pornește un context nou — o sesiune acoperă un singur fir de gândire, nu toată ziua.</button>
+          <button type="button" class="sc-opt">Poți deschide o singură sesiune Claude Code odată, pe tot calculatorul.</button>
+          <button type="button" class="sc-opt">Fiecare persoană din echipă are voie la o singură sesiune pe zi.</button>
+        </div>
+        <div class="sc-explain">Regula e despre igiena contextului: task nou → context nou. O singură sesiune uriașă pentru toată ziua e semnul clasic de folosire slabă — istoricul crește, calitatea scade. Nu are legătură cu câte sesiuni rulezi în paralel.</div>
+      </div>
+      <div class="sc-q" data-correct="2">
+        <p class="sc-question"><strong>5.</strong> În ce ordine se evaluează regulile de permisiuni și ce înseamnă asta practic?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt"><code>allow</code> → <code>ask</code> → <code>deny</code>; un <code>allow</code> explicit lasă comanda să treacă chiar dacă e și în <code>deny</code>.</button>
+          <button type="button" class="sc-opt">Ordinea nu contează — câștigă regula scrisă ultima în fișier.</button>
+          <button type="button" class="sc-opt"><code>deny</code> → <code>ask</code> → <code>allow</code>; un <code>deny</code> bate mereu orice <code>allow</code>, deci o comandă blocată e refuzată din start, nu pusă la aprobat.</button>
+        </div>
+        <div class="sc-explain">Se evaluează <code>deny</code> → <code>ask</code> → <code>allow</code>: <code>deny</code> are prioritate absolută. De-aia <code>Bash(rm -rf *)</code> pus în <code>deny</code> e refuzat din start, nu trecut prin aprobare — chiar dacă ai un <code>allow</code> larg. Un <code>allow</code> nu poate anula un <code>deny</code>.</div>
+      </div>
+    </div>
+  </section>
+
   <div class="page-nav">
     <a href="s0.html">← S0: Kickoff &amp; Diagnostic</a>
     <a href="s2.html">S2: CLAUDE.md →</a>
@@ -416,5 +479,6 @@ O capcană a mea pe care vreau s-o rup:
 
 <script src="assets/main.js"></script>
 <script src="assets/glossary.js"></script>
+<script src="assets/selfcheck.js"></script>
 </body>
 </html>

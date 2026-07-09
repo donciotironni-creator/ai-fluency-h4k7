@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Schimbări în Claude Code · AI Fluency</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo"><span class="nav-logo-mark"><span class="nav-logo-ring"></span></span>AI Fluency</a>
+  <div class="nav-divider"></div>
+  <div class="nav-sessions">
+    <a href="index.html" class="nav-pill">Acasă</a>
+    <a href="s0.html" class="nav-pill">S0</a>
+    <a href="s1.html" class="nav-pill">S1</a>
+    <a href="s2.html" class="nav-pill">S2</a>
+    <a href="s3.html" class="nav-pill">S3</a>
+    <a href="s4.html" class="nav-pill">S4</a>
+    <a href="s5.html" class="nav-pill">S5</a>
+    <a href="s6.html" class="nav-pill">S6</a>
+    <a href="s7.html" class="nav-pill">S7</a>
+    <a href="s8.html" class="nav-pill">S8</a>
+    <a href="s9.html" class="nav-pill">S9</a>
+    <a href="s10.html" class="nav-pill">S10</a>
+    <div class="nav-divider"></div>
+    <a href="dictionar.html" class="nav-pill">Dicționar</a>
+    <a href="cheatsheet.html" class="nav-pill">Cheatsheet</a>
+    <a href="artefacte.html" class="nav-pill">Artefacte</a>
+    <a href="schimbari.html" class="nav-pill active">Schimbări</a>
+  </div>
+  <button class="nav-toggle" onclick="toggleTheme()">☾ / ☀</button>
+</nav>
+
+<div class="wrap">
+
+  <div class="session-hero">
+    <span class="kicker">Referință · se actualizează</span>
+    <h1>Schimbări în Claude Code</h1>
+    <p style="color:var(--ink-soft);margin-top:12px;max-width:680px;">Unealta se mișcă repede. Câmpuri de frontmatter, substituții, flag-uri — sintaxa exactă se poate schimba de la o lună la alta. Pagina asta ține evidența schimbărilor care contradic ce predau materialele mai vechi, ca să nu reparăm retroactiv fiecare sesiune.</p>
+  </div>
+
+  <div class="callout">
+    <strong>Principiul:</strong> cursul predă <strong>principii care rezistă</strong> (ce e un fapt vs. o procedură, cine invocă o unealtă, cum ții contextul curat) — nu sintaxă care se schimbă săptămânal. Sintaxa se confirmă mereu la sursă: rulează <code>/help</code> la începutul sesiunii și verifică docul oficial la <code>code.claude.com/docs</code>. Reflexul corect: <strong>verifică docul, nu memoria</strong>.
+  </div>
+
+  <div class="section-label">Verificat iulie 2026</div>
+
+  <div class="warning-card">
+    <h4>Comenzile custom = skills (unificate)</h4>
+    <p style="margin-bottom:8px;">Slash command-urile custom și skills-urile s-au <strong>contopit</strong>. Un fișier <code>.claude/commands/x.md</code> și un skill <code>.claude/skills/x/SKILL.md</code> produc <strong>amândouă</strong> <code>/x</code> și se comportă identic. Fișierele vechi din <code>.claude/commands/</code> funcționează în continuare.</p>
+    <p style="margin-bottom:0;">Nu mai gândi „command <em>vs.</em> skill". Gândește <strong>formă minimă vs. formă completă</strong> a aceluiași lucru: un singur <code>.md</code> pentru un prompt-template scurt, sau un folder cu fișiere ajutătoare când ai nevoie de reference lung ori scripturi. <span style="color:var(--ink-soft);">Afectează S3.</span></p>
+  </div>
+
+  <div class="warning-card">
+    <h4>Argumente poziționale 0-based</h4>
+    <p style="margin-bottom:8px;">Argumentele poziționale sunt <strong>0-based</strong>: <code>$0</code> (sau <code>$ARGUMENTS[0]</code>) = <strong>primul</strong> argument, <code>$1</code> = al doilea, ș.a.m.d.</p>
+    <p style="margin-bottom:0;">Tutorialele mai vechi ziceau greșit „<code>$1</code> = primul argument" — e depășit. Când numerotezi un skill cu 2+ argumente, verifică pe docul curent. <span style="color:var(--ink-soft);">Afectează S3.</span></p>
+  </div>
+
+  <div class="callout callout-blue">
+    <strong>Cum crește pagina:</strong> pe măsură ce apar schimbări care contrazic materialele, se adaugă aici o intrare nouă cu <strong>data verificării pe docul oficial</strong>. Nu reparăm retroactiv fiecare pagină de sesiune — locul unic de adevăr pentru „ce s-a schimbat" e aici.
+  </div>
+
+  <div class="page-nav">
+    <a href="dictionar.html">← Dicționar</a>
+    <a href="s3.html">S3: Slash commands &amp; skills →</a>
+  </div>
+
+</div>
+
+<script src="assets/main.js"></script>
+<script src="assets/glossary.js"></script>
+</body>
+</html>

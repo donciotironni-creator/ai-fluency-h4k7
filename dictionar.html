@@ -16,6 +16,7 @@
     --accent:#1F5C4B; --warm:#1F5C4B;
     --cat-fundamente:#3A6EA5; --cat-prompting:#5A3E8C; --cat-rag:#1F5C4B;
     --cat-agenti:#C67B2E; --cat-harness:#9A7420; --cat-guardrails:#C24B3F;
+    --cat-claudecode:#2F7E8C;
     --cat-evaluare:#3A6EA5; --cat-productie:#2E7D5B; --cat-deployment:#4A63B0;
     --cat-multimodal:#7A3B6B; --cat-training:#3A6B8A; --cat-ecosistem:#6B746E;
     --shadow:0 1px 2px rgba(26,33,30,.05), 0 8px 24px -12px rgba(26,33,30,.14);
@@ -27,6 +28,7 @@
     --accent:#4FA98A; --warm:#4FA98A;
     --cat-fundamente:#6FA0D6; --cat-prompting:#B39BEF; --cat-rag:#4FA98A;
     --cat-agenti:#E0A059; --cat-harness:#D9AB5F; --cat-guardrails:#E07A6E;
+    --cat-claudecode:#6FBBC9;
     --cat-evaluare:#6FA0D6; --cat-productie:#8FCBA8; --cat-deployment:#8BA0E0;
     --cat-multimodal:#D68FC0; --cat-training:#79AACB; --cat-ecosistem:#A9B0AA;
     --shadow:0 1px 2px rgba(0,0,0,.25), 0 10px 28px -14px rgba(0,0,0,.5);
@@ -148,6 +150,9 @@
     <a href="s10.html" class="nav-pill">S10</a>
     <div class="nav-divider"></div>
     <a href="dictionar.html" class="nav-pill active">Dicționar</a>
+    <a href="cheatsheet.html" class="nav-pill">Cheatsheet</a>
+    <a href="artefacte.html" class="nav-pill">Artefacte</a>
+    <a href="schimbari.html" class="nav-pill">Schimbări</a>
   </div>
   <button class="nav-toggle" onclick="toggleTheme()">☾ / ☀</button>
 </nav>
@@ -156,7 +161,7 @@
   <header class="intro">
     <div class="eyebrow">Dicționar · AI Engineering</div>
     <h1>Termenii de care ai nevoie ca să devii AI engineer</h1>
-    <p class="sub">Peste 110 termeni, în <b>română</b>, grupați pe cele 12 zone pe care le străbate un inginer AI — de la <code>token</code> și <code>RAG</code> la <code>agentic</code> și <code>harness</code>. Caută pe măsură ce scrii; filtrează pe categorii.</p>
+    <p class="sub">Peste 135 de termeni, în <b>română</b>, grupați pe cele 13 zone pe care le străbate un inginer AI — de la <code>token</code> și <code>RAG</code> la <code>agentic</code>, <code>harness</code> și uneltele <code>Claude Code</code>. Caută pe măsură ce scrii; filtrează pe categorii.</p>
   </header>
 </div>
 
@@ -190,6 +195,7 @@ var CATS = [
   {id:"rag",         label:"RAG · date proprii"},
   {id:"agenti",      label:"Agenți & agentic"},
   {id:"harness",     label:"Harness & infrastructură"},
+  {id:"claudecode",  label:"Claude Code · unelte & configurare"},
   {id:"guardrails",  label:"Guardrails & securitate"},
   {id:"evaluare",    label:"Evaluare & observability"},
   {id:"productie",   label:"Producție & performanță"},
@@ -280,6 +286,25 @@ var TERMS = [
   {t:"Semantic caching", c:"harness", d:"Servirea unui răspuns pre-calculat pentru cereri similare, ca să scazi latența și costul."},
   {t:"Compound AI system", c:"harness", d:"Sistem care combină mai multe modele, componente și pași — nu un singur apel de model."},
   {t:"Context compaction", c:"harness", d:"Comprimarea sau sumarizarea contextului când fereastra se umple, ca să poți continua."},
+
+  // ---------- CLAUDE CODE ----------
+  {t:"Plan mode", c:"claudecode", d:"Mod în care Claude Code cercetează codul și propune un plan pe pași, fără să atingă niciun fișier; execută abia după ce aprobi. Bun pentru schimbări pe mai multe fișiere sau layere.", n:"Nu scrie nimic până nu aprobi planul — separă gândirea de execuție."},
+  {t:"CLAUDE.md", c:"claudecode", d:"Fișier de instrucțiuni pe care Claude Code îl citește automat la pornire: convenții, context de proiect, reguli. Memoria persistentă a repo-ului, în limbaj natural."},
+  {t:"Straturi de memorie (personal / proiect / local)", c:"claudecode", d:"Trei niveluri de CLAUDE.md care se combină la pornire: personal (în ~/.claude, valabil pe toate proiectele tale), proiect (în repo, versionat, partajat cu echipa) și local (per-proiect, ne-versionat, doar al tău)."},
+  {t:"Slash command", c:"claudecode", d:"Comandă rapidă tastată cu „/\" (ex. /clear, /init) care rulează o acțiune sau un skill predefinit. În versiunile noi, un slash command e de fapt un skill invocat pe nume."},
+  {t:"Skill", c:"claudecode", d:"Capabilitate reutilizabilă, definită într-un SKILL.md (instrucțiuni + frontmatter), pe care Claude o încarcă doar la nevoie. Se invocă pe nume sau ca slash command.", n:"Skill-ul îți împachetează un flux repetabil (proces, checklist, convenție) ca să nu-l rescrii de fiecare dată."},
+  {t:"Frontmatter (SKILL.md)", c:"claudecode", d:"Blocul YAML de la începutul unui SKILL.md (name, description, allowed-tools, argument-hint). Doar el stă mereu în context; restul instrucțiunilor se citesc abia când skill-ul e invocat."},
+  {t:"Progressive disclosure", c:"claudecode", d:"Principiul prin care un skill expune întâi doar frontmatter-ul (nume + descriere), iar restul instrucțiunilor se dezvăluie abia la invocare. Ține contextul curat și ieftin."},
+  {t:"Hook", c:"claudecode", d:"Script pe care harness-ul îl rulează automat la un eveniment (înainte/după un tool, la oprirea sesiunii etc.). Comportamentul automat îl execută harness-ul, nu modelul — de aceea „de fiecare dată când X\" se pune în hook, nu în prompt."},
+  {t:"Headless (claude -p)", c:"claudecode", d:"Rularea Claude Code fără interfață interactivă, cu „claude -p …\", ca să-l pui în scripturi, pipeline-uri sau CI. Primește un prompt, întoarce rezultatul și iese."},
+  {t:"Git worktree", c:"claudecode", d:"Checkout paralel al aceluiași repo într-un alt director, pe alt branch. Izolează munca unui agent (sau a ta) fără să atingă workspace-ul curent."},
+  {t:"Permisiuni (allow / ask / deny)", c:"claudecode", d:"Cele trei verdicte pe care harness-ul le dă unei acțiuni: allow (rulează direct), ask (cere confirmare), deny (blochează). Se configurează pe tool și pe pattern, în settings.json."},
+  {t:"allowed-tools", c:"claudecode", d:"Câmp în frontmatter-ul unui skill care restrânge ce unelte poate folosi cât timp rulează — least privilege aplicat skill-urilor."},
+  {t:"argument-hint", c:"claudecode", d:"Câmp în frontmatter care sugerează ce argumente primește un slash command; apare ca ajutor la tastare."},
+  {t:"Effort", c:"claudecode", d:"Reglaj al bugetului de raționament pe care i-l aloci lui Claude pentru o sarcină (de la low la max). Mai mult effort = analiză mai adâncă, dar mai mult timp și cost."},
+  {t:"/clear", c:"claudecode", d:"Slash command care golește contextul conversației curente, păstrând sesiunea deschisă. Îl folosești când treci la o sarcină nouă, ca să nu cari context vechi irelevant."},
+  {t:"/init", c:"claudecode", d:"Slash command care scanează repo-ul și generează un CLAUDE.md inițial, cu structura și convențiile proiectului. Punctul de plecare, pe care apoi îl editezi manual."},
+  {t:"settings.json (precedență)", c:"claudecode", d:"Fișierul de configurare al Claude Code (permisiuni, variabile de mediu, hooks). Se aplică în ordine de precedență: local > proiect > user (global) — setarea cea mai specifică câștigă."},
 
   // ---------- GUARDRAILS ----------
   {t:"Guardrails", c:"guardrails", d:"Mecanisme care constrâng intrările și ieșirile unui sistem AI: validare, filtrare, reguli de comportament."},
