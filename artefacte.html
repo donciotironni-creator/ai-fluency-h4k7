@@ -225,7 +225,119 @@ Rezumă modificările de mai sus în 2-3 puncte, apoi listează riscurile pe car
     <p style="color:var(--ink-soft);font-size:.9rem;margin-top:10px;">Skill de <strong>acțiune</strong> (scrie / comite / trimite)? Adaugă <code>disable-model-invocation: true</code> în frontmatter, ca să-l poți invoca doar tu, nu Claude automat.</p>
   </div>
 
-  <!-- ══════════════ GRUP 4 — RUTINA PERSONALĂ ══════════════ -->
+  <!-- ══════════════ GRUP 4 — SUBAGENȚI ══════════════ -->
+  <div class="phase-title">Subagenți de pornire</div>
+  <p style="color:var(--ink-soft);margin-bottom:8px;">Lucrători pe care Claude îi <strong>deleagă</strong> — fac o muncă în context izolat și întorc doar concluzia (S4). Un subagent e un fișier <code>&lt;nume&gt;.md</code> = frontmatter (<code>name</code>, <code>description</code>, opțional <code>tools</code>/<code>model</code>) + corp = system prompt. Cei de mai jos sunt <strong>personali și cross-project</strong>: copiază-i în <code>~/.claude/agents/</code> și merg pe toate repo-urile tale (TimeOff, Filnet, Iris…). Regula de siguranță din S1/S4: cercetătorii primesc unelte <strong>read-only</strong>; scrierea rămâne pe agentul principal.</p>
+
+  <div class="callout">
+    <strong>Nu confunda cu <code>AGENTS.md</code>.</strong> <code>AGENTS.md</code> e un fișier de <em>context</em> (geamănul open-standard al lui <code>CLAUDE.md</code>) — nu un agent. Aici vorbim de <strong>subagenți</strong>: unelte pe care le <em>folosești</em>, în <code>~/.claude/agents/</code> (personal) sau <code>.claude/agents/</code> (proiect). Vezi lămurirea din <a href="s2.html">S2</a>.
+  </div>
+
+  <div class="card">
+    <div class="section-label">codebase-explorer — cercetare read-only a codebase-ului</div>
+    <p style="margin-bottom:6px;">Mapează un feature fără să atingă nimic. Pornit pe <code>haiku</code> (ieftin), cu unelte strict read-only. Întoarce o hartă, nu fișiere întregi.</p>
+    <div style="margin-bottom:10px;">
+      <span class="tag">~/.claude/agents/codebase-explorer.md</span>
+      <span class="tag">personal · toate proiectele</span>
+      <span class="tag">read-only</span>
+    </div>
+    <div class="template-block">---
+name: codebase-explorer
+description: Cercetează cum e structurat un feature în codebase și întoarce o hartă a fișierelor, fluxului și dependențelor. Folosește când cineva întreabă „unde/cum e implementat X" sau vrea harta unui modul, fără să modifice nimic.
+tools: Read, Grep, Glob
+model: haiku
+---
+
+Ești un explorator de cod. Când primești o sarcină:
+- Urmărește fluxul prin fișiere, de la punctul de intrare la implementare.
+- Mapează layerele (rută → handler/controller → serviciu → acces la date).
+- Identifică dependențele și punctele de integrare.
+
+Nu modifica nimic. Întoarce o hartă concisă: fișierele-cheie (cu cale:linie),
+fluxul în câțiva pași, dependențele relevante. Rezumat, nu dump-uri — nu copia
+fișiere întregi în răspuns.</div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">code-reviewer — review pe modificări</div>
+    <p style="margin-bottom:6px;">Review pe corectitudine, securitate și convenții. Read-only; primești diff-ul în promptul de delegare. Raportează doar ce e sigur o problemă — fără zgomot.</p>
+    <div style="margin-bottom:10px;">
+      <span class="tag">~/.claude/agents/code-reviewer.md</span>
+      <span class="tag">personal · toate proiectele</span>
+      <span class="tag">read-only</span>
+    </div>
+    <div class="template-block">---
+name: code-reviewer
+description: Review pe modificările de cod pentru corectitudine, securitate și convenții. Folosește după ce ai scris sau modificat cod, sau când cineva cere un review pe un diff.
+tools: Read, Grep, Glob
+model: sonnet
+---
+
+Ești un reviewer de cod senior. Analizează modificările și dă feedback
+concret, acționabil, pe trei axe:
+- Corectitudine: bug-uri de logică, cazuri limită neacoperite, null / off-by-one.
+- Securitate: input nevalidat, secrete hardcodate, injection, expuneri.
+- Convenții: respectă stilul și regulile din CLAUDE.md al proiectului.
+
+Prioritizează după severitate. Pentru fiecare problemă: unde e (fișier:linie),
+de ce e o problemă, și fix-ul propus. Nu raporta nimic ce nu ești sigur că e o
+problemă reală.</div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">sql-reviewer — review T-SQL (pentru echipa SQL)</div>
+    <p style="margin-bottom:6px;">Croit pe munca voastră: stored procs, interogări, migrări, indexuri. Verifică corectitudine, performanță și siguranță pe date reale. Read-only.</p>
+    <div style="margin-bottom:10px;">
+      <span class="tag">~/.claude/agents/sql-reviewer.md</span>
+      <span class="tag">personal · toate proiectele</span>
+      <span class="tag">read-only</span>
+    </div>
+    <div class="template-block">---
+name: sql-reviewer
+description: Review pe cod T-SQL — stored procs, interogări, migrări, indexuri — pentru corectitudine, performanță și standarde de echipă. Folosește când modifici SQL, o procedură stocată sau un script de migrare.
+tools: Read, Grep, Glob
+model: sonnet
+---
+
+Ești un reviewer SQL Server senior. Analizează codul T-SQL pe:
+- Corectitudine: NULL handling, JOIN-uri care dublează rânduri, DELETE/UPDATE
+  fără WHERE, tranzacții incomplete.
+- Performanță: predicate ne-SARGable, scanări de tabel, indexuri lipsă, cursor
+  unde un set-based ar merge.
+- Siguranță pe date reale: semnalează orice DROP / TRUNCATE / DELETE în masă; nu
+  propune modificări pe proceduri prod fără să marchezi explicit riscul.
+- Standarde: convențiile de numire și de logging ale echipei.
+
+Nu modifica nimic. Pentru fiecare observație: unde, de ce, și varianta corectată.</div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">test-runner — rulează testele, întoarce doar ce pică</div>
+    <p style="margin-bottom:6px;">Izolează output-ul voluminos al testelor: rulează suita în fereastra lui și-ți întoarce doar testele picate. Are nevoie de <code>Bash</code> ca să ruleze comanda.</p>
+    <div style="margin-bottom:10px;">
+      <span class="tag">~/.claude/agents/test-runner.md</span>
+      <span class="tag">personal · toate proiectele</span>
+      <span class="tag">Bash</span>
+    </div>
+    <div class="template-block">---
+name: test-runner
+description: Rulează suita de teste și întoarce DOAR testele care pică, cu mesajul de eroare. Folosește când vrei să verifici testele fără să-ți umpli contextul cu tot output-ul.
+tools: Read, Grep, Glob, Bash
+model: haiku
+---
+
+Ești un runner de teste. Detectează comanda de test a proiectului din CLAUDE.md
+sau din structura repo-ului (ex. `dotnet test`, `npm test`, `pytest`) și rulează-o.
+
+Întoarce DOAR:
+- Numărul de teste rulate / trecute / picate.
+- Pentru fiecare test picat: numele, fișierul, mesajul de eroare (concis).
+
+Nu întoarce output-ul testelor care trec. Dacă totul trece, spune doar atât.
+Rezumat, nu log brut — asta e ideea unui subagent.</div>
+  </div>
+
+  <!-- ══════════════ GRUP 5 — RUTINA PERSONALĂ ══════════════ -->
   <div class="phase-title">Rutina personală</div>
 
   <div class="card">
