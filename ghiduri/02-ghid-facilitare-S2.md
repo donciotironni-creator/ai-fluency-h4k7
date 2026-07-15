@@ -58,6 +58,8 @@ Concret, cu demo pe repo-ul de nisip. Șase segmente.
 - Local e pentru ce e adevărat doar pe mașina ta (căi locale, porturi, chei de test) — nu ajunge niciodată în commit.
 - Regula practică: când două straturi se contrazic, câștigă cel mai specific (local > proiect > personal).
 
+> **„AGENTS.md" nu e un agent — și Claude Code nu-l citește direct.** Vei întâlni prin alte unelte fișiere `AGENTS.md`: e numele open-standard, cross-tool, pentru *același lucru* ca `CLAUDE.md` — un fișier de **context**, nu un „agent" pe care-l rulezi (agenții pe care-i delegi sunt `.claude/agents/`, S4). Claude Code citește `CLAUDE.md`, **nu** `AGENTS.md`. Dacă un repo are deja `AGENTS.md`, importă-l din `CLAUDE.md` cu o linie `@AGENTS.md` (sau symlink), ca ambele unelte să citească aceeași sursă. Încărcarea ierarhică (rădăcina la startup, subfolderele la cerere) e reală — dar pentru `CLAUDE.md`.
+
 **Demo:** arată cele trei fișiere pe repo-ul de nisip, unul lângă altul, cu câte o regulă care se suprapune, ca să se vadă precedența în practică.
 
 #### 3. Anatomia folderului `.claude/` — harta completă (20–25 min)
