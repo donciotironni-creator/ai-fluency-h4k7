@@ -46,40 +46,509 @@
       <span class="badge badge-p2">Faza 2</span>
       <span class="tag">hooks</span>
       <span class="tag">guardrails</span>
+      <span class="tag">determinism</span>
       <span class="tag">automatizare</span>
     </div>
+    <p style="color:var(--ink-soft);margin-top:12px;max-width:680px;">Tot ce ai construit până acum — fapte în <code>CLAUDE.md</code>, proceduri în skills, instrucțiuni pentru subagenți — depinde de faptul că modelul <strong>citește și decide</strong> să le urmeze. De obicei o face. Uneori uită. Un hook nu decide nimic: e un script legat de un eveniment din ciclul de viață, care rulează <strong>de fiecare dată</strong>, indiferent ce „crede" modelul.</p>
   </div>
 
-  <div class="card" style="border-left:3px solid var(--accent-3);">
-    <h2 style="color:var(--accent-3);font-size:1.1rem;">Conținut în pregătire</h2>
-    <p>Ghidul de facilitare și exercițiile pentru S5 sunt în lucru. Mai jos găsești rezumatul sesiunii din curriculum.</p>
+  <!-- Role switch -->
+  <div class="role-switch">
+    <button class="role-btn active" data-role="facilitator">Ghid facilitare</button>
+    <button class="role-btn" data-role="echipa">Exerciții echipă</button>
   </div>
 
-  <div class="card">
-    <h2>Despre această sesiune</h2>
-    <p>Hooks sunt scripturi care rulează la evenimente din ciclul de viață al Claude Code. Diferența față de instrucțiuni în prompt: <strong>un hook nu halucinează</strong>.</p>
+  <!-- ══ FACILITATOR PANEL ══ -->
+  <div id="facilitator" class="role-panel active">
 
-    <h3 style="margin-top:16px;">Evenimente disponibile</h3>
-    <table>
-      <tr><th>Eveniment</th><th>Când se declanșează</th></tr>
-      <tr><td><code>PreToolUse</code></td><td>Înainte ca Claude să folosească o unealtă — poate bloca acțiunea</td></tr>
-      <tr><td><code>PostToolUse</code></td><td>După folosirea unei unelte — bun pentru formatare automată</td></tr>
-      <tr><td><code>UserPromptSubmit</code></td><td>La fiecare prompt al utilizatorului</td></tr>
-      <tr><td><code>SessionStart</code></td><td>La începutul sesiunii</td></tr>
-      <tr><td><code>PreCompact</code></td><td>Înainte de compactare — poți adăuga context important</td></tr>
-    </table>
+    <div class="callout" style="margin-bottom:20px;">
+      <strong>Notă: numele se schimbă.</strong> Claude Code publică des. Evenimentele, câmpurile JSON și codurile de ieșire se pot schimba de la o lună la alta. La începutul fiecărei sesiuni rulează <code>/help</code> și verifică docul oficial (<code>code.claude.com/docs/en/hooks</code>). Ghidul predă <strong>principii care rezistă</strong>, nu sintaxă săptămânală.
+    </div>
 
-    <h3 style="margin-top:16px;">Cazuri de folosire</h3>
-    <ul>
-      <li>Format automat după <code>Edit</code> (Prettier, dotnet format).</li>
-      <li>Scanare de secrete înainte de <code>Write</code>.</li>
-      <li>Blocarea comenzilor periculoase (<code>rm -rf</code>, <code>DROP TABLE</code>).</li>
-      <li>Notificări la task-uri lungi (notify-send, Slack webhook).</li>
-      <li>Log de audit al acțiunilor Claude.</li>
-    </ul>
+    <div class="callout callout-blue" style="margin-bottom:20px;">
+      <strong>Două lucruri de reținut ca fiind curente</strong> (verificat pe docul oficial, iulie 2026) — fixează-le explicit:
+      <ul style="margin:8px 0 0;">
+        <li>Lista de evenimente e <strong>mult mai mare</strong> decât subsetul practic de azi (<code>SessionEnd</code>, <code>SubagentStart/Stop</code>, <code>PostToolBatch</code>, <code>Notification</code>…) — dar cele 5–6 din segmentul 2 acoperă tot ce faci în prima lună.</li>
+        <li>Hook-urile sunt <strong>fail-open</strong> și <strong>nu</strong> sunt o graniță de securitate dură — pentru interdicții hard folosești sistemul de permisiuni (S1), nu hook-uri.</li>
+      </ul>
+    </div>
 
-    <div class="artefact">minim un hook configurat (guardrail sau formatare)</div>
-  </div>
+    <div class="section-label">Firul care leagă tot programul — de la „sper" la „garantez"</div>
+    <div class="card">
+      <p>Un singur fir leagă sesiunea:</p>
+      <ul>
+        <li><strong><code>CLAUDE.md</code>, skills, subagenți = speranță calificată.</strong> Pui instrucțiunea în context, modelul o vede, de obicei o respectă. Probabilistic.</li>
+        <li><strong>Hook = determinism.</strong> Codul rulează la eveniment, orice ar fi. Un <code>PreToolUse</code> care blochează <code>rm -rf</code> îl blochează <strong>și</strong> când modelul e convins că e sigur. „Un hook nu halucinează."</li>
+      </ul>
+      <p style="margin-top:12px;">Compromisul (și e real): hook-urile sunt <strong>rigide</strong>. Sunt cod pe care-l scrii și-l întreții, rulează orbește, și un hook prost blochează munca legitimă. Deci nu pui totul în hook-uri — pui <strong>cele câteva reguli care chiar trebuie să țină întotdeauna</strong>. Restul rămâne instrucțiune (fapt/procedură).</p>
+    </div>
+
+    <div class="section-label">Obiective de învățare</div>
+    <div class="card">
+      <p style="color:var(--ink-soft);font-size:.93rem;margin-bottom:8px;">La final, fiecare știe:</p>
+      <ul>
+        <li>Ce e un hook, concret: un handler (de obicei un script shell) legat de un <strong>eveniment</strong> din ciclul de viață Claude Code, configurat în <code>settings.json</code>.</li>
+        <li><strong>Evenimentele care contează</strong>: <code>PreToolUse</code> (înainte de o unealtă — poate <strong>bloca</strong>), <code>PostToolUse</code> (după — formatare, lint), <code>UserPromptSubmit</code> (injectează context), <code>SessionStart</code> (încarcă stare), <code>Stop</code>/<code>SubagentStop</code> (împiedică oprirea).</li>
+        <li>Cum se <strong>configurează</strong>: structura <code>hooks</code> → eveniment → <code>matcher</code> → listă de handlere, și cele trei locații (personal / proiect-comis / proiect-local).</li>
+        <li>Ce <strong>primește</strong> un hook (JSON pe stdin: <code>tool_input</code>, <code>cwd</code>, <code>hook_event_name</code>…) și cum <strong>controlează</strong>: cod de ieșire <code>0</code> (ok), <code>2</code> (blochează), altceva (eroare ne-blocantă); sau JSON structurat.</li>
+        <li>Cazuri reale pentru o echipă SQL→full-stack: guardrails (<code>DROP TABLE</code>, secrete), formatare automată, audit, notificări.</li>
+        <li>De ce hook-urile <strong>nu</strong> sunt o graniță de securitate dură (fail-open) — și că pentru interdicții hard e sistemul de <strong>permisiuni</strong> (S1).</li>
+        <li>Cum <strong>verifică</strong> empiric că un hook (a) se declanșează pe evenimentul corect și (b) face ce trebuie (blochează / formatează / injectează).</li>
+      </ul>
+    </div>
+
+    <div class="callout callout-blue" style="margin-bottom:20px;">
+      <strong>Notă de scop:</strong> miezul zilei e <strong>segmentul 4</strong> (input &amp; control prin coduri de ieșire — validatorul care blochează) plus <strong>segmentul 6</strong> (regula din prep devine hook + dovada). Segmentul 5 (cazuri reale) e locul unde sesiunea „aterizează" în munca lor — leagă direct de regulile din <code>CLAUDE.md</code>-ul global al echipei (DROP TABLE, CNP, prod). Dacă timpul strânge, comprimă segmentul 2 (lista de evenimente devine referință) și protejează 4 și 6. Capcana conceptuală de fixat: <strong>hook ≠ permisiune</strong>. Hook-ul e fail-open; permisiunea e autoritatea.
+    </div>
+
+    <div class="section-label">Structura zilei</div>
+    <div class="agenda">
+      <div class="agenda-row">
+        <div class="agenda-time">90–110 min</div>
+        <div class="agenda-content"><strong>Tutorial</strong> — 6 segmente (vezi mai jos). Demo pe repo-ul de nisip, nu slide-uri.</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">70–85 min</div>
+        <div class="agenda-content"><strong>Lucru aplicat</strong> — un hook funcțional, comis, din propria regulă din prep.</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">15–20 min</div>
+        <div class="agenda-content"><strong>Schimb de practici</strong> — ~2 min/persoană, notate în „AI Wins &amp; Fails".</div>
+      </div>
+    </div>
+
+    <div class="section-label">Tutorial (90–110 min) — 6 segmente</div>
+
+    <div class="card">
+      <h3>1. De ce hooks — de la speranță la determinism <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">10–15 min</span></h3>
+      <ul>
+        <li><strong>Punctul de plecare:</strong> regula din prep-ul S4 — ceva ce vrei mereu, dar Claude uneori ratează. „Formatează după edit." „Nu comite secrete." „Rulează testele înainte de commit."</li>
+        <li><strong>De ce contează:</strong> o instrucțiune în <code>CLAUDE.md</code> e citită și <em>de obicei</em> respectată. Dar „de obicei" nu e bun pentru reguli care <strong>trebuie</strong> să țină — un secret comis o singură dată e deja în istoric. Un hook mută regula din stratul „modelul decide" în stratul „codul impune".</li>
+        <li><strong>Criteriul (repetat toată ziua):</strong> dacă regula trebuie să țină întotdeauna, determinist → hook. Dacă e o preferință pe care modelul o urmează bine → rămâne instrucțiune. Nu pui totul în hook-uri; pui cele câteva reguli critice.</li>
+      </ul>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> pune în <code>CLAUDE.md</code> „rulează întotdeauna formatarea după edit" și arată că uneori Claude o face, alteori uită. Apoi anunță: „la finalul zilei, un <code>PostToolUse</code> o face <strong>de fiecare dată</strong>, fără să depindă de memoria modelului."
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>2. Ciclul de viață: evenimentele <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <p>Un hook se leagă de un <strong>eveniment</strong>. Sunt multe; astea sunt cele care-ți acoperă prima lună:</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <tr><th>Eveniment</th><th>Când se declanșează</th><th>Blochează?</th><th>Bun pentru</th></tr>
+          <tr><td><code>PreToolUse</code></td><td>înainte ca o unealtă să ruleze</td><td><strong>Da</strong></td><td>guardrails: blochează comenzi/edituri periculoase</td></tr>
+          <tr><td><code>PostToolUse</code></td><td>după ce o unealtă a reușit</td><td>Nu</td><td>formatare automată, lint, verificări</td></tr>
+          <tr><td><code>UserPromptSubmit</code></td><td>la fiecare prompt al tău, înainte de procesare</td><td>Da</td><td>injectează context (branch, ticket, stare)</td></tr>
+          <tr><td><code>SessionStart</code></td><td>la începutul/reluarea sesiunii</td><td>Nu</td><td>încarcă stare de proiect în context</td></tr>
+          <tr><td><code>Stop</code> / <code>SubagentStop</code></td><td>când Claude / un subagent termină</td><td>Da</td><td>împiedică oprirea până se termină ceva (ex. testele)</td></tr>
+          <tr><td><code>PreCompact</code></td><td>înainte de compactarea contextului</td><td>Da</td><td>păstrează context important înainte de compactare</td></tr>
+        </table>
+      </div>
+      <ul style="margin-top:12px;">
+        <li><strong><code>matcher</code>-ul</strong> filtrează <em>ce</em> declanșează hook-ul. Pentru evenimentele de unelte, matcher-ul e <strong>numele uneltei</strong>: <code>Bash</code>, <code>Edit|Write</code>, sau un regex. Omis sau <code>*</code> = orice.</li>
+        <li><strong>Fitilul din S4:</strong> <code>SubagentStart</code>/<code>SubagentStop</code> sunt exact evenimentele de ciclu de viață al subagenților din S4 — poți rula un setup înainte și un cleanup după.</li>
+      </ul>
+      <div class="callout" style="margin-top:12px;">
+        Lista completă de evenimente e mult mai lungă (<code>SessionEnd</code>, <code>Notification</code>, <code>PostToolBatch</code>, <code>PermissionRequest</code>…). Nu le înveți pe toate azi — <code>/help</code> și docul le au când ai nevoie. Cele 6 de mai sus acoperă tot ce construiești în practică la început.
+      </div>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> arată <code>/hooks</code> (listează hook-urile configurate) — probabil gol acum. Explică pe diagramă unde pică fiecare eveniment în ciclul unui turn: prompt → <code>UserPromptSubmit</code> → model → <code>PreToolUse</code> → unealtă → <code>PostToolUse</code> → … → <code>Stop</code>.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>3. Cum se configurează — <code>settings.json</code> <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <p>Hook-urile trăiesc în fișierele de settings, cu trei niveluri de imbricare: eveniment → <code>matcher</code> → listă de handlere.</p>
+      <div class="template-block">{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/format.sh"
+          }
+        ]
+      }
+    ]
+  }
+}</div>
+      <p style="margin-top:12px;"><strong>Locațiile</strong> (aceeași ierarhie ca la skills și <code>CLAUDE.md</code>):</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <tr><th>Locație</th><th>Cale</th><th>Se aplică la</th></tr>
+          <tr><td>Personal</td><td><code>~/.claude/settings.json</code></td><td>toate proiectele tale</td></tr>
+          <tr><td>Proiect (comis)</td><td><code>.claude/settings.json</code></td><td>acest repo, <strong>comis în git</strong> — regula echipei</td></tr>
+          <tr><td>Proiect (local)</td><td><code>.claude/settings.local.json</code></td><td>acest repo, <strong>gitignored</strong> — doar al tău</td></tr>
+          <tr><td>Managed</td><td>settings administrate</td><td>impus de organizație, nu poate fi suprascris</td></tr>
+        </table>
+      </div>
+      <ul style="margin-top:12px;">
+        <li><strong>Decizia comis vs. local:</strong> o regulă care trebuie să țină pentru <strong>toată echipa</strong> (guardrail pe prod, scanare secrete) merge în <code>.claude/settings.json</code>, comisă. Un hook personal (notificare pe Slack) merge în <code>.local.json</code> sau în settings-ul personal.</li>
+        <li><strong>Tipuri de handler:</strong> <code>command</code> (script — cel mai folosit) e cel de azi. Mai există <code>http</code>, <code>prompt</code>, <code>agent</code>, <code>mcp_tool</code> — le menționezi, nu le predai.</li>
+        <li><strong><code>$CLAUDE_PROJECT_DIR</code></strong> — placeholder pentru rădăcina proiectului, ca scriptul să fie găsit indiferent de directorul curent.</li>
+      </ul>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> adaugă live hook-ul de formatare de mai sus în <code>.claude/settings.json</code> pe LMS, cu un <code>format.sh</code> minimal. Fă un edit și arată că formatarea rulează automat, fără să o ceri.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>4. Input &amp; control: coduri de ieșire și JSON <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <p>Miezul mecanic al zilei. Hook-ul primește un JSON pe stdin, cu tot ce trebuie ca să decidă:</p>
+      <div class="template-block">{
+  "session_id": "...",
+  "cwd": "/cale/proiect",
+  "hook_event_name": "PreToolUse",
+  "tool_input": { "command": "git push --force" }
+}</div>
+      <p style="margin-top:12px;"><strong>Cum controlează — prin codul de ieșire:</strong></p>
+      <div style="overflow-x:auto;">
+        <table>
+          <tr><th>Cod</th><th>Înseamnă</th></tr>
+          <tr><td><strong>0</strong></td><td>Succes. Pentru majoritatea evenimentelor stdout merge în debug log.</td></tr>
+          <tr><td><strong>2</strong></td><td><strong>Eroare blocantă.</strong> Efectul depinde de eveniment: <code>PreToolUse</code> <strong>blochează</strong> unealta, <code>Stop</code> împiedică oprirea, <code>UserPromptSubmit</code> respinge promptul. <strong>stderr merge la Claude</strong> ca feedback.</td></tr>
+          <tr><td><strong>altceva</strong></td><td>Eroare ne-blocantă. Se loghează, execuția continuă.</td></tr>
+        </table>
+      </div>
+      <p style="margin-top:12px;">Alternativ, hook-ul poate scoate <strong>JSON structurat</strong> pe stdout (cod 0) pentru control fin: <code>decision</code>, <code>permissionDecision: deny/allow/ask</code>, sau <code>additionalContext</code> (injectează text în atenția lui Claude).</p>
+      <p style="margin-top:12px;"><strong>Exemplul canonic — validatorul de comenzi periculoase</strong> (<code>PreToolUse</code> pe <code>Bash</code>):</p>
+      <div class="template-block">#!/bin/bash
+COMMAND=$(jq -r '.tool_input.command' &lt; /dev/stdin)
+
+if echo "$COMMAND" | grep -qE '\b(DROP TABLE|TRUNCATE|rm -rf)\b'; then
+  echo "Blocat de politica echipei: comandă distructivă." &gt;&amp;2
+  exit 2   # blochează unealta; mesajul merge la Claude
+fi
+exit 0</div>
+      <p style="margin-top:12px;">Ăsta e exact guardrail-ul care leagă S5 de regulile de siguranță ale echipei. Codul <code>2</code> oprește acțiunea <strong>înainte</strong> să se întâmple, indiferent ce a decis modelul.</p>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> pune validatorul ca <code>PreToolUse</code> pe <code>Bash</code>, apoi cere-i lui Claude ceva ce conține <code>rm -rf</code> sau <code>DROP TABLE</code> și arată că e blocat, cu mesajul apărând în conversație. Contrast cu S1: acolo <strong>tu</strong> aprobai; aici scriptul refuză singur, determinist.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>5. Cazuri reale pentru echipa SQL→full-stack <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <p>Aici sesiunea aterizează în munca lor. Mapare directă pe regulile din <code>CLAUDE.md</code>-ul global al echipei:</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <tr><th>Regulă (din munca reală)</th><th>Hook</th></tr>
+          <tr><td>Nu comite CNP / connection string / API key</td><td><code>PreToolUse</code> pe <code>Write|Edit</code> — scanează conținutul, <code>exit 2</code> dacă găsește</td></tr>
+          <tr><td>Nu rula <code>DROP TABLE</code> / <code>DELETE</code> fără <code>WHERE</code></td><td><code>PreToolUse</code> pe <code>Bash</code> — validatorul din segmentul 4</td></tr>
+          <tr><td>Formatează după fiecare edit (dotnet format, prettier)</td><td><code>PostToolUse</code> pe <code>Edit|Write</code></td></tr>
+          <tr><td>Log de audit al acțiunilor Claude</td><td><code>PostToolUse</code> pe <code>*</code> — scrie într-un fișier</td></tr>
+          <tr><td>Notificare când termină un task lung</td><td><code>Stop</code> — notify-send / webhook Slack</td></tr>
+          <tr><td>Încarcă branch-ul și ticket-ul curent la start</td><td><code>SessionStart</code> sau <code>UserPromptSubmit</code> — <code>additionalContext</code></td></tr>
+        </table>
+      </div>
+      <div class="warning-card">
+        <h4>⚠️ Suprafață de securitate — două lucruri.</h4>
+        <p style="margin:0;font-size:.93rem;">(1) Hook-urile rulează <strong>automat</strong>, cu privilegiile shell-ului tău. Un hook dintr-un repo în care ai încredere scăzută poate rula orice — citește hook-urile de proiect înainte să te încrezi în repo (aceeași disciplină ca la skills în S3). (2) Hook-urile sunt <strong>fail-open</strong>: dacă scriptul crapă sau pattern-ul e prost, acțiunea <strong>trece</strong>. Deci un hook <strong>nu</strong> e o graniță de securitate dură — pentru interdicții care trebuie să țină cu adevărat, folosești sistemul de <strong>permisiuni</strong> (S1), care e autoritatea. Hook-ul e o plasă utilă, nu un zid.</p>
+      </div>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> ia scanerul de secrete (<code>PreToolUse</code> pe <code>Write|Edit</code>) și încearcă să scrii un fișier cu un connection string fals — arată blocarea. Apoi menționează explicit: „dacă vreți asta impus dur, la nivel de organizație, e managed permissions, nu un hook local."
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>6. De la regulă la hook, generat cu Claude — și cum verifici <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <p>Ținta zilei, concret: fiecare pleacă cu <strong>cel puțin un hook funcțional, comis</strong>, făcut din regula lui din prep. Nu-l scriem manual — îi cerem lui Claude. Dar aici review-ul e <strong>cel mai important din tot programul</strong>: hook-ul rulează pe mașina ta, automat, cu privilegiile tale.</p>
+      <div class="prompt-box">
+        <span class="prompt-box-label">Pasul 1 — generează hook-ul din regulă</span>
+        „Vreau o regulă care să țină mereu: [regula din prep]. Fă-mi un hook pentru asta — spune-mi ce eveniment (<code>PreToolUse</code>/<code>PostToolUse</code>/…), scrie scriptul, și dă-mi intrarea pentru <code>.claude/settings.json</code>. Arată-mi și scriptul, și config-ul înainte să le scrii."
+      </div>
+      <div class="prompt-box" style="margin-top:12px;">
+        <span class="prompt-box-label">Pasul 2 — citește înainte să accepți (regula supremă)</span>
+        Un hook e cod care rulează singur la fiecare eveniment. Citește scriptul linie cu linie. Ce comenzi rulează? Poate bloca ceva legitim? Are un <code>exit 2</code> acolo unde trebuie? Nu accepți un hook necitit — niciodată.
+      </div>
+      <p style="margin-top:12px;"><strong>Pasul 3 — dovada „declanșare + efect".</strong> Un hook contează doar dacă (a) se declanșează pe evenimentul corect și (b) face ce voiai. Se testează empiric:</p>
+      <ol>
+        <li><strong>Se declanșează?</strong> → provoacă evenimentul (fă un edit pentru <code>PostToolUse</code>, încearcă comanda interzisă pentru <code>PreToolUse</code>) și confirmă că hook-ul a rulat (<code>/hooks</code>, sau efectul vizibil).</li>
+        <li><strong>Face ce trebuie?</strong> → guardrail: acțiunea interzisă e <strong>blocată</strong>? formatare: fișierul e <strong>formatat</strong>? injectare: contextul <strong>apare</strong>?</li>
+      </ol>
+      <div class="callout" style="margin-top:12px;">
+        <strong>Când NU faci hook</strong> (la fel de important):
+        <ul style="margin:8px 0 0;">
+          <li>Regula e o preferință pe care modelul o respectă bine → rămâne în <code>CLAUDE.md</code>, nu merită cod de întreținut.</li>
+          <li>Vrei interdicție hard, de securitate → <strong>permisiuni</strong> (S1), nu hook (fail-open).</li>
+          <li>Regula e „uneori da, uneori nu, depinde de context" → aia e judecată, nu determinism; nu se pune în hook.</li>
+        </ul>
+      </div>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> rulează cei trei pași live pe LMS, pornind de la o regulă reală (formatare sau scanare secrete). Arată scriptul <strong>înainte</strong> de accept (nu aprobi orbește — și niciunde nu contează mai mult ca aici), apoi dovada: provoci evenimentul, confirmi efectul.
+      </div>
+    </div>
+
+    <div class="section-label">Lucru aplicat (70–85 min)</div>
+    <div class="card">
+      <p><strong>Brief:</strong> fiecare iese cu cel puțin un hook funcțional, comis în git pe repo-ul LMS (din S0–S4), făcut din propria regulă din prep — și cu <strong>dovada</strong> că se declanșează și face ce trebuie.</p>
+      <ol>
+        <li><strong>Alege regula</strong> — cea din prep-ul S4. Candidați siguri: formatare după edit (<code>PostToolUse</code>), scanare secrete (<code>PreToolUse</code> pe <code>Write|Edit</code>), blocare comenzi distructive (<code>PreToolUse</code> pe <code>Bash</code>).</li>
+        <li><strong>Testul hook/instrucțiune</strong> — chiar trebuie determinist? Dacă e o preferință pe care modelul o respectă → rămâne în <code>CLAUDE.md</code>. Dacă vrei interdicție de securitate hard → e permisiune, nu hook.</li>
+        <li><strong>Generează hook-ul</strong> — promptul de la segmentul 6, pasul 1. Alege evenimentul corect (blochezi → <code>PreToolUse</code>; reacționezi → <code>PostToolUse</code>).</li>
+        <li><strong>Citește scriptul înainte să accepți</strong> — linie cu linie. E cod care rulează pe mașina ta, automat. Cel mai important review din program.</li>
+        <li><strong>Dovada declanșare/efect</strong> — provoacă evenimentul și confirmă: hook-ul a rulat? a făcut ce voiai (blocat / formatat / injectat)?</li>
+        <li><strong>Comite</strong> hook-ul de proiect (<code>chore: add format-on-edit hook</code>), dacă e regulă de echipă. Hook-urile personale (settings personal / <code>.local.json</code>) <strong>nu</strong> se comit.</li>
+      </ol>
+      <p><strong>Extensie (dacă ai terminat):</strong> adaugă un al doilea hook complementar — dacă ai făcut formatare (<code>PostToolUse</code>), adaugă un guardrail (<code>PreToolUse</code>). Sau: fă un hook <code>SessionStart</code> care injectează branch-ul git curent în context și simte diferența la începutul sesiunii următoare.</p>
+      <div class="artefact">cel puțin un hook funcțional în <code>.claude/settings.json</code> (+ scriptul lui în <code>.claude/hooks/</code>) pe repo-ul LMS, cu dovada că se declanșează pe evenimentul corect și face ce trebuie</div>
+    </div>
+
+    <div class="section-label">Schimb de practici (15–20 min)</div>
+    <div class="card">
+      <p>Fiecare, ~2 min:</p>
+      <ul>
+        <li>Hook-ul făcut, din ce regulă a venit, pe ce eveniment, și dacă blochează sau reacționează.</li>
+        <li>Un moment „aici s-a văzut diferența" — determinismul: a rulat de fiecare dată, spre deosebire de instrucțiunea din <code>CLAUDE.md</code> pe care modelul o rata uneori.</li>
+      </ul>
+      <p style="color:var(--ink-soft);font-size:.93rem;">Se notează în docul „AI Wins &amp; Fails", coloana „Candidat standard?" — de-aici alegeți, în Faza 3, ce hook-uri intră în setul de referință al echipei.</p>
+    </div>
+
+    <div class="section-label">Capcane comune</div>
+
+    <div class="warning-card">
+      <h4>Hook confundat cu permisiune.</h4>
+      <p style="margin:0;font-size:.93rem;">Cea mai importantă distincție a zilei. Hook-urile sunt <strong>fail-open</strong> — dacă scriptul crapă, acțiunea trece. Pentru interdicții de securitate dure → sistemul de permisiuni (S1). Hook-ul e plasă, nu zid.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Confuzia codurilor de ieșire.</h4>
+      <p style="margin:0;font-size:.93rem;"><code>2</code> blochează (și stderr merge la Claude); orice alt cod ne-zero e doar eroare ne-blocantă, execuția continuă. Cine vrea să blocheze și pune <code>exit 1</code> se miră că acțiunea trece.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Matcher prea larg.</h4>
+      <p style="margin:0;font-size:.93rem;">Un hook cu matcher <code>*</code> care rulează un script scump la <strong>fiecare</strong> unealtă încetinește totul. Țintește evenimentul și unealta.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Comis vs. local greșit.</h4>
+      <p style="margin:0;font-size:.93rem;">O regulă de echipă pusă în <code>.local.json</code> (gitignored) nu ajunge la nimeni altcineva. Un hook personal pus în <code>.claude/settings.json</code> comis îl impune tuturor. Alege conștient.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Încredere oarbă într-un hook străin.</h4>
+      <p style="margin:0;font-size:.93rem;">Un hook dintr-un repo rulează automat, cu privilegiile tale. Citește-l înainte să te încrezi în repo — exact ca skill-urile în S3.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Hook care atârnă.</h4>
+      <p style="margin:0;font-size:.93rem;">Un script fără timeout care blochează = sesiune înghețată. Ai grijă la comenzi lente.</p>
+    </div>
+    <div class="warning-card">
+      <h4>„Un hook rezolvă tot."</h4>
+      <p style="margin:0;font-size:.93rem;">Nu. Hook-urile sunt pentru cele câteva reguli care trebuie să țină determinist. Restul rămâne instrucțiune. Prea multe hook-uri = fragilitate și lentoare.</p>
+    </div>
+
+    <div class="section-label">Prep pentru S6</div>
+    <div class="card">
+      <p>Temă de 5 minute: fiecare notează <strong>un sistem extern la care ar vrea ca Claude să ajungă</strong> — baza de date a echipei, un API intern, Jira, GitHub, Slack. Până acum tot ce ai construit (fapte, proceduri, subagenți, hook-uri) lucrează cu uneltele proprii ale Claude Code, în interiorul lui. În S6 deschidem ușa spre exterior: <strong>MCP</strong> (Model Context Protocol) — servere care conectează Claude la sisteme reale. Notează ce ai conecta primul și ce l-ai lăsa să facă acolo (doar citire? și scriere?).</p>
+    </div>
+
+  </div><!-- /facilitator -->
+
+  <!-- ══ ECHIPA PANEL ══ -->
+  <div id="echipa" class="role-panel">
+
+    <div class="callout callout-blue">
+      <strong>Context:</strong> în S4 ai izolat munca grea într-un subagent. Azi transformi <strong>o regulă pe care o vrei mereu, dar Claude uneori o ratează</strong> — cea din prep-ul S4 — dintr-o <em>speranță</em> (instrucțiune în <code>CLAUDE.md</code>) într-o <em>garanție</em> (un hook care rulează determinist la un eveniment). Exercițiile urmează pașii de lucru aplicat din tutorial.
+    </div>
+    <div class="callout" style="margin-bottom:24px;">
+      <strong>Sursa exercițiilor:</strong> setul de mai jos e derivat direct din secțiunea „lucru aplicat" a ghidului de facilitare S5 — cadrul corect de urmat azi.
+    </div>
+    <div class="callout callout-green" style="margin-bottom:24px;">
+      <strong>Ținta zilei:</strong> la final ai <strong>cel puțin un hook funcțional, comis în git</strong> pe repo-ul LMS, făcut din propria regulă — și ai <strong>dovedit</strong> că se declanșează pe evenimentul corect și face ce voiai.
+    </div>
+
+    <!-- Ex 1 -->
+    <div class="section-label">Exercițiul 1 — Alege regula &amp; testul hook/instrucțiune</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 1</span>
+        <span class="ex-time">≈10 min</span>
+        <span class="ex-trains">Antrenează: criteriul determinism vs. instrucțiune vs. permisiune</span>
+      </div>
+      <p>Înainte să faci un hook, decide dacă merită unul. Ia regula din prep-ul S4 (o vrei mereu, Claude uneori o ratează). Dacă n-ai una bună, candidați siguri pe LMS: formatare după edit, scanare secrete, blocare comenzi distructive.</p>
+      <p style="margin-top:8px;">Aplică testul pe trei căi:</p>
+      <ul>
+        <li>Trebuie să țină <strong>întotdeauna</strong>, determinist? → hook.</li>
+        <li>E o preferință pe care modelul o respectă de obicei? → rămâne în <code>CLAUDE.md</code>, nu merită cod.</li>
+        <li>E o interdicție de <strong>securitate</strong> care trebuie să țină cu adevărat? → <strong>permisiuni</strong> (S1), nu hook (fail-open).</li>
+      </ul>
+      <p style="margin-top:8px;">Dacă e hook: <strong>blochezi</strong> ceva (→ <code>PreToolUse</code>) sau <strong>reacționezi</strong> după (→ <code>PostToolUse</code>)?</p>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Ai o regulă-candidat și poți spune într-o frază de ce e treabă de hook (nu instrucțiune, nu permisiune) și pe ce eveniment.
+      </div>
+    </div>
+
+    <!-- Ex 2 -->
+    <div class="section-label">Exercițiul 2 — Harta evenimentelor pe un turn real</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 2</span>
+        <span class="ex-time">≈10 min</span>
+        <span class="ex-trains">Antrenează: ciclul de viață și evenimentele</span>
+      </div>
+      <p>Un hook se leagă de un eveniment. Ca să alegi corect, trebuie să știi unde pică fiecare în ciclul unui turn.</p>
+      <ol>
+        <li>Rulează <code>/hooks</code> pe LMS — vezi ce e configurat acum (probabil nimic).</li>
+        <li>Pentru regula ta din Ex. 1, plasează evenimentul pe firul unui turn: <code>prompt → UserPromptSubmit → model → PreToolUse → unealtă → PostToolUse → … → Stop</code>.</li>
+        <li>Confirmă alegerea: dacă vrei să <strong>oprești</strong> o acțiune înainte să se întâmple, e <code>PreToolUse</code> (poate bloca). Dacă vrei să <strong>reacționezi</strong> la ceva deja făcut (formatare), e <code>PostToolUse</code>.</li>
+      </ol>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Poți arăta pe firul turnului unde pică evenimentul tău și de ce e cel corect pentru regula ta.
+      </div>
+    </div>
+
+    <!-- Ex 3 -->
+    <div class="section-label">Exercițiul 3 — Primul hook: formatare automată (<code>PostToolUse</code>)</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 3</span>
+        <span class="ex-time">≈15 min</span>
+        <span class="ex-trains">Antrenează: configurarea în settings.json + tipul command</span>
+      </div>
+      <p>Începe cu un hook care <strong>reacționează</strong>, nu blochează — mai puțin riscant, bun ca prim contact. Formatarea automată după edit e candidatul clasic.</p>
+      <div class="prompt-box">
+        <span class="prompt-box-label">Prompt de pornire</span>
+        „Fă-mi un hook <code>PostToolUse</code> pe <code>Edit|Write</code> care rulează formatarea proiectului (prettier / dotnet format, ce se potrivește pe LMS). Scriptul în <code>.claude/hooks/</code>, config-ul în <code>.claude/settings.json</code>. Arată-mi ambele înainte să le scrii."
+      </div>
+      <p style="margin-top:12px;">Citește structura config-ului: eveniment → <code>matcher: "Edit|Write"</code> → handler <code>type: command</code>. Verifică <code>$CLAUDE_PROJECT_DIR</code> în calea scriptului. Apoi fă un edit pe un fișier de pe LMS și confirmă că formatarea rulează automat, fără să o ceri.</p>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Un edit declanșează formatarea automat, și înțelegi cele trei niveluri de imbricare (eveniment → matcher → handler).
+      </div>
+    </div>
+
+    <!-- Ex 4 -->
+    <div class="section-label">Exercițiul 4 — Un guardrail care blochează (<code>PreToolUse</code> + exit 2)</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 4</span>
+        <span class="ex-time">≈20 min</span>
+        <span class="ex-trains">Antrenează: input JSON + control prin coduri de ieșire</span>
+      </div>
+      <p>Miezul zilei: un hook care <strong>oprește</strong> o acțiune periculoasă înainte să se întâmple. Codul de ieșire <code>2</code> blochează unealta.</p>
+      <div class="prompt-box">
+        <span class="prompt-box-label">Prompt de pornire</span>
+        „Fă-mi un hook <code>PreToolUse</code> pe <code>Bash</code> care citește <code>tool_input.command</code> din JSON-ul de pe stdin și, dacă găsește <code>DROP TABLE</code>, <code>TRUNCATE</code> sau <code>rm -rf</code>, iese cu cod 2 și un mesaj pe stderr. Arată-mi scriptul înainte."
+      </div>
+      <p style="margin-top:12px;"><strong>Citește scriptul linie cu linie.</strong> Confirmă: extrage corect comanda din JSON? pattern-ul e cel vrut? <code>exit 2</code> la match, <code>exit 0</code> altfel? Apoi cere-i lui Claude ceva ce conține o comandă interzisă (ex. un <code>rm -rf</code> pe un folder de test) și confirmă că e <strong>blocat</strong>, cu mesajul tău apărând în conversație.</p>
+      <div class="warning-card">
+        <h4>⚠️ Coduri de ieșire.</h4>
+        <p style="margin:0;font-size:.93rem;">Doar <code>2</code> blochează (și stderr merge la Claude). <code>exit 1</code> sau alt cod ne-zero e doar eroare ne-blocantă — acțiunea <strong>trece</strong>. Cine vrea să blocheze cu <code>exit 1</code> se miră că nu merge.</p>
+      </div>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        O comandă interzisă e blocată determinist, iar tu ai citit scriptul înainte să-l accepți.
+      </div>
+    </div>
+
+    <!-- Ex 5 -->
+    <div class="section-label">Exercițiul 5 — Dovada: declanșare + efect</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 5</span>
+        <span class="ex-time">≈20 min</span>
+        <span class="ex-trains">Antrenează: verificarea empirică — declanșare + efect + determinism</span>
+      </div>
+      <p>Un hook contează doar dacă (a) se declanșează pe evenimentul corect și (b) face ce voiai. Se testează, nu se presupune — și, spre deosebire de o instrucțiune din <code>CLAUDE.md</code>, un hook trebuie să funcționeze <strong>de fiecare dată</strong>.</p>
+      <ol>
+        <li><strong>Declanșarea:</strong> provoacă evenimentul hook-ului tău — fă un edit (<code>PostToolUse</code>), încearcă comanda interzisă (<code>PreToolUse</code>). Confirmă că a rulat (efect vizibil sau <code>/hooks</code>).</li>
+        <li><strong>Efectul:</strong> guardrail → acțiunea e blocată? formatare → fișierul e formatat? injectare → contextul apare?</li>
+        <li><strong>Determinismul:</strong> repetă de 2–3 ori. Contrast cu instrucțiunea din <code>CLAUDE.md</code> pe care modelul o rata uneori — hook-ul rulează la fel de fiecare dată. Ăsta e câștigul.</li>
+      </ol>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Poți arăta că hook-ul se declanșează și face ce trebuie, repetabil — și poți numi diferența față de aceeași regulă lăsată ca instrucțiune.
+      </div>
+    </div>
+
+    <!-- Ex 6 -->
+    <div class="section-label">Exercițiul 6 — Comite &amp; (opțional) al doilea hook</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 6</span>
+        <span class="ex-time">≈15 min</span>
+        <span class="ex-trains">Antrenează: decizia comis/local + forma finală</span>
+      </div>
+      <p><strong>Ce faci:</strong></p>
+      <ol>
+        <li>Decide locația conștient: regulă de <strong>echipă</strong> (guardrail, formatare) → <code>.claude/settings.json</code>, <strong>comisă</strong>. Hook <strong>personal</strong> (notificare pe Slack) → settings personal sau <code>.claude/settings.local.json</code> (gitignored).</li>
+        <li><strong>Comite</strong> hook-ul de proiect în git (<code>chore: add &lt;nume&gt; hook</code>) — și scriptul din <code>.claude/hooks/</code>.</li>
+        <li>Notează pentru schimbul de practici: din ce regulă a venit, pe ce eveniment, dacă blochează sau reacționează, și momentul „aici s-a văzut determinismul".</li>
+      </ol>
+      <div class="callout callout-green" style="margin:12px 0;">
+        <strong>Extensie (dacă ai terminat):</strong> adaugă un al doilea hook complementar. Dacă ai făcut formatare (<code>PostToolUse</code>), adaugă un guardrail (<code>PreToolUse</code> scaner de secrete pe <code>Write|Edit</code>). Sau un <code>SessionStart</code> care injectează branch-ul git curent în context — și simte diferența la începutul sesiunii următoare.
+      </div>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Ai cel puțin un hook comis, care se declanșează corect și are dovada declanșare/efect — iar oricine clonează repo-ul LMS moștenește regula din prima sesiune Claude Code.
+      </div>
+    </div>
+
+    <!-- Artefact -->
+    <div class="section-label">Artefactul sesiunii</div>
+    <div class="card">
+      <div class="artefact">cel puțin un hook funcțional în <code>.claude/settings.json</code> (+ scriptul lui în <code>.claude/hooks/</code>), comis în git pe repo-ul LMS, cu dovada că se declanșează pe evenimentul corect și face ce trebuie</div>
+    </div>
+
+  </div><!-- /echipa -->
+
+  <!-- ══ SELF-CHECK ══ -->
+  <section class="selfcheck">
+    <div class="section-label">Verifică-te</div>
+    <div class="card">
+      <div class="sc-q" data-correct="2">
+        <p class="sc-question"><strong>1.</strong> Care e diferența de fond între o regulă pusă în <code>CLAUDE.md</code> și aceeași regulă pusă într-un hook?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Niciuna — amândouă spun lui Claude ce să facă, doar în locuri diferite.</button>
+          <button type="button" class="sc-opt"><code>CLAUDE.md</code> e mai puternic: e citit la fiecare sesiune, deci regula e mereu activă.</button>
+          <button type="button" class="sc-opt">Regula din <code>CLAUDE.md</code> e o speranță (modelul o citește și de obicei o respectă); hook-ul e determinist (codul rulează la eveniment, indiferent ce decide modelul).</button>
+        </div>
+        <div class="sc-explain">Firul zilei: <code>CLAUDE.md</code>/skills/subagenți depind de <strong>decizia modelului</strong> să urmeze instrucțiunea — probabilistic. Un hook e <strong>cod legat de un eveniment</strong> care rulează de fiecare dată, orice ar „crede" modelul. „Un hook nu halucinează." De aceea regulile care <em>trebuie</em> să țină întotdeauna merg în hook-uri, nu în instrucțiuni.</div>
+      </div>
+
+      <div class="sc-q" data-correct="1">
+        <p class="sc-question"><strong>2.</strong> Scrii un hook <code>PreToolUse</code> care ar trebui să blocheze <code>DROP TABLE</code>. Cu ce cod de ieșire iese scriptul ca să <strong>blocheze</strong> comanda?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt"><code>exit 1</code> — orice cod ne-zero semnalează o eroare și oprește acțiunea.</button>
+          <button type="button" class="sc-opt"><code>exit 2</code> — codul 2 e eroare blocantă; <code>PreToolUse</code> blochează unealta, iar stderr merge la Claude.</button>
+          <button type="button" class="sc-opt"><code>exit 0</code> — trebuie să iasă cu succes ca decizia lui să fie respectată.</button>
+        </div>
+        <div class="sc-explain">Doar <strong><code>exit 2</code></strong> blochează. Pentru <code>PreToolUse</code> asta oprește unealta, și stderr-ul e trimis lui Claude ca feedback. <code>exit 0</code> = succes (acțiunea trece); orice alt cod ne-zero (<code>1</code>, <code>127</code>…) e doar eroare <em>ne-blocantă</em> — se loghează, dar acțiunea trece. Capcana clasică: <code>exit 1</code> ca să blochezi.</div>
+      </div>
+
+      <div class="sc-q" data-correct="0">
+        <p class="sc-question"><strong>3.</strong> Vrei să te asiguri, la nivel de organizație, că nimeni nu poate rula comenzi distructive pe prod — o garanție de securitate dură. Un hook <code>PreToolUse</code> e soluția potrivită?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Nu — hook-urile sunt fail-open (dacă scriptul crapă, acțiunea trece); pentru interdicții hard folosești sistemul de permisiuni (S1) / managed settings.</button>
+          <button type="button" class="sc-opt">Da — un hook <code>PreToolUse</code> e o garanție de securitate absolută.</button>
+          <button type="button" class="sc-opt">Da, dacă îi pui <code>exit 2</code> — asta îl face de neocolit.</button>
+        </div>
+        <div class="sc-explain">Un hook e o <strong>plasă utilă, nu un zid</strong>. E fail-open: dacă scriptul are un bug sau crapă, acțiunea trece. Pentru interdicții care trebuie să țină cu adevărat — mai ales impuse organizației — folosești sistemul de <strong>permisiuni</strong> (S1), eventual managed settings, care e autoritatea. Hook-ul completează permisiunile, nu le înlocuiește.</div>
+      </div>
+
+      <div class="sc-q" data-correct="2">
+        <p class="sc-question"><strong>4.</strong> Vrei ca formatarea să ruleze automat după fiecare modificare de fișier. Ce eveniment folosești?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt"><code>PreToolUse</code> pe <code>Edit|Write</code> — ca să formatezi înainte ca fișierul să se schimbe.</button>
+          <button type="button" class="sc-opt"><code>SessionStart</code> — ca să formatezi tot proiectul o dată, la început.</button>
+          <button type="button" class="sc-opt"><code>PostToolUse</code> pe <code>Edit|Write</code> — reacționezi <em>după</em> ce modificarea a reușit, apoi rulezi formatarea.</button>
+        </div>
+        <div class="sc-explain">Formatarea e o <strong>reacție</strong> la o modificare deja făcută → <code>PostToolUse</code> pe <code>Edit|Write</code>. <code>PreToolUse</code> rulează <em>înainte</em>, când fișierul încă n-a fost modificat (util pentru a bloca, nu a formata). Regula generală: vrei să oprești ceva → <code>PreToolUse</code>; vrei să reacționezi la ceva făcut → <code>PostToolUse</code>.</div>
+      </div>
+
+      <div class="sc-q" data-correct="1">
+        <p class="sc-question"><strong>5.</strong> Ai făcut un guardrail pe care vrei să-l respecte toată echipa. Unde pui configurarea hook-ului?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">În <code>.claude/settings.local.json</code> — e locul standard pentru hook-uri.</button>
+          <button type="button" class="sc-opt">În <code>.claude/settings.json</code>, comis în git — așa ajunge la toată echipa când clonează repo-ul.</button>
+          <button type="button" class="sc-opt">În <code>~/.claude/settings.json</code> — settings-ul personal se sincronizează automat cu echipa.</button>
+        </div>
+        <div class="sc-explain">O regulă de echipă merge în <code>.claude/settings.json</code>, <strong>comis în git</strong> — oricine clonează repo-ul o moștenește. <code>.claude/settings.local.json</code> e gitignored (doar al tău), iar <code>~/.claude/settings.json</code> e personal, pe toate proiectele tale, dar nu se împarte cu nimeni. Capcana: o regulă de echipă pusă local nu ajunge la nimeni altcineva.</div>
+      </div>
+    </div>
+  </section>
 
   <div class="page-nav">
     <a href="s4.html">← S4: Subagents</a>
@@ -90,5 +559,6 @@
 
 <script src="assets/main.js"></script>
 <script src="assets/glossary.js"></script>
+<script src="assets/selfcheck.js"></script>
 </body>
 </html>
