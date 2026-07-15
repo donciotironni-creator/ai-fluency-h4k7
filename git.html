@@ -211,7 +211,7 @@
   <header class="intro">
     <div class="eyebrow">Modus Operandi · Git</div>
     <h1>Cum lucrăm cu Git</h1>
-    <p class="sub">Bune practici de echipă, în <b>română</b>. Folosim <b>Bitbucket</b>, dar principiile sunt aceleași peste tot — Git e Git; Bitbucket e doar locul unde stă remote-ul și unde facem pull request-urile. Scopul: istoric curat, munca nimănui pierdută, toți lucrăm la fel.</p>
+    <p class="sub">Bune practici de echipă, în <b>română</b>. Folosim <b>GitHub</b>, dar principiile sunt aceleași peste tot — Git e Git; GitHub e doar locul unde stă remote-ul și unde facem pull request-urile. Scopul: istoric curat, munca nimănui pierdută, toți lucrăm la fel.</p>
 
     <nav class="toc">
       <a href="#model"><span class="n">01</span> · Model mental</a>
@@ -239,7 +239,7 @@
       <li><strong>Repository (repo)</strong> — folderul proiectului plus toată istoria lui. Copia ta locală e completă, nu o vedere parțială.</li>
       <li><strong>Commit</strong> — o fotografie a proiectului la un moment dat, cu un mesaj și un părinte. Istoricul e un lanț de commit-uri.</li>
       <li><strong>Branch</strong> — un pointer mișcător către un commit. Nu copiază fișiere; e o etichetă care avansează pe măsură ce comiți. De asta branch-urile-s ieftine.</li>
-      <li><strong>Remote (<code>origin</code>)</strong> — copia de pe Bitbucket. <code>push</code> trimite commit-urile tale acolo; <code>pull</code> le aduce pe ale celorlalți.</li>
+      <li><strong>Remote (<code>origin</code>)</strong> — copia de pe GitHub. <code>push</code> trimite commit-urile tale acolo; <code>pull</code> le aduce pe ale celorlalți.</li>
     </ul>
     <div class="note">
       <b>Pentru echipa SQL:</b> un commit e ca un <code>BACKUP</code> cu timestamp și comentariu. Un branch e ca un environment izolat. <code>merge</code> e ca un <code>MERGE</code> — împaci două stări. Diferența: în Git te poți întoarce oricând la orice snapshot, gratis.
@@ -252,7 +252,7 @@
       <div class="arr">→</div>
       <div class="node"><b>istoric local</b><span>git commit</span></div>
       <div class="arr">→</div>
-      <div class="node"><b>Bitbucket</b><span>git push</span></div>
+      <div class="node"><b>GitHub</b><span>git push</span></div>
     </div>
   </section>
 
@@ -331,10 +331,10 @@ Refs: TIMEOFF-142</code></pre>
 <span class="k">git</span> fetch origin
 <span class="k">git</span> rebase origin/main
 
-<span class="c"># 5. Împingi pe Bitbucket</span>
+<span class="c"># 5. Împingi pe GitHub</span>
 <span class="k">git</span> push -u origin feature/timeoff-accrual-policy
 
-<span class="c"># 6. Deschizi Pull Request din Bitbucket UI</span>
+<span class="c"># 6. Deschizi Pull Request din GitHub UI</span>
 <span class="c"># 7. După aprobare + merge: cureți</span>
 <span class="k">git</span> checkout main
 <span class="k">git</span> pull
@@ -344,14 +344,14 @@ Refs: TIMEOFF-142</code></pre>
 
   <!-- 05 -->
   <section class="block" id="pr">
-    <h2><span class="num">05</span> Pull Requests pe Bitbucket</h2>
+    <h2><span class="num">05</span> Pull Requests pe GitHub</h2>
     <p class="lead">PR-ul e locul unde codul devine al echipei. Nu e o formalitate — e review și e documentație.</p>
     <h3>Ce face un PR bun</h3>
     <ul>
       <li><strong>Titlu clar</strong> — ca un mesaj de commit: <code>feat: accrual proratat pentru intrări la mijloc de lună</code>.</li>
       <li><strong>Descriere care răspunde la 3 întrebări:</strong> ce face? de ce (ce ticket)? cum verifici?</li>
       <li><strong>Mic.</strong> Un PR de 200 de linii primește review real. Unul de 2000 primește „LGTM 👍" fără să-l citească nimeni. Dacă e mare, sparge-l.</li>
-      <li><strong>Self-review întâi.</strong> Citește-ți propriul diff în Bitbucket înainte să ceri altcuiva. Prinzi jumătate din observații singur.</li>
+      <li><strong>Self-review întâi.</strong> Citește-ți propriul diff în GitHub înainte să ceri altcuiva. Prinzi jumătate din observații singur.</li>
       <li><strong>Reviewers potriviți</strong> — cine cunoaște zona. Pentru module sensibile, reviewer-ul e obligatoriu.</li>
     </ul>
     <h3>Șablon de descriere PR</h3>
@@ -372,7 +372,7 @@ Calculul din AccrualService.ComputeMonthly — logică de business.</code></pre>
     <h3>Merge din PR</h3>
     <ul>
       <li><strong>Squash and merge</strong> pentru branch-uri cu istoric zgomotos (multe „wip") — <code>main</code> rămâne o linie curată, un commit per feature.</li>
-      <li>După merge, <strong>șterge branch-ul</strong> de pe Bitbucket. Nu lăsa cimitire de branch-uri.</li>
+      <li>După merge, <strong>șterge branch-ul</strong> de pe GitHub. Nu lăsa cimitire de branch-uri.</li>
     </ul>
   </section>
 
@@ -486,7 +486,7 @@ codul de pe main
   </section>
 
   <footer>
-    Terminologia Git rămâne în engleză (așa apare în comenzi și în Bitbucket); explicațiile sunt în română. Versiunea completă în markdown: <code>ghiduri/ghid-git-modus-operandi.md</code>. Git se învață făcând — greșește pe un repo de test, nu pe cel de producție.
+    Terminologia Git rămâne în engleză (așa apare în comenzi și în GitHub); explicațiile sunt în română. Versiunea completă în markdown: <code>ghiduri/ghid-git-modus-operandi.md</code>. Git se învață făcând — greșește pe un repo de test, nu pe cel de producție.
   </footer>
 
 </main>

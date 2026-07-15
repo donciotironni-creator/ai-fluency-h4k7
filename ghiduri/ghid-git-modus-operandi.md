@@ -1,6 +1,6 @@
 # Modus Operandi Git
 
-Ghid de bune practici Git pentru echipă. Folosim **Bitbucket**, dar principiile sunt aceleași pe orice platformă (GitHub, GitLab, Azure DevOps) — Git e Git; Bitbucket e doar locul unde stă remote-ul și unde facem pull request-urile.
+Ghid de bune practici Git pentru echipă. Folosim **GitHub**, dar principiile sunt aceleași pe orice platformă (GitLab, Bitbucket, Azure DevOps) — Git e Git; GitHub e doar locul unde stă remote-ul și unde facem pull request-urile.
 
 Scris pentru o echipă care vine dinspre SQL și trece spre full-stack. Nu presupune că știi deja Git „de reflex" — dar nici nu-ți explică ce e un fișier. Scopul: să lucrăm toți la fel, ca istoricul repo-ului să rămână curat și munca nimănui să nu se piardă.
 
@@ -13,14 +13,14 @@ Patru concepte și cam atât:
 - **Repository (repo)** — folderul proiectului plus toată istoria lui. Ce e local la tine e o copie completă, nu o vedere parțială.
 - **Commit** — o fotografie a proiectului la un moment dat, cu un mesaj și un părinte. Istoricul e un lanț de commit-uri.
 - **Branch** — un pointer mișcător către un commit. „Un branch" nu copiază fișiere; e doar o etichetă care avansează pe măsură ce comiți. De asta branch-urile în Git sunt ieftine.
-- **Remote (`origin`)** — copia de pe Bitbucket. `push` trimite commit-urile tale acolo; `pull` le aduce pe ale celorlalți.
+- **Remote (`origin`)** — copia de pe GitHub. `push` trimite commit-urile tale acolo; `pull` le aduce pe ale celorlalți.
 
 > Analogie pentru echipa SQL: un commit e ca un `BACKUP` cu timestamp și comentariu. Un branch e ca un environment de lucru izolat. `merge` e ca un `MERGE` — iei două stări și le împaci. Diferența: în Git te poți întoarce oricând la orice snapshot, gratis.
 
 Cele trei zone prin care trece o modificare:
 
 ```
-working directory  →  staging area (index)  →  commit (istoric local)  →  origin (Bitbucket)
+working directory  →  staging area (index)  →  commit (istoric local)  →  origin (GitHub)
      (editezi)          git add                    git commit                git push
 ```
 
@@ -44,7 +44,7 @@ chore/bump-dependencies
 docs/git-modus-operandi
 ```
 
-Dacă lucrați cu ticket-uri (Jira / Bitbucket issues), pune ID-ul în nume: `feature/PROJ-142-remaining-days`.
+Dacă lucrați cu ticket-uri (Jira / GitHub issues), pune ID-ul în nume: `feature/PROJ-142-remaining-days`.
 
 **Regula de aur:** un branch = o intenție. Dacă te trezești că faci „și încă un fix cât tot aici", probabil e alt branch.
 
@@ -129,10 +129,10 @@ git commit -m "feat: ..."
 git fetch origin
 git rebase origin/main           # sau merge, vezi secțiunea 6
 
-# 5. Împingi pe Bitbucket
+# 5. Împingi pe GitHub
 git push -u origin feature/timeoff-accrual-policy
 
-# 6. Deschizi Pull Request din Bitbucket UI
+# 6. Deschizi Pull Request din GitHub UI
 # 7. După aprobare + merge: cureți
 git checkout main
 git pull
@@ -143,7 +143,7 @@ git branch -d feature/timeoff-accrual-policy
 
 ---
 
-## 5. Pull Request-uri pe Bitbucket
+## 5. Pull Request-uri pe GitHub
 
 PR-ul e locul unde codul devine al echipei. Nu e o formalitate — e review și e documentație.
 
@@ -155,7 +155,7 @@ PR-ul e locul unde codul devine al echipei. Nu e o formalitate — e review și 
   2. **De ce** — ce problemă rezolvă / ce ticket?
   3. **Cum verifici** — pași de testare, ce să se uite reviewer-ul cu atenție.
 - **Mic.** Un PR de 200 de linii primește review real. Unul de 2000 primește „LGTM 👍" fără să-l citească nimeni. Dacă e mare, sparge-l.
-- **Self-review întâi.** Citește-ți propriul diff în Bitbucket înainte să ceri altcuiva. Prinzi jumătate din observații singur.
+- **Self-review întâi.** Citește-ți propriul diff în GitHub înainte să ceri altcuiva. Prinzi jumătate din observații singur.
 - **Reviewers potriviți** — cine cunoaște zona. Pentru module sensibile (vezi mai jos), reviewer-ul e obligatoriu, nu opțional.
 
 ### Șablon de descriere PR
@@ -181,7 +181,7 @@ Calculul din `AccrualService.ComputeMonthly` — logică de business, review uma
 
 - **Squash and merge** pentru feature branches cu istoric zgomotos (multe „wip", „fix typo") — istoricul pe `main` rămâne o linie curată, un commit per feature.
 - **Merge commit** când vrei să păstrezi structura branch-ului (rar necesar la noi).
-- După merge, **șterge branch-ul** de pe Bitbucket (e un checkbox în UI). Nu lăsa cimitire de branch-uri.
+- După merge, **șterge branch-ul** de pe GitHub (e un checkbox în UI). Nu lăsa cimitire de branch-uri.
 
 ---
 
@@ -318,4 +318,4 @@ Pentru repo-urile noastre, modificările în zonele astea NU merg pe „aprob ra
 
 ---
 
-*Terminologia Git rămâne în engleză (așa apare în comenzi și în Bitbucket); explicațiile sunt în română. Git se învață făcând — greșește pe un repo de test, nu pe cel de producție.*
+*Terminologia Git rămâne în engleză (așa apare în comenzi și în GitHub); explicațiile sunt în română. Git se învață făcând — greșește pe un repo de test, nu pe cel de producție.*
