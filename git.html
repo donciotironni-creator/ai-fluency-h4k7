@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modus Operandi Git · AI Fluency</title>
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F7F5F0; --surface:#FFFFFF; --surface-2:#F1EEE7;
+    --ink:#1A211E; --ink-soft:#6B746E; --ink-faint:#A3A79E;
+    --line:#E5E1D8; --line-soft:#EEEBE3;
+    --accent:#1F5C4B; --warm:#C67B2E;
+    --code-bg:#1E2521; --code-ink:#E4E0D6; --code-faint:#8B968C;
+    --ok:#2E7D5B; --danger:#C24B3F;
+    --shadow:0 1px 2px rgba(26,33,30,.05), 0 8px 24px -12px rgba(26,33,30,.14);
+  }
+  [data-theme="dark"]{
+    --bg:#171D1A; --surface:#212925; --surface-2:#1E2521;
+    --ink:#EDEAE2; --ink-soft:#A9B0AA; --ink-faint:#7C857F;
+    --line:#333B36; --line-soft:#2A302B;
+    --accent:#4FA98A; --warm:#E0A059;
+    --code-bg:#12160F; --code-ink:#E4E0D6; --code-faint:#7C857F;
+    --ok:#8FCBA8; --danger:#E07A6E;
+    --shadow:0 1px 2px rgba(0,0,0,.25), 0 10px 28px -14px rgba(0,0,0,.5);
+  }
+  *{box-sizing:border-box;}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important;}}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:'Hanken Grotesk',system-ui,sans-serif; font-size:16px; line-height:1.65;
+    -webkit-font-smoothing:antialiased; transition:background .3s,color .3s;
+    padding-top:52px;
+  }
+
+  /* ── site nav ── */
+  .site-nav{
+    position:fixed; top:0; left:0; right:0;
+    height:52px; background:var(--surface);
+    border-bottom:1px solid var(--line);
+    z-index:100; display:flex; align-items:center;
+    padding:0 20px; gap:8px; transition:background .3s;
+  }
+  .nav-logo{display:flex;align-items:center;gap:9px;font-family:'Spectral',Georgia,serif;font-size:15px;font-weight:700;color:var(--ink);text-decoration:none;letter-spacing:-.01em;white-space:nowrap;margin-right:4px;}
+  .nav-logo-mark{width:26px;height:26px;border-radius:7px;background:var(--accent);display:flex;align-items:center;justify-content:center;flex:none;}
+  .nav-logo-ring{width:11px;height:11px;border:2px solid #fff;border-radius:50%;border-right-color:transparent;}
+  .nav-sessions{display:flex; gap:3px; overflow-x:auto; flex:1; scrollbar-width:none;}
+  .nav-sessions::-webkit-scrollbar{display:none;}
+  .nav-pill{
+    font-family:ui-monospace,Menlo,'Cascadia Code',monospace; font-size:11px;
+    padding:4px 10px; border-radius:20px; color:var(--ink-soft);
+    text-decoration:none; white-space:nowrap; border:1px solid transparent; transition:all .15s;
+  }
+  .nav-pill:hover{background:var(--surface-2); border-color:var(--line); color:var(--ink);}
+  .nav-pill.active{background:var(--warm); color:#fff;}
+  [data-theme="dark"] .nav-pill.active{color:#171D1A;}
+  .nav-divider{width:1px; height:20px; background:var(--line); flex-shrink:0;}
+  .nav-toggle{font-family:ui-monospace,Menlo,'Cascadia Code',monospace; font-size:12px; background:transparent; color:var(--ink-soft); border:1px solid var(--line); border-radius:20px; padding:6px 12px; cursor:pointer; white-space:nowrap; flex-shrink:0;}
+  .nav-toggle:hover{color:var(--ink); border-color:var(--ink-faint);}
+
+  .wrap{max-width:900px; margin:0 auto; padding:0 22px;}
+
+  /* intro */
+  header.intro{padding:52px 0 26px;}
+  .eyebrow{font-family:ui-monospace,Menlo,'Cascadia Code',monospace; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--warm); margin-bottom:16px;}
+  h1{font-family:'Spectral',Georgia,serif; font-weight:700; font-size:clamp(2.1rem,5.4vw,3.3rem); line-height:1.04; letter-spacing:-.02em; margin:0 0 16px;}
+  .sub{color:var(--ink-soft); font-size:1.08rem; max-width:64ch; margin:0;}
+  .sub b{color:var(--ink); font-weight:600;}
+
+  /* table of contents */
+  .toc{
+    display:flex; flex-wrap:wrap; gap:7px; margin:28px 0 8px;
+    padding:18px 0 22px; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .toc a{
+    font-family:ui-monospace,Menlo,'Cascadia Code',monospace; font-size:11.5px;
+    padding:6px 12px; border-radius:20px; border:1px solid var(--line); background:var(--surface-2);
+    color:var(--ink-soft); text-decoration:none; transition:all .12s; white-space:nowrap;
+  }
+  .toc a:hover{border-color:var(--warm); color:var(--ink);}
+  .toc a .n{color:var(--warm); font-weight:600;}
+
+  main{padding:14px 0 40px;}
+
+  section.block{
+    background:var(--surface); border:1px solid var(--line); border-radius:16px;
+    padding:26px 28px; margin:20px 0; box-shadow:var(--shadow); scroll-margin-top:70px;
+  }
+  section.block > h2{
+    font-family:'Spectral',Georgia,serif; font-weight:700; font-size:1.5rem; letter-spacing:-.01em;
+    margin:0 0 6px; display:flex; align-items:baseline; gap:12px;
+  }
+  section.block > h2 .num{
+    font-family:ui-monospace,Menlo,monospace; font-size:.85rem; color:var(--warm);
+    font-weight:600; flex:none;
+  }
+  .lead{color:var(--ink-soft); margin:0 0 18px; font-size:1.02rem;}
+  h3{font-family:'Spectral',Georgia,serif; font-weight:600; font-size:1.12rem; margin:22px 0 8px; letter-spacing:-.01em;}
+  p{margin:0 0 12px;}
+  ul,ol{margin:0 0 12px; padding-left:22px;}
+  li{margin:6px 0;}
+  strong{font-weight:700; color:var(--ink);}
+  a.inl{color:var(--accent); text-decoration:underline; text-underline-offset:2px; text-decoration-thickness:1px;}
+
+  code{
+    font-family:ui-monospace,Menlo,'Cascadia Code',monospace; font-size:.88em;
+    background:var(--surface-2); border:1px solid var(--line-soft);
+    padding:1px 6px; border-radius:6px; color:var(--ink);
+  }
+  pre{
+    background:var(--code-bg); border-radius:12px; padding:16px 18px; margin:14px 0;
+    overflow-x:auto; border:1px solid rgba(0,0,0,.2);
+  }
+  pre code{
+    background:none; border:none; padding:0; color:var(--code-ink);
+    font-size:.82rem; line-height:1.7; display:block; white-space:pre;
+  }
+  pre code .c{color:var(--code-faint);}   /* comentariu */
+  pre code .k{color:#E0A059;}              /* keyword / comandă */
+  pre code .g{color:#8FCBA8;}              /* good */
+  pre code .b{color:#E07A6E;}              /* bad */
+
+  /* tables */
+  .tbl{overflow-x:auto; margin:14px 0;}
+  table{border-collapse:collapse; width:100%; font-size:.92rem;}
+  th,td{text-align:left; padding:9px 12px; border-bottom:1px solid var(--line-soft); vertical-align:top;}
+  th{font-family:ui-monospace,Menlo,monospace; font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); font-weight:600; border-bottom:2px solid var(--line);}
+  td code{white-space:nowrap;}
+
+  /* callouts */
+  .note{
+    border-left:3px solid var(--warm); background:color-mix(in srgb,var(--warm) 8%,transparent);
+    padding:12px 16px; border-radius:0 10px 10px 0; margin:14px 0; font-size:.96rem;
+  }
+  .note.danger{border-left-color:var(--danger); background:color-mix(in srgb,var(--danger) 9%,transparent);}
+  .note b{color:var(--ink);}
+
+  /* golden rules */
+  .rules{counter-reset:r; list-style:none; padding:0; margin:6px 0 0;}
+  .rules li{
+    counter-increment:r; position:relative; padding:12px 12px 12px 52px; margin:8px 0;
+    background:var(--surface-2); border:1px solid var(--line); border-radius:12px; font-size:.98rem;
+  }
+  .rules li::before{
+    content:counter(r); position:absolute; left:12px; top:50%; transform:translateY(-50%);
+    width:28px; height:28px; border-radius:50%; background:var(--accent); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-family:ui-monospace,monospace; font-weight:700; font-size:.85rem;
+  }
+  [data-theme="dark"] .rules li::before{color:#171D1A;}
+
+  /* flow diagram */
+  .flow{
+    display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:16px 0;
+    font-family:ui-monospace,Menlo,monospace; font-size:.8rem;
+  }
+  .flow .node{
+    background:var(--surface-2); border:1px solid var(--line); border-radius:10px;
+    padding:8px 12px; text-align:center;
+  }
+  .flow .node b{display:block; color:var(--ink); font-size:.85rem; margin-bottom:2px;}
+  .flow .node span{color:var(--warm);}
+  .flow .arr{color:var(--ink-faint); font-size:1.1rem;}
+
+  .pill-tip{display:inline-block; font-family:ui-monospace,monospace; font-size:10px; letter-spacing:.05em; text-transform:uppercase; padding:2px 9px; border-radius:20px; color:#fff; margin-left:4px;}
+  .pill-feat{background:#2E7D5B;} .pill-fix{background:#C24B3F;} .pill-docs{background:#3A6EA5;}
+  .pill-chore{background:#9A7420;} .pill-refactor{background:#5A3E8C;}
+
+  footer{padding:30px 0 60px; color:var(--ink-faint); font-size:.82rem; border-top:1px solid var(--line); margin-top:20px;}
+  footer code{font-size:.9em;}
+
+  @media(max-width:640px){
+    section.block{padding:22px 18px;}
+    .flow{font-size:.72rem;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo"><span class="nav-logo-mark"><span class="nav-logo-ring"></span></span>AI Fluency</a>
+  <div class="nav-divider"></div>
+  <div class="nav-sessions">
+    <a href="index.html" class="nav-pill">Acasă</a>
+    <a href="s0.html" class="nav-pill">S0</a>
+    <a href="s1.html" class="nav-pill">S1</a>
+    <a href="s2.html" class="nav-pill">S2</a>
+    <a href="s3.html" class="nav-pill">S3</a>
+    <a href="s4.html" class="nav-pill">S4</a>
+    <a href="s5.html" class="nav-pill">S5</a>
+    <a href="s6.html" class="nav-pill">S6</a>
+    <a href="s7.html" class="nav-pill">S7</a>
+    <a href="s8.html" class="nav-pill">S8</a>
+    <a href="s9.html" class="nav-pill">S9</a>
+    <a href="s10.html" class="nav-pill">S10</a>
+    <div class="nav-divider"></div>
+    <a href="dictionar.html" class="nav-pill">Dicționar</a>
+    <a href="git.html" class="nav-pill active">Git</a>
+    <a href="cheatsheet.html" class="nav-pill">Cheatsheet</a>
+    <a href="artefacte.html" class="nav-pill">Artefacte</a>
+    <a href="schimbari.html" class="nav-pill">Schimbări</a>
+  </div>
+  <button class="nav-toggle" onclick="toggleTheme()">☾ / ☀</button>
+</nav>
+
+<div class="wrap">
+  <header class="intro">
+    <div class="eyebrow">Modus Operandi · Git</div>
+    <h1>Cum lucrăm cu Git</h1>
+    <p class="sub">Bune practici de echipă, în <b>română</b>. Folosim <b>Bitbucket</b>, dar principiile sunt aceleași peste tot — Git e Git; Bitbucket e doar locul unde stă remote-ul și unde facem pull request-urile. Scopul: istoric curat, munca nimănui pierdută, toți lucrăm la fel.</p>
+
+    <nav class="toc">
+      <a href="#model"><span class="n">01</span> · Model mental</a>
+      <a href="#branching"><span class="n">02</span> · Branching</a>
+      <a href="#commits"><span class="n">03</span> · Commit-uri</a>
+      <a href="#bucla"><span class="n">04</span> · Bucla zilnică</a>
+      <a href="#pr"><span class="n">05</span> · Pull Requests</a>
+      <a href="#rebase"><span class="n">06</span> · Merge vs Rebase</a>
+      <a href="#secrete"><span class="n">07</span> · Ce nu comiți</a>
+      <a href="#conflicte"><span class="n">08</span> · Conflicte</a>
+      <a href="#recovery"><span class="n">09</span> · Trusa de urgență</a>
+      <a href="#reguli"><span class="n">10</span> · Reguli de aur</a>
+    </nav>
+  </header>
+</div>
+
+<div class="wrap">
+<main>
+
+  <!-- 01 -->
+  <section class="block" id="model">
+    <h2><span class="num">01</span> Modelul mental</h2>
+    <p class="lead">Patru concepte și cam atât. Fără ele, restul e magie neagră.</p>
+    <ul>
+      <li><strong>Repository (repo)</strong> — folderul proiectului plus toată istoria lui. Copia ta locală e completă, nu o vedere parțială.</li>
+      <li><strong>Commit</strong> — o fotografie a proiectului la un moment dat, cu un mesaj și un părinte. Istoricul e un lanț de commit-uri.</li>
+      <li><strong>Branch</strong> — un pointer mișcător către un commit. Nu copiază fișiere; e o etichetă care avansează pe măsură ce comiți. De asta branch-urile-s ieftine.</li>
+      <li><strong>Remote (<code>origin</code>)</strong> — copia de pe Bitbucket. <code>push</code> trimite commit-urile tale acolo; <code>pull</code> le aduce pe ale celorlalți.</li>
+    </ul>
+    <div class="note">
+      <b>Pentru echipa SQL:</b> un commit e ca un <code>BACKUP</code> cu timestamp și comentariu. Un branch e ca un environment izolat. <code>merge</code> e ca un <code>MERGE</code> — împaci două stări. Diferența: în Git te poți întoarce oricând la orice snapshot, gratis.
+    </div>
+    <p>Cele trei zone prin care trece o modificare:</p>
+    <div class="flow">
+      <div class="node"><b>working dir</b><span>editezi</span></div>
+      <div class="arr">→</div>
+      <div class="node"><b>staging</b><span>git add</span></div>
+      <div class="arr">→</div>
+      <div class="node"><b>istoric local</b><span>git commit</span></div>
+      <div class="arr">→</div>
+      <div class="node"><b>Bitbucket</b><span>git push</span></div>
+    </div>
+  </section>
+
+  <!-- 02 -->
+  <section class="block" id="branching">
+    <h2><span class="num">02</span> Modelul de branching</h2>
+    <p class="lead">Ținem simplu: <strong>trunk cu feature branches scurte</strong>.</p>
+    <ul>
+      <li><code>main</code> (sau <code>master</code>/<code>develop</code>, după repo) e sacru. Nu comiți direct pe el — se ajunge acolo <strong>doar prin pull request</strong>.</li>
+      <li>Pentru orice bucată de lucru îți faci un branch pornit din <code>main</code> la zi.</li>
+      <li>Branch-urile trăiesc scurt — ore sau zile, nu săptămâni. Cu cât stă mai mult deschis, cu atât doare mai tare merge-ul final.</li>
+    </ul>
+    <h3>Convenție de denumire</h3>
+    <p>Prefix + descriere kebab-case, opțional ID de ticket:</p>
+    <pre><code><span class="k">feature/</span>timeoff-accrual-policy
+<span class="k">fix/</span>filnet-ocr-null-date
+<span class="k">hotfix/</span>iris-deadlock-sync-job
+<span class="k">chore/</span>bump-dependencies
+<span class="k">feature/</span>PROJ-142-remaining-days   <span class="c"># cu ticket</span></code></pre>
+    <div class="note"><b>Regula de aur:</b> un branch = o intenție. Dacă te trezești că faci „și încă un fix cât tot aici", probabil e alt branch.</div>
+  </section>
+
+  <!-- 03 -->
+  <section class="block" id="commits">
+    <h2><span class="num">03</span> Commit-uri: mici, atomice, cu mesaj care spune DE CE</h2>
+    <p class="lead">Un commit bun e o unitate logică ce are sens singură. Nu „munca de azi", ci „adaug validarea pe câmpul X".</p>
+    <h3>Anatomia unui mesaj — Conventional Commits</h3>
+    <pre><code><span class="k">&lt;tip&gt;</span>: &lt;ce face, la imperativ, sub 72 de caractere&gt;
+
+&lt;corp opțional: DE CE, nu CUM — codul spune deja cum&gt;
+
+&lt;footer opțional: refs ticket, breaking changes&gt;</code></pre>
+    <p>Tipuri folosite:</p>
+    <p>
+      <span class="pill-tip pill-feat">feat</span> funcționalitate nouă
+      <span class="pill-tip pill-fix">fix</span> bug
+      <span class="pill-tip pill-docs">docs</span> documentație
+      <span class="pill-tip pill-refactor">refactor</span> rescriere fără schimbare de comportament
+      <span class="pill-tip pill-chore">chore</span> mentenanță / config
+    </p>
+    <h3>Bun</h3>
+    <pre><code><span class="g">feat: add remaining-days calculation for partial accrual</span>
+
+Accrual-ul lunar trebuia proratat pentru angajații intrați
+la mijlocul lunii. Înainte primeau luna întreagă.
+
+Refs: TIMEOFF-142</code></pre>
+    <h3>Anti-pattern</h3>
+    <pre><code><span class="b">update</span>                     <span class="c"># ce ai updatat?</span>
+<span class="b">fix bug</span>                    <span class="c"># care bug?</span>
+<span class="b">asdf</span>                       <span class="c"># ...</span>
+<span class="b">final version FINAL v2</span>     <span class="c"># nu.</span></code></pre>
+    <ul>
+      <li><strong>Commit des, local.</strong> E gratis. Poți rescrie istoricul înainte de push.</li>
+      <li><strong>Fiecare commit lasă repo-ul într-o stare validă</strong> — compilează, trec testele.</li>
+      <li><strong>Verifică ce comiți.</strong> <code>git status</code> și <code>git diff --staged</code> înainte de fiecare commit. Nu da <code>git add .</code> orbește — folosește <code>git add -p</code>.</li>
+    </ul>
+  </section>
+
+  <!-- 04 -->
+  <section class="block" id="bucla">
+    <h2><span class="num">04</span> Bucla zilnică</h2>
+    <p class="lead">Workflow-ul standard, cap-coadă.</p>
+    <pre><code><span class="c"># 1. Pornești de la main la zi</span>
+<span class="k">git</span> checkout main
+<span class="k">git</span> pull
+
+<span class="c"># 2. Îți faci branch-ul de lucru</span>
+<span class="k">git</span> checkout -b feature/timeoff-accrual-policy
+
+<span class="c"># 3. Lucrezi. Comiți în bucăți logice.</span>
+<span class="k">git</span> add -p                       <span class="c"># stage selectiv, pe bucăți</span>
+<span class="k">git</span> commit -m "feat: ..."
+
+<span class="c"># 4. Ții branch-ul sincronizat cu main (dacă lucrarea durează)</span>
+<span class="k">git</span> fetch origin
+<span class="k">git</span> rebase origin/main
+
+<span class="c"># 5. Împingi pe Bitbucket</span>
+<span class="k">git</span> push -u origin feature/timeoff-accrual-policy
+
+<span class="c"># 6. Deschizi Pull Request din Bitbucket UI</span>
+<span class="c"># 7. După aprobare + merge: cureți</span>
+<span class="k">git</span> checkout main
+<span class="k">git</span> pull
+<span class="k">git</span> branch -d feature/timeoff-accrual-policy</code></pre>
+    <div class="note"><code>git add -p</code> te plimbă prin fiecare bucată de modificare și te întreabă dacă o incluzi. Așa ajungi la commit-uri atomice fără efort.</div>
+  </section>
+
+  <!-- 05 -->
+  <section class="block" id="pr">
+    <h2><span class="num">05</span> Pull Requests pe Bitbucket</h2>
+    <p class="lead">PR-ul e locul unde codul devine al echipei. Nu e o formalitate — e review și e documentație.</p>
+    <h3>Ce face un PR bun</h3>
+    <ul>
+      <li><strong>Titlu clar</strong> — ca un mesaj de commit: <code>feat: accrual proratat pentru intrări la mijloc de lună</code>.</li>
+      <li><strong>Descriere care răspunde la 3 întrebări:</strong> ce face? de ce (ce ticket)? cum verifici?</li>
+      <li><strong>Mic.</strong> Un PR de 200 de linii primește review real. Unul de 2000 primește „LGTM 👍" fără să-l citească nimeni. Dacă e mare, sparge-l.</li>
+      <li><strong>Self-review întâi.</strong> Citește-ți propriul diff în Bitbucket înainte să ceri altcuiva. Prinzi jumătate din observații singur.</li>
+      <li><strong>Reviewers potriviți</strong> — cine cunoaște zona. Pentru module sensibile, reviewer-ul e obligatoriu.</li>
+    </ul>
+    <h3>Șablon de descriere PR</h3>
+    <pre><code><span class="k">## Ce</span>
+Prorează accrual-ul lunar pentru angajații intrați la mijlocul lunii.
+
+<span class="k">## De ce</span>
+Bug raportat de HR: angajat intrat pe 20 primea 1.75 zile în loc de ~0.58.
+Refs: TIMEOFF-142
+
+<span class="k">## Cum verific</span>
+1. Creează un angajat cu data de start 2026-06-20
+2. Rulează jobul de accrual pentru iunie
+3. RemainingDays trebuie proratat, nu luna întreagă
+
+<span class="k">## Atenție la</span>
+Calculul din AccrualService.ComputeMonthly — logică de business.</code></pre>
+    <h3>Merge din PR</h3>
+    <ul>
+      <li><strong>Squash and merge</strong> pentru branch-uri cu istoric zgomotos (multe „wip") — <code>main</code> rămâne o linie curată, un commit per feature.</li>
+      <li>După merge, <strong>șterge branch-ul</strong> de pe Bitbucket. Nu lăsa cimitire de branch-uri.</li>
+    </ul>
+  </section>
+
+  <!-- 06 -->
+  <section class="block" id="rebase">
+    <h2><span class="num">06</span> Merge vs. Rebase</h2>
+    <p class="lead">Amândouă aduc modificările din <code>main</code> în branch-ul tău. Diferența e ce fac cu istoricul.</p>
+    <ul>
+      <li><strong>merge</strong> — creează un „merge commit" ce leagă cele două linii. Istoric fidel, dar cu multe furci.</li>
+      <li><strong>rebase</strong> — mută commit-urile tale ca și cum ai fi pornit chiar acum din vârful lui <code>main</code>. Istoric liniar, curat.</li>
+    </ul>
+    <div class="note"><b>Regula noastră:</b> rebase pe branch-ul tău local, cât timp e doar al tău. <b>Nu</b> rebase pe nimic pe care l-ai împărțit cu alții.</div>
+    <pre><code><span class="c"># Îți sincronizezi branch-ul propriu cu main — OK</span>
+<span class="k">git</span> fetch origin
+<span class="k">git</span> rebase origin/main</code></pre>
+    <div class="note danger">
+      <b>Interzis:</b> <code>rebase</code> sau <code>push --force</code> pe <code>main</code>/<code>develop</code>/<code>master</code> ori pe orice branch pe care lucrează și altcineva. Rescrii istoria de sub picioarele lor. Dacă chiar trebuie să forțezi pe branch-ul TĂU după rebase, folosește <code>git push --force-with-lease</code> — niciodată <code>--force</code> simplu.
+    </div>
+  </section>
+
+  <!-- 07 -->
+  <section class="block" id="secrete">
+    <h2><span class="num">07</span> Ce NU comiți NICIODATĂ</h2>
+    <p class="lead">Critic pentru o echipă care lucrează cu baze de date.</p>
+    <ul>
+      <li><strong>Connection string-uri</strong> (<code>Server=...;Password=...</code>) — în config local / secret manager, nu în repo.</li>
+      <li><strong>Parole, API keys, token-uri, certificate.</strong></li>
+      <li><strong>Dump-uri de date reale</strong> — mai ales cu date de clienți / pacienți (GDPR).</li>
+      <li><strong>Fișiere generate</strong> — <code>bin/</code>, <code>obj/</code>, <code>node_modules/</code>, build output.</li>
+      <li><strong>Fișiere de IDE / OS</strong> — <code>.idea/</code>, <code>*.user</code>, <code>Thumbs.db</code>.</li>
+    </ul>
+    <p>Toate stau în <code>.gitignore</code>, comis de la început:</p>
+    <pre><code><span class="c"># Build</span>
+bin/
+obj/
+node_modules/
+
+<span class="c"># Secrete / config local</span>
+appsettings.Development.json
+*.local.json
+.env
+
+<span class="c"># IDE / OS</span>
+.vs/
+.idea/
+*.user
+Thumbs.db</code></pre>
+    <div class="note danger">
+      Dacă ai comis deja un secret: <b>nu e destul să-l ștergi într-un commit nou</b> — rămâne în istoric. Trebuie rotit (schimbat) secretul <b>și</b> curățat istoricul (<code>git filter-repo</code> sau BFG). Mai bine să nu ajungi acolo.
+    </div>
+  </section>
+
+  <!-- 08 -->
+  <section class="block" id="conflicte">
+    <h2><span class="num">08</span> Conflicte de merge</h2>
+    <p class="lead">Un conflict înseamnă că două branch-uri au schimbat aceleași linii. Git nu ghicește — te întreabă pe tine. Nu intra în panică.</p>
+    <pre><code><span class="b">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span>
+codul tău
+<span class="k">=======</span>
+codul de pe main
+<span class="b">&gt;&gt;&gt;&gt;&gt;&gt;&gt; origin/main</span></code></pre>
+    <ol>
+      <li>Deschizi fișierul, ștergi marcajele <code>&lt;&lt;&lt;</code> / <code>===</code> / <code>&gt;&gt;&gt;</code> și lași varianta corectă (uneori o combinație).</li>
+      <li><code>git add &lt;fișier&gt;</code> pentru fiecare rezolvat.</li>
+      <li><code>git rebase --continue</code> (dacă erai în rebase) sau <code>git commit</code> (dacă erai în merge).</li>
+    </ol>
+    <p>Dacă te-ai încurcat rău: <code>git rebase --abort</code> / <code>git merge --abort</code> te întorc la starea de dinainte. Nimic pierdut.</p>
+    <div class="note"><b>Preventiv:</b> branch-uri scurte + sincronizare deasă cu <code>main</code> = conflicte mici și rare.</div>
+  </section>
+
+  <!-- 09 -->
+  <section class="block" id="recovery">
+    <h2><span class="num">09</span> Trusa de urgență</h2>
+    <p class="lead">Git aproape nu pierde nimic. Aproape orice greșeală e reversibilă.</p>
+    <div class="tbl">
+    <table>
+      <tr><th>Situație</th><th>Comandă</th></tr>
+      <tr><td>Am modificat un fișier, vreau înapoi</td><td><code>git restore &lt;fișier&gt;</code></td></tr>
+      <tr><td>Am făcut <code>add</code> din greșeală</td><td><code>git restore --staged &lt;fișier&gt;</code></td></tr>
+      <tr><td>Anulez ultimul commit, dar păstrez modificările</td><td><code>git reset --soft HEAD~1</code></td></tr>
+      <tr><td>Întrerup ce fac și sar pe alt branch</td><td><code>git stash</code> → … → <code>git stash pop</code></td></tr>
+      <tr><td>Am șters un commit / branch și îl vreau înapoi</td><td><code>git reflog</code> → <code>git checkout &lt;hash&gt;</code></td></tr>
+      <tr><td>Anulez un commit DEJA împins pe branch partajat</td><td><code>git revert &lt;hash&gt;</code></td></tr>
+    </table>
+    </div>
+    <div class="note">
+      <b>reset vs. revert:</b> <code>reset</code> rescrie istoria — bun <b>local</b>, interzis pe ce ai împins pe un branch partajat. <code>revert</code> creează un commit nou care anulează efectul unuia vechi — sigur pe branch-uri partajate.
+    </div>
+    <p><code>git reflog</code> e plasa de siguranță: ține evidența oricărei mișcări de <code>HEAD</code> din ultimele ~90 de zile. Chiar dacă crezi că ai pierdut ceva, e probabil acolo.</p>
+  </section>
+
+  <!-- 10 -->
+  <section class="block" id="reguli">
+    <h2><span class="num">10</span> Reguli de aur</h2>
+    <p class="lead">Rezumatul de pus pe perete.</p>
+    <ol class="rules">
+      <li><strong><code>main</code> doar prin PR.</strong> Niciun commit direct pe branch-ul principal.</li>
+      <li><strong>Branch-uri scurte</strong>, o intenție per branch.</li>
+      <li><strong>Commit-uri atomice</strong>, mesaj în format <code>tip: descriere</code>.</li>
+      <li><strong>Pull / rebase des</strong> ca să eviți conflicte mari.</li>
+      <li><strong>PR-uri mici</strong>, cu descriere: ce / de ce / cum verifici.</li>
+      <li><strong>Self-review</strong> înainte de a cere review.</li>
+      <li><strong>Niciun secret în repo.</strong> <code>.gitignore</code> de la prima zi.</li>
+      <li><strong><code>--force-with-lease</code>, niciodată <code>--force</code></strong> pe ce e partajat.</li>
+      <li><strong><code>revert</code> pe partajat, <code>reset</code> doar local.</strong></li>
+      <li><strong>Când te-ai încurcat: <code>git reflog</code>.</strong> Nu ai pierdut nimic încă.</li>
+    </ol>
+    <div class="note" style="margin-top:20px;">
+      <b>Module cu review uman obligatoriu:</b> TimeOff (calcul <code>RemainingDays</code>, accrual, roluri) · Filnet OCR (pipeline extracție) · Iris / Atlas (stored procs în producție). Modificările aici se discută în PR, nu se aprobă rapid.
+    </div>
+  </section>
+
+  <footer>
+    Terminologia Git rămâne în engleză (așa apare în comenzi și în Bitbucket); explicațiile sunt în română. Versiunea completă în markdown: <code>ghiduri/ghid-git-modus-operandi.md</code>. Git se învață făcând — greșește pe un repo de test, nu pe cel de producție.
+  </footer>
+
+</main>
+</div>
+
+<script src="assets/main.js"></script>
+</body>
+</html>
