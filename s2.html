@@ -101,7 +101,7 @@
     <div class="section-label">Tutorial (100–130 min) — 6 segmente</div>
 
     <div class="card">
-      <h3>1. Ce e CLAUDE.md și de ce contează <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">10–15 min</span></h3>
+      <h3>1. Ce e CLAUDE.md și de ce contează <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">10–15 min</span></h3>
       <ul>
         <li><strong>Ce e:</strong> un fișier Markdown pe care Claude Code îl citește <strong>automat</strong>, la începutul sesiunii, ca parte din context — fără să-l ceri tu explicit de fiecare dată.</li>
         <li><strong>Legătura cu S1:</strong> rețeta de sesiune din S1 trăia în capul fiecăruia. Problema: nu ajuta pe nimeni altcineva și trebuia „repetată" verbal lui Claude la fiecare sesiune nouă. <code>CLAUDE.md</code> e locul unde regulile stabile ale unui repo devin <strong>memorie persistentă și partajată</strong>.</li>
@@ -113,7 +113,7 @@
     </div>
 
     <div class="card">
-      <h3>2. Straturile de memorie și precedența lor <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <h3>2. Straturile de memorie și precedența lor <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
       <table>
         <tr><th>Fișier</th><th>Scope</th><th>Precedență</th></tr>
         <tr><td><code>~/.claude/CLAUDE.md</code></td><td>Personal, toate proiectele</td><td>Cel mai jos</td></tr>
@@ -135,7 +135,7 @@
     </div>
 
     <div class="card">
-      <h3>3. Anatomia folderului .claude/ — harta completă <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <h3>3. Anatomia folderului .claude/ — harta completă <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
       <p><code>CLAUDE.md</code> e <strong>intrarea</strong> în sistem, nu tot sistemul. Merită arătată harta completă acum, ca fiecare să știe unde se duce ce — chiar dacă majoritatea pieselor se construiesc efectiv în sesiuni viitoare.</p>
       <div style="overflow-x:auto;">
         <table>
@@ -157,7 +157,7 @@
     </div>
 
     <div class="card">
-      <h3>4. Ce pui / ce NU pui în CLAUDE.md <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <h3>4. Ce pui / ce NU pui în CLAUDE.md <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
       <div style="overflow-x:auto;">
         <table>
           <tr><th>✅ Pui</th><th>❌ Nu pui</th></tr>
@@ -179,7 +179,7 @@
     </div>
 
     <div class="card">
-      <h3>5. Principii universale: de la Karpathy la Cherny <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">25–30 min</span></h3>
+      <h3>5. Principii universale: de la Karpathy la Cherny <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">25–30 min</span></h3>
       <p>Nu tot ce pui în <code>CLAUDE.md</code> e specific proiectului. Andrej Karpathy a distilat din tipare comune de eșec ale LLM-urilor la coding patru principii <strong>universale</strong>:</p>
       <ol>
         <li><strong>Gândește înainte de a coda</strong> — nu presupune în tăcere, expune compromisurile, întreabă când ceva e ambiguu.</li>
@@ -225,7 +225,7 @@
     </div>
 
     <div class="card">
-      <h3>6. De la template la scaffold: generat cu Claude <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <h3>6. De la template la scaffold: generat cu Claude <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
       <p>Ținta zilei, concret: la final, fiecare are (a) <code>~/.claude/CLAUDE.md</code> cu blocul de mai sus și (b) un <code>CLAUDE.md</code> de proiect + un <code>.claude/</code> minim (<code>settings.json</code>, <code>tasks/</code>) pe un repo real.</p>
       <p>Nu construim asta fișier cu fișier, și nu întreținem un script de scaffold separat (bash vs. PowerShell diferă de la o mașină la alta). În schimb, <strong>îi cerem lui Claude Code s-o facă</strong>, ca orice altă sarcină — în plan mode, dintr-un prompt-rețetă reutilizabil.</p>
       <div class="prompt-box">
@@ -273,7 +273,7 @@
     </div>
 
     <div class="card">
-      <h3>1. <code>~/.claude/CLAUDE.md</code> — personal, toate proiectele <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">necomis</span></h3>
+      <h3>1. <code>~/.claude/CLAUDE.md</code> — personal, toate proiectele <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">necomis</span></h3>
       <p>Doar ce e <strong>universal</strong> — reguli de comportament și siguranță valabile pe orice repo. Zero fapte de proiect.</p>
       <div class="template-block"># Instrucțiuni personale — toate proiectele
 
@@ -319,7 +319,7 @@ Dacă e nevoie de una: oprește-te, descrie comanda, cere confirmare.
     </div>
 
     <div class="card">
-      <h3>2. <code>CLAUDE.md</code> — proiect <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">comis în git</span></h3>
+      <h3>2. <code>CLAUDE.md</code> — proiect <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">comis în git</span></h3>
       <p>„Constituția" repo-ului, o citește toată echipa. Structura utilă: <strong>CE</strong> (stack, hartă), <strong>DE CE</strong> (scop), <strong>CUM</strong> (comenzi, convenții). Exemplu pe LMS:</p>
       <div class="template-block"># LMS — platformă internă de training
 
@@ -358,7 +358,7 @@ Aplicație de învățare: cursuri cu prerechizite, sesiuni, participanți
     </div>
 
     <div class="card">
-      <h3>3. <code>CLAUDE.local.md</code> — proiect, doar mașina ta <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">gitignored</span></h3>
+      <h3>3. <code>CLAUDE.local.md</code> — proiect, doar mașina ta <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">gitignored</span></h3>
       <p>Override-uri și specificuri de mașină pentru <strong>acest</strong> proiect.</p>
       <div class="callout" style="margin-bottom:12px;">
         <strong>Atenție — nu e auto-gitignored.</strong> Trebuie să-l adaugi tu în <code>.gitignore</code>, altfel îți urci preferințele personale în repo-ul echipei.

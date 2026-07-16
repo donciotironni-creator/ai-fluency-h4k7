@@ -123,7 +123,7 @@
     <div class="section-label">Tutorial (90–110 min) — 6 segmente</div>
 
     <div class="card">
-      <h3>1. De ce subagenți — izolarea de context <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">10–15 min</span></h3>
+      <h3>1. De ce subagenți — izolarea de context <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">10–15 min</span></h3>
       <ul>
         <li><strong>Punctul de plecare:</strong> sarcina notată în prep-ul S3 — ceva ce ai da lui Claude și care ți-ar umple contextul cu output pe care nu-l reții. Candidați: „găsește toate locurile unde apelăm API-ul vechi", „rulează testele și spune-mi ce pică", „citește fișierul ăsta de 1500 de linii și rezumă-mi contractul lui".</li>
         <li><strong>De ce contează:</strong> fereastra de context e un buget. Când Claude citește 40 de fișiere ca să-ți răspundă, cele 40 rămân în context și concurează cu munca ta reală. Un subagent le citește <strong>în fereastra lui</strong>, o aruncă la final, și-ți dă înapoi doar concluzia — două rânduri, nu 40 de fișiere.</li>
@@ -135,7 +135,7 @@
     </div>
 
     <div class="card">
-      <h3>2. Cei trei agenți built-in — și delegarea automată <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <h3>2. Cei trei agenți built-in — și delegarea automată <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
       <p>Nu trebuie să configurezi nimic ca să folosești subagenți: Claude Code vine cu trei, și-i cheamă singur când se potrivesc.</p>
       <div style="overflow-x:auto;">
         <table>
@@ -156,7 +156,7 @@
     </div>
 
     <div class="card">
-      <h3>3. Compromisul central: izolarea ascunde context <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <h3>3. Compromisul central: izolarea ascunde context <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
       <p>Miezul conceptual al zilei — echivalentul segmentului „cine invocă" din S3. Un subagent pornește cu o fereastră de context <strong>proaspătă și goală</strong>. Nu-ți vede conversația, fișierele pe care Claude le-a citit deja, skills-urile pe care le-ai invocat. Claude îi scrie un mesaj de delegare care rezumă sarcina, și subagentul lucrează de acolo.</p>
       <div class="callout callout-green" style="margin:12px 0;">
         Asta e <strong>și beneficiul, și costul</strong>, în același timp. <strong>Beneficiul:</strong> output-ul voluminos rămâne izolat; contextul tău nu se umflă; poți impune restricții de unelte. <strong>Costul:</strong> subagentul nu știe ce știi tu — dacă sarcina depinde de nuanțe discutate în conversație, ori le repeți în delegare, ori greșește. Și: rezultatul <strong>reintră</strong> în contextul tău, deci un subagent care-ți dă înapoi un dump de 500 de linii n-a economisit nimic.
@@ -177,7 +177,7 @@
     </div>
 
     <div class="card">
-      <h3>4. Cum definești un subagent propriu <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <h3>4. Cum definești un subagent propriu <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
       <p>Când te trezești că dai <em>aceeași</em> sarcină de cercetare iar și iar, o transformi într-un subagent dedicat — reflexul „promptul repetat devine skill" din S3, mutat la nivel de agent. Un subagent e un fișier Markdown cu frontmatter:</p>
       <div class="template-block">---
 name: codebase-explorer
@@ -215,7 +215,7 @@ dependențele, punctele de intrare. Nu modifica nimic.
     </div>
 
     <div class="card">
-      <h3>5. Paralelism, înlănțuire — și costul lor <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <h3>5. Paralelism, înlănțuire — și costul lor <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
       <ul>
         <li><strong>Paralelism:</strong> pentru investigații independente, Claude poate porni mai mulți subagenți deodată. „Cercetează în paralel modulele de auth, DB și API, cu subagenți separați." Fiecare explorează izolat, apoi Claude sintetizează.</li>
         <li><strong>Înlănțuire:</strong> pentru fluxuri multi-pas, subagenți în serie — unul găsește, altul repară. „Folosește code-reviewer să găsească problemele de performanță, apoi optimizer să le repare."</li>
@@ -234,7 +234,7 @@ dependențele, punctele de intrare. Nu modifica nimic.
     </div>
 
     <div class="card">
-      <h3>6. De la sarcină la subagent, generat cu Claude — și cum verifici <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <h3>6. De la sarcină la subagent, generat cu Claude — și cum verifici <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
       <p>Ținta zilei, concret: fiecare pleacă cu <strong>cel puțin un subagent funcțional, comis</strong>, făcut din sarcina lui din prep. Nu-l scriem manual — îi cerem lui Claude, ca orice altă sarcină.</p>
       <div class="prompt-box">
         <span class="prompt-box-label">Pasul 1 — generează subagentul dintr-o sarcină repetată</span>

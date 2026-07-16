@@ -122,7 +122,7 @@
     <div class="section-label">Tutorial (90–110 min) — 6 segmente</div>
 
     <div class="card">
-      <h3>1. De ce skills — promptul repetat devine unealtă <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">10–15 min</span></h3>
+      <h3>1. De ce skills — promptul repetat devine unealtă <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">10–15 min</span></h3>
       <ul>
         <li><strong>Punctul de plecare:</strong> promptul notat în prep-ul S2 — ceva scris manual, la fel, de 2-3 ori. Candidatul evident chiar din S2: promptul de bootstrap (<code>~/.claude/CLAUDE.md</code> + scaffold), pe care fiecare îl va rula din nou pe alte repo-uri. Alți candidați: „review-uiește diff-ul curent după convențiile noastre", „scrie un commit message în formatul nostru", „deschide un PR cu template-ul echipei".</li>
         <li><strong>De ce contează:</strong> un prompt repetat manual e (a) inconsistent — de fiecare dată îl formulezi altfel, (b) needocumentat — trăiește în capul tău, (c) neversionat. Exact problemele pe care <code>CLAUDE.md</code> le-a rezolvat pentru <strong>fapte</strong> în S2; skill-ul le rezolvă pentru <strong>proceduri</strong>.</li>
@@ -134,7 +134,7 @@
     </div>
 
     <div class="card">
-      <h3>2. Anatomia unui skill — și de ce „command" și „skill" sunt același lucru <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <h3>2. Anatomia unui skill — și de ce „command" și „skill" sunt același lucru <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
       <p>Un skill e un folder cu un fișier <code>SKILL.md</code>:</p>
       <div class="template-block">.claude/skills/summarize-changes/
 └── SKILL.md          # obligatoriu: frontmatter + instrucțiuni</div>
@@ -189,7 +189,7 @@ riscurile pe care le observi.</div>
     </div>
 
     <div class="card">
-      <h3>3. Cine invocă — și de ce e cea mai importantă decizie <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <h3>3. Cine invocă — și de ce e cea mai importantă decizie <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
       <p>Miezul conceptual al zilei. Un skill are, implicit, <strong>două uși de intrare</strong>: o poți deschide tu (<code>/nume</code>) sau o poate deschide Claude (automat, când <code>description</code>-ul se potrivește cu ce ceri).</p>
       <div class="callout callout-green" style="margin:12px 0;">
         <code>description</code> <strong>nu e documentație — e interfața de auto-declanșare.</strong> E singurul lucru din skill care stă <strong>mereu</strong> în context (ca modelul să știe că skill-ul există); corpul se încarcă doar la invocare. Un <code>description</code> prost = skill care nu se declanșează când trebuie, sau se declanșează când nu trebuie. Regula practică: pune cazul principal de folosire <strong>primul</strong> și include cuvintele pe care le-ai spune natural („când vrei un commit message", „când review-uiești un diff").
@@ -211,7 +211,7 @@ riscurile pe care le observi.</div>
     </div>
 
     <div class="card">
-      <h3>4. Argumente și injectare de context <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <h3>4. Argumente și injectare de context <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
       <p>Un skill devine unealtă adevărată când primește input.</p>
       <p style="margin-top:8px;"><strong>Argumente:</strong></p>
       <ul>
@@ -245,7 +245,7 @@ riscurile pe care le observi.</div>
     </div>
 
     <div class="card">
-      <h3>5. Fișiere ajutătoare &amp; pre-aprobarea uneltelor <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <h3>5. Fișiere ajutătoare &amp; pre-aprobarea uneltelor <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
       <p>Aici forma minimă devine forma completă — dar doar când merită.</p>
       <p style="margin-top:8px;"><strong>Progressive disclosure cu fișiere ajutătoare:</strong></p>
       <div class="template-block">my-skill/
@@ -274,7 +274,7 @@ allowed-tools: Bash(git add *) Bash(git commit *) Bash(git status *)
     </div>
 
     <div class="card">
-      <h3>6. De la prompt la skill, generat cu Claude — și cum verifici că a prins <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <h3>6. De la prompt la skill, generat cu Claude — și cum verifici că a prins <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
       <p>Ținta zilei, concret: fiecare pleacă cu <strong>cel puțin un skill funcțional, comis</strong>, făcut din promptul lui repetat. Nu-l scriem manual, câmp cu câmp. Îi cerem lui Claude — el știe sintaxa curentă mai bine decât o ținem noi minte.</p>
       <div class="prompt-box">
         <span class="prompt-box-label">Pasul 1 — generează skill-ul dintr-un prompt existent</span>

@@ -98,20 +98,20 @@
     <div class="card">
       <div style="display:flex;flex-direction:column;gap:16px;">
         <div>
-          <div style="font-size:.75rem;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;">0–5 min · Cadru</div>
+          <div style="font-size:.75rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;">0–5 min · Cadru</div>
           <blockquote style="margin:0;padding:10px 14px;border-left:3px solid var(--line);color:var(--ink-soft);font-style:italic;font-size:.95rem;">„Programul ăsta nu e despre AI în general — e despre Claude Code ca unealtă de echipă. Deci nu predăm prompturi frumoase, predăm cum conduci un agent: ce îi dai să vadă, ce îl lași să facă, cum ții costul și riscul sub control. Fiecare joi pleacă cu ceva comis în repo — nu cu notițe, nu cu idei, cu un artefact real. Azi nu producem nimic, azi ne calibrăm."</blockquote>
         </div>
         <div>
-          <div style="font-size:.75rem;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;">5–20 min · Diagnostic</div>
+          <div style="font-size:.75rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;">5–20 min · Diagnostic</div>
           <blockquote style="margin:0;padding:10px 14px;border-left:3px solid var(--line);color:var(--ink-soft);font-style:italic;font-size:.95rem;">„O să vă pun 9 întrebări rapide. La fiecare, autoevaluare sinceră: 0 dacă n-ai auzit sau n-ai folosit niciodată, 1 dacă ai atins subiectul dar nu sistematic, 2 dacă e parte din rutina ta zilnică. Nu există răspuns greșit — cu cât știu mai bine unde sunteți, cu atât adaptez mai bine programul pentru voi."</blockquote>
         </div>
         <div>
-          <div style="font-size:.75rem;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;">20–27 min · Calibrare</div>
+          <div style="font-size:.75rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;">20–27 min · Calibrare</div>
           <p style="font-size:.88rem;color:var(--ink-soft);margin:0 0 6px;font-style:normal;"><em>după ce ai scorurile vizibile pentru toată lumea:</em></p>
           <blockquote style="margin:0;padding:10px 14px;border-left:3px solid var(--line);color:var(--ink-soft);font-style:italic;font-size:.95rem;">„Pe baza a ce văd, iată cum mergem: [<strong>dacă mediile 1–4 ≥ 1,5</strong>] S1–S3 le comprimăm, punem mai mult timp în Faza 2 și 3. [<strong>dacă scoruri mici la 1–4</strong>] Mergem integral pe Faza 1 — e exact ce trebuie. [<strong>în ambele cazuri</strong>] Cei cu scoruri mari pe 5–9 — voi intrați mai devreme ca prezentatori rotativi."</blockquote>
         </div>
         <div>
-          <div style="font-size:.75rem;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;">27–30 min · Setup &amp; logistică</div>
+          <div style="font-size:.75rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:6px;">27–30 min · Setup &amp; logistică</div>
           <blockquote style="margin:0;padding:10px 14px;border-left:3px solid var(--line);color:var(--ink-soft);font-style:italic;font-size:.95rem;">„Verificați că <code>claude</code> rulează în terminal și că sunteți autentificați — <code>claude auth status</code>. Dacă nu, rezolvați azi, că joi începem direct în unealtă. Am deschis acum docul partajat AI Wins &amp; Fails — linkul e în chat. Din S4, unul dintre voi prezintă la început — stabilim rotația atunci."</blockquote>
         </div>
       </div>
@@ -188,7 +188,7 @@
         <li>Ai la îndemână un <strong>repo de test „de nisip"</strong> (sandbox), separat de codul real — pe el vom testa în sesiunile următoare lucruri potențial distructive (hooks, permisiuni).</li>
         <li>Ai acces la docul partajat „AI Wins &amp; Fails".</li>
       </ul>
-      <p style="font-size:.82rem;color:var(--ink-faint);margin:14px 0 8px;text-transform:uppercase;letter-spacing:.08em;font-family:'DM Mono',monospace;">Opțional — util, nu obligatoriu</p>
+      <p style="font-size:.82rem;color:var(--ink-mute);margin:14px 0 8px;text-transform:uppercase;letter-spacing:.08em;font-family:var(--mono);">Opțional — util, nu obligatoriu</p>
       <ul class="checklist" style="opacity:.8;">
         <li><strong>VS Code</strong> cu extensia <strong>Claude Code</strong> instalată — sesiune Claude direct din editor, fără să schimbi fereastra.</li>
         <li><strong>Antigravity</strong> — desktop app alternativ pentru Claude Code; util dacă preferi o interfață dedicată față de terminal.</li>
@@ -199,7 +199,7 @@
     <div class="card">
       <p style="color:var(--ink-soft);font-size:.93rem;margin-bottom:16px;">Referință rapidă — util de arătat sau trimis înainte de S1.</p>
 
-      <h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-family:'DM Mono',monospace;margin:0 0 10px;">Terminal — pornire &amp; autentificare</h4>
+      <h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-mute);font-family:var(--mono);margin:0 0 10px;">Terminal — pornire &amp; autentificare</h4>
       <table style="width:100%;font-size:.9rem;margin-bottom:20px;">
         <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>claude</code></td><td style="color:var(--ink-soft);">pornește o sesiune interactivă în folderul curent</td></tr>
         <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>claude auth status</code></td><td style="color:var(--ink-soft);">verifică dacă ești autentificat</td></tr>
@@ -207,7 +207,7 @@
         <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>claude -p "prompt"</code></td><td style="color:var(--ink-soft);">rulare one-shot, fără sesiune interactivă (headless)</td></tr>
       </table>
 
-      <h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-family:'DM Mono',monospace;margin:0 0 10px;">În sesiune — slash commands</h4>
+      <h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-mute);font-family:var(--mono);margin:0 0 10px;">În sesiune — slash commands</h4>
       <table style="width:100%;font-size:.9rem;margin-bottom:20px;">
         <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>/help</code></td><td style="color:var(--ink-soft);">lista completă de comenzi disponibile în versiunea curentă</td></tr>
         <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>/clear</code></td><td style="color:var(--ink-soft);">șterge contextul sesiunii — nou fir de gândire</td></tr>
@@ -216,14 +216,14 @@
         <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>/permissions</code></td><td style="color:var(--ink-soft);">vizualizează regulile allow / ask / deny active</td></tr>
       </table>
 
-      <h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-family:'DM Mono',monospace;margin:0 0 10px;">Navigare cu tastatura</h4>
+      <h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-mute);font-family:var(--mono);margin:0 0 10px;">Navigare cu tastatura</h4>
       <table style="width:100%;font-size:.9rem;margin-bottom:20px;">
         <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>Shift+Tab</code></td><td style="color:var(--ink-soft);">ciclează moduri: normal → plan → auto</td></tr>
         <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>Ctrl+C</code></td><td style="color:var(--ink-soft);">întrerupe execuția în desfășurare</td></tr>
         <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;"><code>Escape</code></td><td style="color:var(--ink-soft);">anulează acțiunea curentă fără să oprești sesiunea</td></tr>
       </table>
 
-      <h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-faint);font-family:'DM Mono',monospace;margin:0 0 10px;">Remote &amp; VS Code</h4>
+      <h4 style="font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-mute);font-family:var(--mono);margin:0 0 10px;">Remote &amp; VS Code</h4>
       <table style="width:100%;font-size:.9rem;">
         <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;">Extensie VS Code</td><td style="color:var(--ink-soft);">sesiune Claude în sidebar, acces direct la fișierele deschise</td></tr>
         <tr><td style="padding:5px 12px 5px 0;white-space:nowrap;">VS Code Remote</td><td style="color:var(--ink-soft);">deschizi folderul pe un server remote, Claude Code rulează local dar vede fișierele remote</td></tr>

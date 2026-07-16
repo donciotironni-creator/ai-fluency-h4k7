@@ -95,13 +95,13 @@
     <div class="section-label">Tutorial (60–90 min) — 4 segmente</div>
 
     <div class="card">
-      <h3>1. Modelul mental — chatbot vs. sistem <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">10 min</span></h3>
+      <h3>1. Modelul mental — chatbot vs. sistem <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">10 min</span></h3>
       <p>Ideea centrală: Claude Code nu e un chat cu cod. E un agent care citește repo-ul, rulează comenzi, editează fișiere și cere permisiuni. Diferența dintre folosirea slabă și cea bună <strong>nu</strong> stă în prompt-uri mai lungi, ci în cât de deliberat conduci: ce vede, ce are voie, cu ce model, câtă planificare face înainte.</p>
       <p style="color:var(--ink-soft);font-size:.93rem;">Un cadru util pentru restul programului: fiecare sesiune adaugă o pârghie de control — azi bucla, apoi contextul persistent (S2), apoi comenzile (S3), apoi izolarea (S4) etc.</p>
     </div>
 
     <div class="card">
-      <h3>2. Plan mode vs. execuție directă <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <h3>2. Plan mode vs. execuție directă <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
       <ul>
         <li><strong>Ce e:</strong> un mod în care Claude întâi îți propune un plan și explorează, fără să modifice cod, până aprobi. (Comuți modurile cu <code>Shift+Tab</code> în versiunile curente; confirmă cu <code>/help</code>.)</li>
         <li><strong>Când merită:</strong> task-uri cu ramificații, refactorizări, orice atingi cod pe care nu vrei surprize. Plan mode declanșează des un subagent de tip „Explore" care scanează repo-ul și întoarce o hartă, ținând sesiunea principală curată.</li>
@@ -113,7 +113,7 @@
     </div>
 
     <div class="card">
-      <h3>3. Gestiunea contextului <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <h3>3. Gestiunea contextului <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
       <ul>
         <li><strong>Fereastra de context nu e infinită și nu e gratuită.</strong> Cu cât o umpli cu zgomot (log-uri lungi, fișiere irelevante, istoric vechi), cu atât modelul raționează mai prost și mai scump.</li>
         <li><code>/clear</code> — repornește sesiunea curată când treci la un task nesuspect de cel anterior.</li>
@@ -126,7 +126,7 @@
     </div>
 
     <div class="card">
-      <h3>4. Model / effort &amp; permisiuni <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <h3>4. Model / effort &amp; permisiuni <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
       <p><strong>Model / effort</strong> — nu folosi același model reflex la orice:</p>
       <table>
         <tr><th>Tip task</th><th>Nivel recomandat</th></tr>

@@ -120,7 +120,7 @@
     <div class="section-label">Tutorial (90–110 min) — 6 segmente</div>
 
     <div class="card">
-      <h3>1. De ce hooks — de la speranță la determinism <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">10–15 min</span></h3>
+      <h3>1. De ce hooks — de la speranță la determinism <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">10–15 min</span></h3>
       <ul>
         <li><strong>Punctul de plecare:</strong> regula din prep-ul S4 — ceva ce vrei mereu, dar Claude uneori ratează. „Formatează după edit." „Nu comite secrete." „Rulează testele înainte de commit."</li>
         <li><strong>De ce contează:</strong> o instrucțiune în <code>CLAUDE.md</code> e citită și <em>de obicei</em> respectată. Dar „de obicei" nu e bun pentru reguli care <strong>trebuie</strong> să țină — un secret comis o singură dată e deja în istoric. Un hook mută regula din stratul „modelul decide" în stratul „codul impune".</li>
@@ -132,7 +132,7 @@
     </div>
 
     <div class="card">
-      <h3>2. Ciclul de viață: evenimentele <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <h3>2. Ciclul de viață: evenimentele <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
       <p>Un hook se leagă de un <strong>eveniment</strong>. Sunt multe; astea sunt cele care-ți acoperă prima lună:</p>
       <div style="overflow-x:auto;">
         <table>
@@ -158,7 +158,7 @@
     </div>
 
     <div class="card">
-      <h3>3. Cum se configurează — <code>settings.json</code> <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <h3>3. Cum se configurează — <code>settings.json</code> <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
       <p>Hook-urile trăiesc în fișierele de settings, cu trei niveluri de imbricare: eveniment → <code>matcher</code> → listă de handlere.</p>
       <div class="template-block">{
   "hooks": {
@@ -196,7 +196,7 @@
     </div>
 
     <div class="card">
-      <h3>4. Input &amp; control: coduri de ieșire și JSON <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <h3>4. Input &amp; control: coduri de ieșire și JSON <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
       <p>Miezul mecanic al zilei. Hook-ul primește un JSON pe stdin, cu tot ce trebuie ca să decidă:</p>
       <div class="template-block">{
   "session_id": "...",
@@ -230,7 +230,7 @@ exit 0</div>
     </div>
 
     <div class="card">
-      <h3>5. Cazuri reale pentru echipa SQL→full-stack <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <h3>5. Cazuri reale pentru echipa SQL→full-stack <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
       <p>Aici sesiunea aterizează în munca lor. Mapare directă pe regulile din <code>CLAUDE.md</code>-ul global al echipei:</p>
       <div style="overflow-x:auto;">
         <table>
@@ -253,7 +253,7 @@ exit 0</div>
     </div>
 
     <div class="card">
-      <h3>6. De la regulă la hook, generat cu Claude — și cum verifici <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <h3>6. De la regulă la hook, generat cu Claude — și cum verifici <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
       <p>Ținta zilei, concret: fiecare pleacă cu <strong>cel puțin un hook funcțional, comis</strong>, făcut din regula lui din prep. Nu-l scriem manual — îi cerem lui Claude. Dar aici review-ul e <strong>cel mai important din tot programul</strong>: hook-ul rulează pe mașina ta, automat, cu privilegiile tale.</p>
       <div class="prompt-box">
         <span class="prompt-box-label">Pasul 1 — generează hook-ul din regulă</span>
