@@ -62,7 +62,10 @@ s4.html/s5.html doar dacă mai e timp și doar după ce confirm eu. Nu atinge
 
 ## Log
 
+- **2026-07-16** — Finalizări post-review (fără S6-S10): card „Documentație oficială" în `index.html` (link-uri code.claude.com mapate pe S2-S5, incl. sub-agents), clarificat modelul „un repo per student" (l.162), comise fișierele NotebookLM S3/S4. **Decizia #3 rezolvată:** fiecare student lucrează pe repo-ul lui (facilitatorul le-a creat câte unul); nu e un repo LMS comun.
+
 - **2026-07-15** — Definit goal S4+S5 (material prioritar, pagini opțional). Materialul Git gata, necommis.
 - **2026-07-15** — **Material S4 + S5 COMPLET** (6 fișiere, necommis). Verificat pe doc-ul oficial (sub-agents + hooks) înainte de redactare. Rămas nice-to-have: `s4.html` / `s5.html` complete (după confirmare). Nimic încă nu e comis.
 - **2026-07-15** — **`s4.html` + `s5.html` COMPLETE** la nivelul S3 (facilitator + echipă + 5 self-check + nav). Verificat în browser: comutare rol OK, self-check OK, glossary auto-link OK, 0 erori consolă. `index.html` deja consistent (fără schimbări).
+- **2026-07-16** — **Review pe proiect (workflow 4 dimensiuni) + pachet de polish COMIS & PUSHED.** Commits `59f2aa4` (design: token --mono, fix --ink-faint→--ink-mute, reduced-motion, cheat-grid mobil), `a24588c` (homepage: done pe S2-S5, coming-soon pe S6-S10, Dicționar în Resurse), `794421b` (README la S0-S5, footer schimbari, șters prezentare-S2.txt). Verificat în browser: 0 erori consolă. Rămas din review: **S6-S10** (efort L), decizia „repo comun vs individual" (#3), prezentare-S1.md, intrări dicționar pentru termeni-cheie. Necomis: cele 2 fișiere suport-notebooklm-S3/S4.md.
 - **2026-07-15** — **COMIS.** S4 → `c6604c9`, S5 → `b3bd96b` (fiecare: 3 md + pagina html). Materialul Git era deja comis extern (`52395e0` + `6bd1391`, care a trecut și „Bitbucket→GitHub" — am aliniat referințele din S5). Necommis rămân doar: `excalidraw.log` (log rătăcit MCP, de pus în `.gitignore`) și `PROGRESS.md` (fișier de lucru). **Sesiuni complete: S0–S5.** Următoarea: S6 (MCP).
