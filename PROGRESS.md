@@ -62,6 +62,8 @@ s4.html/s5.html doar dacă mai e timp și doar după ce confirm eu. Nu atinge
 
 ## Log
 
+- **2026-07-16** — Unificat tema pe paginile forkate (`dictionar.html`, `git.html` importă acum `style.css`; nav 60px/Hanken/verde peste tot). Dicționar: `glossary.js` auto-linkează acum Skills/Hooks/Plugins/Permisiuni; adăugată intrarea „Plugin" (138 termeni). Toate verificate în browser, 0 erori. Rămas (când se reia): intrări dicționar suplimentare dacă apar termeni noi, `prezentare-S1.md`, `:focus-visible`/`@media print`, și **S6–S10** (build-ul mare).
+
 - **2026-07-16** — Finalizări post-review (fără S6-S10): card „Documentație oficială" în `index.html` (link-uri code.claude.com mapate pe S2-S5, incl. sub-agents), clarificat modelul „un repo per student" (l.162), comise fișierele NotebookLM S3/S4. **Decizia #3 rezolvată:** fiecare student lucrează pe repo-ul lui (facilitatorul le-a creat câte unul); nu e un repo LMS comun.
 
 - **2026-07-15** — Definit goal S4+S5 (material prioritar, pagini opțional). Materialul Git gata, necommis.
