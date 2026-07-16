@@ -15,9 +15,13 @@ Site static (HTML/CSS/JS simplu, fără build) plus materialele de facilitare î
 - **`index.html`** — pagina de start: prezentarea programului, curriculumul pe 10 săptămâni în 3 faze, matricea de fluență și notele de facilitare.
 - **`s0.html`–`s10.html`** — câte o pagină per sesiune. Fiecare pagină de sesiune are două panouri comutabile: **Ghid facilitare** (pentru tine) și **Exerciții echipă** (pentru participanți).
 - **`dictionar.html`** — dicționarul de termeni.
+- **Pagini transversale:** `cheatsheet.html` (referință rapidă), `artefacte.html` (șabloane copy-paste, inclusiv template-uri de CLAUDE.md și subagenți), `git.html` (modus operandi Git & GitHub), `schimbari.html` (ce s-a schimbat în unealtă între versiuni).
 - **`ghiduri/`** — sursele markdown din care se construiesc paginile:
-  - `02-ghid-facilitare-S{0,1,2}.md` — ghidurile de facilitare (timing, conținutul tutorialului, capcane).
-  - `03-exercitii-S{0,1,2}.md` — fișele de exerciții aplicate pe LMS.
+  - `02-ghid-facilitare-SN.md` — ghidurile de facilitare (timing, conținutul tutorialului, capcane).
+  - `prezentare-SN.md` — slide-urile (Marp) per sesiune.
+  - `03-exercitii-SN.md` — fișele de exerciții aplicate pe LMS.
+  - `suport-notebooklm-SN.md` — variantă în proză, self-contained, de dat lui NotebookLM (deocamdată S3, S4).
+  - `template-CLAUDE.md`, `template-subagenti.md` — șabloane de referință (livrabilele din S2 și S4).
   - `AI-Wins-Fails.md` — template-ul documentului partajat de echipă.
 - **`01-program-10-saptamani.html`** — pagină orfană (nelinkuită), varianta veche a programului. Nu se atinge fără cerere explicită.
 
@@ -27,7 +31,7 @@ Site static (HTML/CSS/JS simplu, fără build) plus materialele de facilitare î
 
 - `index.html` e contextul de ansamblu — îl citești o dată, la început.
 - La fiecare sesiune: **tu** conduci după panoul „Ghid facilitare", iar **participanții** lucrează după panoul „Exerciții echipă" (ambele pe aceeași pagină `sN.html`).
-- **S0, S1 și S2 sunt gata** (ghid + exerciții). Pasul următor firesc e **S3** (slash commands & skills), pe același tipar.
+- **S0–S5 sunt complete** — fiecare sesiune are cele patru surse sincronizate: ghid de facilitare + prezentare (Marp) + exerciții + pagina `sN.html` (cu panel facilitator, panel echipă și self-check). Pasul următor firesc e **S6** (MCP), pe același tipar.
 
 ---
 
