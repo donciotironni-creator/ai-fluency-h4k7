@@ -350,6 +350,49 @@ dependențele, punctele de intrare. Nu modifica nimic.
       <strong>Starter-pack gata de folosit:</strong> patru subagenți cross-project (<code>codebase-explorer</code>, <code>code-reviewer</code>, <code>sql-reviewer</code>, <code>test-runner</code>) sunt în <a href="artefacte.html">Artefacte</a> — copiază-i în <code>~/.claude/agents/</code> și pornește de la ei, nu de la zero. Merg pe toate proiectele tale.
     </div>
 
+    <!-- Prerechizite de mediu -->
+    <div class="section-label">Prerechizite de mediu — fă-le înainte de exerciții</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Prep</span>
+        <span class="ex-time">≈20 min</span>
+        <span class="ex-trains">Confirmă că baza de date și Bitbucket merg pe repo-ul tău</span>
+      </div>
+      <p>Înainte de exercițiile cu subagenți, asigură-te că mediul e viu: te conectezi la baza ta de date și faci un insert prin Entity Framework, apoi confirmi că poți face push pe repo-ul tău de Bitbucket. Repo-ul are deja tot ce trebuie — endpoint-ul de insert, migrarea, agentul <code>run-lms</code> și comanda <code>/ship</code>.</p>
+
+      <p style="margin-top:14px;"><strong>1 · Baza de date + insert cu EF</strong></p>
+      <div class="prompt-box">
+        <span class="prompt-box-label">Prompt — conexiune</span>
+        Sunt în repo-ul LMS (backend .NET 10 în <code>backend/LearningPlatform.Api</code>, SQL Server). Pornește SQL Server din <code>docker-compose.yml</code> (<code>docker compose up -d</code>) — are nevoie de parola SA în <code>.env</code> (<code>MSSQL_SA_PASSWORD</code>), pe care o pun EU (confirmă că <code>.env</code> e gitignored). Apoi dă-mi comanda <code>dotnet user-secrets set "ConnectionStrings:Lms" "…"</code> pe care s-o rulez eu cu baza mea (<code>Database=LMS_&lt;numele_meu&gt;</code>). Nu pune tu parola.
+      </div>
+      <div class="prompt-box" style="margin-top:10px;">
+        <span class="prompt-box-label">Prompt — tabelă + verificare</span>
+        Rulează migrarea <code>backend/Migrations/001_CreateConnectionTest.sql</code> pe baza mea (creează <code>dbo.ConnectionTest</code>, e idempotentă). Pornește API-ul cu agentul <code>run-lms</code>. Apoi verifică: <code>GET /Health/db</code> trebuie să întoarcă <code>{status:"ok"}</code>; dacă dă 503, ajută-mă să depanez connection string-ul.
+      </div>
+      <div class="prompt-box" style="margin-top:10px;">
+        <span class="prompt-box-label">Prompt — insert prin EF</span>
+        Fă un insert pentru obiectul de test cu Entity Framework (nu SQL brut): apelează <code>POST /Health/db/rows</code> cu un <code>Note</code> al meu (ex. „test &lt;numele_meu&gt;"). Arată-mi entitatea întoarsă (<code>Id</code> + <code>CreatedAt</code> puse de DB). Apoi confirmă că rândul e în bază: <code>GET /Health/db/rows</code>.
+      </div>
+
+      <p style="margin-top:14px;"><strong>2 · Bitbucket + push</strong></p>
+      <div class="prompt-box">
+        <span class="prompt-box-label">Prompt — conectare</span>
+        Repo-ul meu e pe Bitbucket și am deja drepturi. Verifică <code>git remote -v</code> (dacă lipsește, ajută-mă să adaug remote-ul — îți dau eu URL-ul), apoi <code>git fetch</code> ca să confirm accesul. Dacă cere autentificare, spune-mi ce-mi lipsește (cheie SSH sau app password) — o configurez EU, nu-mi cere token-ul în chat.
+      </div>
+      <div class="prompt-box" style="margin-top:10px;">
+        <span class="prompt-box-label">Prompt — push</span>
+        Fă o modificare mică de test (un fișier <code>HELLO.md</code> cu numele meu), pune-mă pe un branch de feature (nu <code>main</code>/<code>develop</code>), commit conventional, și push pe branch-ul meu — arată-mi comenzile înainte. Sau, mai simplu, folosește comanda <code>/ship</code> (agentul <code>git-shipper</code>): commit + push + link de PR pe Bitbucket, cu toate guardrails-urile.
+      </div>
+
+      <div class="callout" style="margin-top:14px;">
+        <strong>Siguranță:</strong> parola SA, connection string-ul și token-ul de Bitbucket le pui <strong>tu</strong> — în <code>.env</code> (gitignored), <code>user-secrets</code>, cheie SSH. Nu le tasta în chat, nu le comite. Citește comenzile înainte să le aprobi (disciplina din S1).
+      </div>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        <code>GET /Health/db</code> întoarce ok, îți vezi rândul în <code>GET /Health/db/rows</code>, și ai făcut un push pe branch-ul tău de Bitbucket.
+      </div>
+    </div>
+
     <!-- Ex 1 -->
     <div class="section-label">Exercițiul 1 — Alege sarcina &amp; testul izolare/dialog</div>
     <div class="exercise">
