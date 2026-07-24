@@ -227,7 +227,7 @@ Rezumă modificările de mai sus în 2-3 puncte, apoi listează riscurile pe car
 
   <!-- ══════════════ GRUP 4 — SUBAGENȚI ══════════════ -->
   <div class="phase-title">Subagenți de pornire</div>
-  <p style="color:var(--ink-soft);margin-bottom:8px;">Lucrători pe care Claude îi <strong>deleagă</strong> — fac o muncă în context izolat și întorc doar concluzia (S4). Un subagent e un fișier <code>&lt;nume&gt;.md</code> = frontmatter (<code>name</code>, <code>description</code>, opțional <code>tools</code>/<code>model</code>) + corp = system prompt. Cei de mai jos sunt <strong>personali și cross-project</strong>: copiază-i în <code>~/.claude/agents/</code> și merg pe toate repo-urile tale (TimeOff, Filnet, Iris…). Regula de siguranță din S1/S4: cercetătorii primesc unelte <strong>read-only</strong>; scrierea rămâne pe agentul principal. Referința completă, cu note „de ce așa" per agent și pași de instalare/verificare: <code>ghiduri/template-subagenti.md</code>.</p>
+  <p style="color:var(--ink-soft);margin-bottom:8px;">Lucrători pe care Claude îi <strong>deleagă</strong> — fac o muncă în context izolat și întorc doar concluzia (S4). Un subagent e un fișier <code>&lt;nume&gt;.md</code> = frontmatter (<code>name</code>, <code>description</code>, opțional <code>tools</code>/<code>model</code>) + corp = system prompt. Trăiesc pe <strong>două niveluri</strong>: <strong>personal</strong> (<code>~/.claude/agents/</code> — pe toate repo-urile tale, necomis) și <strong>de proiect</strong> (<code>.claude/agents/</code> — comis în git, partajat cu echipa). Mai jos ai întâi patru agenți <strong>personali</strong> (cross-project), apoi câțiva <strong>de proiect</strong> (specifici unui repo). Regula de siguranță din S1/S4: cercetătorii primesc unelte <strong>read-only</strong>; scrierea rămâne pe agentul principal. Referința completă, cu note „de ce așa" per agent și pași de instalare/verificare: <code>ghiduri/template-subagenti.md</code>.</p>
 
   <div class="callout">
     <strong>Nu confunda cu <code>AGENTS.md</code>.</strong> <code>AGENTS.md</code> e un fișier de <em>context</em> (geamănul open-standard al lui <code>CLAUDE.md</code>) — nu un agent. Aici vorbim de <strong>subagenți</strong>: unelte pe care le <em>folosești</em>, în <code>~/.claude/agents/</code> (personal) sau <code>.claude/agents/</code> (proiect). Vezi lămurirea din <a href="s2.html">S2</a>.
@@ -335,6 +335,70 @@ sau din structura repo-ului (ex. `dotnet test`, `npm test`, `pytest`) și ruleaz
 
 Nu întoarce output-ul testelor care trec. Dacă totul trece, spune doar atât.
 Rezumat, nu log brut — asta e ideea unui subagent.</div>
+  </div>
+
+  <div class="section-label" style="margin-top:26px;">La nivel de proiect — comiși, partajați cu echipa</div>
+  <p style="color:var(--ink-soft);margin-bottom:8px;">Ăștia stau în <code>.claude/agents/</code> al repo-ului și se <strong>comit în git</strong>, ca oricine clonează proiectul să-i aibă din prima. Încapsulează cunoștințe despre <em>acest</em> repo — cum pornești app-ul, cum faci ship. Sunt <strong>șabloane</strong>: adaptează comenzile, porturile și fluxul la proiectul tău.</p>
+
+  <div class="card">
+    <div class="section-label">run-app — pornește aplicația local</div>
+    <p style="margin-bottom:6px;">Pornește serverele de dev ale proiectului, <strong>idempotent</strong> (nu pornește un al doilea proces dacă portul răspunde deja). Adaptează comenzile și porturile la proiectul tău.</p>
+    <div style="margin-bottom:10px;">
+      <span class="tag">.claude/agents/run-app.md</span>
+      <span class="tag">proiect · comis în git</span>
+      <span class="tag">Bash</span>
+    </div>
+    <div class="template-block">---
+name: run-app
+description: Pornește aplicația local (backend + frontend), idempotent și port-aware. Folosește pentru a lansa, reporni sau previzualiza serverele de dev.
+tools: Bash
+model: haiku
+---
+
+Pornești aplicația pe localhost și confirmi că răspunde. Ești mecanic și ieftin.
+
+1. Verifică întâi dacă rulează deja (curl pe porturile de dev). Dacă răspund,
+   raportează „deja pornit" și oprește-te — nu porni un duplicat.
+2. Pornește backend-ul și frontend-ul în fundal (comenzile proiectului — vezi
+   CLAUDE.md; ex. `dotnet run` în backend, `npm run dev` în frontend).
+3. Verifică fiecare până răspunde 200; raportează URL-urile și health-check-ul.
+
+E un singleton: nu porni al doilea proces dacă portul deja răspunde. Dacă un
+port e ocupat de un proces blocat, eliberează-l întâi. Nu schimba porturile.</div>
+  </div>
+
+  <div class="card">
+    <div class="section-label">ship — fluxul de git al echipei</div>
+    <p style="margin-bottom:6px;">Execut mecanic ship-ul: commit pe branch de feature → rebase pe <code>develop</code> → push (niciodată force) → link de PR pe Bitbucket. Cu guardrails: nu atinge <code>main</code>/<code>develop</code> direct. Adaptează la modelul vostru de branching.</p>
+    <div style="margin-bottom:10px;">
+      <span class="tag">.claude/agents/ship.md</span>
+      <span class="tag">proiect · comis în git</span>
+      <span class="tag">Bash</span>
+    </div>
+    <div class="template-block">---
+name: ship
+description: Execut mecanic fluxul de git al echipei — commit pe branch de feature, rebase pe origin/develop, push (niciodată force) și link de PR pe Bitbucket către develop. Invocat doar după ce am aprobat commit-ul.
+tools: Bash
+model: haiku
+---
+
+Ești un executor mecanic de git, invocat după ce am aprobat commit-ul. Fă exact
+pașii de mai jos și raportează structurat — nu improviza.
+
+Guardrails (refuză și raportează dacă se încalcă):
+- Branch-ul curent NU poate fi main / master / develop.
+- Niciodată `git push --force` / `--force-with-lease`; niciodată `reset --hard` pe shared.
+- Push doar pe branch-ul de feature curent; PR-ul țintește develop, nu main.
+
+Pași:
+1. Confirmă branch-ul (guardrail de mai sus).
+2. `git add -A` + commit cu mesajul aprobat (conventional).
+3. `git fetch origin develop` + `git rebase origin/develop` (pe conflict: abort,
+   oprește-te și raportează fișierele — nu forța nimic).
+4. `git push -u origin &lt;branch&gt;` (fără force).
+5. Derivă URL-ul de PR din remote-ul de Bitbucket. NU crea PR-ul, NU face merge.
+
+Raportează: branch, commit, rezultat rebase/push, URL-ul de PR.</div>
   </div>
 
   <!-- ══════════════ GRUP 5 — RUTINA PERSONALĂ ══════════════ -->
