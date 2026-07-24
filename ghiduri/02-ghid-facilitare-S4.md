@@ -51,11 +51,13 @@ Concret, cu demo pe repo-ul de nisip. Șase segmente.
 
 #### 1. De ce subagenți — izolarea de context (10–15 min)
 
-- **Punctul de plecare:** sarcina notată în prep-ul S3 — ceva ce ai da lui Claude și care ți-ar umple contextul cu output pe care nu-l reții. Candidați tipici: „găsește toate locurile unde apelăm API-ul vechi", „rulează testele și spune-mi ce pică", „citește fișierul ăsta de 1500 de linii și rezumă-mi contractul lui".
+- **Punctul de plecare:** sarcina notată în prep-ul S3 — ceva ce ai da lui Claude și care ți-ar umple contextul cu output pe care nu-l reții. Candidați tipici pe LMS (repo greenfield, un walking skeleton): „mapează stratul de API — ce controllere și endpoint-uri există", „unde e definit endpoint-ul de health și ce întoarce?", „rezumă ce entități are `LmsDbContext` și cum sunt create (migrări SQL manuale)".
 - **De ce contează:** fereastra de context e un buget. Când Claude citește 40 de fișiere ca să-ți răspundă la o întrebare, cele 40 de fișiere rămân în context și concurează cu munca ta reală. Un subagent le citește **în fereastra lui**, o aruncă la final, și-ți dă înapoi doar concluzia — două rânduri, nu 40 de fișiere.
 - **Legătura cu S3:** e aceeași economie de context de la skills (progressive disclosure), mutată de la *ce citește modelul* la *unde se face munca*. Fitilul `context: fork` din S3 era exact asta: un skill rulat într-un subagent, ca să nu-ți polueze contextul principal.
 
-**Demo:** pune o întrebare care necesită scanarea repo-ului („unde se definește ruta de login în LMS?"). Arată că Claude deleagă la `Explore`, iar în contextul principal apare doar concluzia — nu cele 15 fișiere pe care le-a deschis subagentul. Punctează: contextul tău a rămas curat.
+**Demo:** pune o întrebare care necesită scanarea repo-ului („mapează backend-ul .NET al LMS: ce controllere, ce endpoint-uri, cum se leagă de DbContext și de migrări"). Arată că Claude deleagă la `Explore`, iar în contextul principal apare doar concluzia (harta) — nu conținutul fișierelor `.cs` pe care le-a deschis subagentul. Punctează: contextul tău a rămas curat.
+
+> **Repo-ul de demo e un walking skeleton** (`HealthController` + `LmsDbContext` cu o entitate, frontend Vue+shadcn — fără login/Course/User). Prompturile care cer feature-uri inexistente („ruta de login", „modulul de cursuri") întorc onest „nu găsesc nimic" — folosește prompturile de mai sus, care lovesc ce chiar există. Cheat-sheet complet cu ground truth: `ghiduri/demo-S4-lms.md`.
 
 #### 2. Cei trei agenți built-in — și delegarea automată (15–20 min)
 
@@ -118,7 +120,7 @@ punctele de intrare. Nu modifica nimic. Întoarce o hartă concisă, nu dump-uri
 - **`name`** (obligatoriu) — identificator cu litere mici și cratime. Numele folderului nu contează; identitatea vine din `name`.
 - **`description`** (obligatoriu) — *când* să delege Claude aici. Ca la skills: **e interfața de delegare**, nu documentație. Pune cazul principal și cuvintele naturale în ea.
 - **`tools`** (opțional) — allowlist de unelte. Omis = moștenește tot. Pentru un cercetător, restrânge la `Read, Grep, Glob` — nu poate scrie, deci nu poate strica. (Invers: `disallowedTools` scoate unelte dintr-un set moștenit.)
-- **`model`** (opțional) — `haiku`/`sonnet`/`opus`/`inherit`. Aici controlezi **costul**: cercetarea grea pe `haiku` e mult mai ieftină și adesea suficientă.
+- **`model`** (opțional) — `haiku`/`sonnet`/`opus`/`fable`/`inherit` (sau un ID complet, ex. `claude-opus-4-8`); default e `inherit`. Aici controlezi **costul**: cercetarea grea pe `haiku` e mult mai ieftină și adesea suficientă.
 - **Corpul Markdown** = system promptul subagentului. **Doar** asta primește, plus detalii de mediu — nu tot system-promptul Claude Code.
 
 **Locații** (paralel direct cu skills și `CLAUDE.md`):
@@ -136,7 +138,7 @@ punctele de intrare. Nu modifica nimic. Întoarce o hartă concisă, nu dump-uri
 
 #### 5. Paralelism, înlănțuire — și costul lor (15–20 min)
 
-- **Paralelism:** pentru investigații independente, Claude poate porni mai mulți subagenți deodată. „Cercetează în paralel modulele de auth, DB și API, cu subagenți separați." Fiecare explorează izolat, apoi Claude sintetizează.
+- **Paralelism:** pentru investigații independente, Claude poate porni mai mulți subagenți deodată. „Mapează în paralel, cu subagenți separați: (1) stratul de API — controllere + `Program.cs`; (2) stratul de frontend — componente shadcn + `App.vue`." Fiecare explorează izolat, apoi Claude sintetizează.
 - **Înlănțuire:** pentru fluxuri multi-pas, subagenți în serie — unul găsește, altul repară. „Folosește code-reviewer să găsească problemele de performanță, apoi optimizer să le repare."
 - **Background by default:** subagenții rulează în fundal cât tu continui lucrul; prompturile de permisiune apar totuși în sesiunea ta principală, numind subagentul care cere.
 
@@ -144,7 +146,7 @@ punctele de intrare. Nu modifica nimic. Întoarce o hartă concisă, nu dump-uri
 
 **Preview de S5 (leagă sesiunile):** ciclul de viață al unui subagent are evenimente — `SubagentStart`, `SubagentStop` — pe care le poți prinde cu un **hook** ca să rulezi ceva determinist (setup înainte, cleanup după). Nu construim asta azi — e fitilul pentru S5: până acum totul depinde de *decizia* modelului; hook-urile rulează **indiferent** de ea.
 
-**Demo:** pornește două investigații în paralel pe LMS (ex. „mapează modulul de cursuri și, separat, modulul de utilizatori") și arată în `/tasks` cei doi subagenți rulând simultan, apoi sinteza. Menționează `SubagentStop` fără să-l implementezi.
+**Demo:** pornește două investigații în paralel pe LMS (ex. „mapează stratul de API — controllere + `Program.cs`" și, separat, „mapează stratul de frontend — componente shadcn + `App.vue`") și arată în `/tasks` cei doi subagenți rulând simultan, apoi sinteza. Menționează `SubagentStop` fără să-l implementezi.
 
 #### 6. De la sarcină la subagent, generat cu Claude — și cum verifici (20–25 min)
 
@@ -178,7 +180,7 @@ Un subagent nu contează pentru că rulează, ci pentru că **face munca fără 
 
 **Brief:** fiecare iese cu cel puțin un subagent funcțional, comis în git pe repo-ul LMS (din S0–S3), făcut din propria sarcină de cercetare din prep — și cu **dovada** că e delegat și că păstrează contextul principal curat.
 
-1. **Alege sarcina** — cea din prep-ul S3 (ceva ce ți-ar polua contextul). Dacă n-ai una bună, candidați siguri pe LMS: „mapează cum e implementat un feature", „găsește toate locurile unde apare un pattern", „rezumă contractul unui fișier mare".
+1. **Alege sarcina** — cea din prep-ul S3 (ceva ce ți-ar polua contextul). Dacă n-ai una bună, candidați siguri pe LMS: „mapează stratul de API (controllere → `LmsDbContext` → migrări)", „unde e definit endpoint-ul de health și ce întoarce?", „rezumă ce face `LmsDbContext`".
 2. **Decide izolarea** — chiar merită un subagent? Poți descrie **rezumatul** pe care-l vrei înapoi? Dacă vrei dialog, e task de conversație principală — alege altă sarcină.
 3. **Generează subagentul** — promptul de la segmentul 6, pasul 1. Citește fișierul propus **înainte** să accepți: `description` cu cuvinte naturale? Unelte read-only? `model` potrivit costului?
 4. **Verifică delegarea** — cere ceva ce ar trebui să-l cheme. Dacă Claude nu deleagă, reglează `description`-ul, nu corpul.
@@ -211,6 +213,34 @@ Se notează în docul „AI Wins & Fails", coloana „Candidat standard?" — de
 - **Reinventezi `Explore`.** Înainte să scrii un subagent de cercetare, verifică dacă built-in-ul `Explore` nu face deja treaba. Nu construi ce ai în cutie.
 - **Uiți că subagentul pornește gol.** `Explore`/`Plan` sar peste `CLAUDE.md`. Dacă o regulă chiar trebuie să ajungă acolo, repet-o în delegare.
 - **Mulți subagenți „ca să fie".** Zece subagenți paraleli care întorc fiecare un dump = context mai plin decât dacă făceai totul în principal. Paralelism doar când chiar sunt investigații independente și fiecare întoarce un rezumat.
+
+### Întrebări avansate — note pentru facilitator (opțional, NU e în cele 6 segmente)
+
+Grupul e senior; pot apărea întrebări dincolo de cele două câmpuri obligatorii. Astea sunt răspunsuri scurte, verificate pe docul oficial (iulie 2026). **Nu le preda proactiv** — protejează segmentele 3 și 6. Sunt pentru „dacă cineva întreabă", și marchează că unealta e mai adâncă decât ce am predat.
+
+**Câmpuri de frontmatter dincolo de `name`/`description`/`tools`/`model`:**
+- **`disallowedTools`** — denylist; scoate unelte dintr-un set moștenit. Acceptă și pattern-uri MCP (`mcp__github`, `mcp__*`). Dacă pui și `tools`, și `disallowedTools`, întâi se aplică denylist-ul, apoi allowlist-ul pe ce a rămas.
+- **`skills`** — preîncarcă *conținutul complet* al unor skills în contextul subagentului la pornire (nu doar `description`-ul). E inversul lui `context: fork` din S3: acolo skill-ul alegea agentul; aici agentul alege skill-urile.
+- **`memory: user|project|local`** — dă subagentului un director de memorie persistentă între conversații (ex. un `code-reviewer` care reține tiparele recurente). `project` = recomandarea implicită (shareable via git).
+- **`permissionMode`** — `default`/`acceptEdits`/`plan`/`dontAsk`/`bypassPermissions`. Atenție: un părinte pe `bypassPermissions` sau `acceptEdits` are prioritate și nu poate fi suprascris de subagent.
+- **`isolation: worktree`** — rulează subagentul într-un git worktree temporar (copie izolată a repo-ului); se curăță singur dacă nu face modificări. Util când mai mulți subagenți scriu în paralel fără să se calce.
+- **`hooks`** — hook-uri scoped pe subagent. Fitil direct spre S5: un hook `Stop` în frontmatter-ul unui subagent devine automat `SubagentStop`.
+
+**Invocare explicită (când delegarea automată nu ajunge):**
+- **Limbaj natural** — numești subagentul în prompt („folosește `codebase-explorer` să…"); Claude decide dacă deleagă.
+- **@-mention** (`@nume`) — *garantează* că acel subagent rulează pentru task-ul respectiv.
+- **`--agent <nume>`** (sau setarea `agent` în `.claude/settings.json`) — toată sesiunea rulează pe system-promptul acelui subagent, ca `--system-prompt`.
+
+**Alte fapte utile:**
+- **Thoroughness la `Explore`** — când îl cheamă, Claude alege un nivel: `quick` / `medium` / `very thorough`.
+- **Reluare** — un subagent `general-purpose` sau custom poate fi *reluat* (păstrează tot istoricul, via `SendMessage`). `Explore`/`Plan` sunt one-shot: nu se pot relua.
+- **Subagenți nested** — un subagent poate porni la rândul lui subagenți (până la o adâncime fixă); doar rezumatul de la vârf ajunge la tine.
+- **Limita de sesiune** — implicit max 200 subagenți per sesiune (`CLAUDE_CODE_MAX_SUBAGENTS_PER_SESSION` ridică plafonul).
+- **Scanare de securitate (leagă de S1/S9)** — Claude Code scanează raportul fiecărui subagent înainte ca agentul principal să-l citească: un subagent poate fi citit conținut ostil (pagini web, output de comenzi), iar un rezultat care imită `<system-reminder>` sau menționează `bypassPermissions` e marcat. Nu înlocuiește restrângerea uneltelor — e defense-in-depth.
+- **`--agents` (CLI)** — poți defini subagenți ad-hoc, doar pentru o sesiune, ca JSON la lansare. Util pentru testare rapidă, fără fișier pe disc.
+- **Agent teams** — pentru paralelism *susținut la scară*, unde fiecare worker are contextul lui: e altă unealtă (`agent teams`), nu subagenți. Menționată deja în segmentul 5 ca „altă zi".
+
+---
 
 ### Prep pentru S5
 

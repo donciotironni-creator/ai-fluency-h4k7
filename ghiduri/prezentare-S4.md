@@ -119,7 +119,7 @@ Ești un explorator de cod. Urmărește fluxul, mapează layerele,
 - **`name`** (obligatoriu) — identificator, litere mici + cratime.
 - **`description`** (obligatoriu) — *când* deleagă Claude. **Interfața de delegare**, ca la skills.
 - **`tools`** — allowlist. Cercetător → `Read, Grep, Glob` (nu poate strica).
-- **`model`** — aici controlezi **costul**: cercetarea grea pe `haiku`.
+- **`model`** — `haiku`/`sonnet`/`opus`/`fable`/`inherit` (default `inherit`); aici controlezi **costul**: cercetarea grea pe `haiku`.
 - **Corpul** = system promptul. Doar asta primește subagentul.
 
 ---
@@ -139,7 +139,7 @@ Ești un explorator de cod. Urmărește fluxul, mapează layerele,
 
 ## Paralelism & înlănțuire
 
-- **Paralel:** „cercetează auth, DB și API în paralel, cu subagenți separați."
+- **Paralel:** „mapează în paralel stratul de API (controllere) și stratul de frontend (Vue), cu subagenți separați."
 - **În serie:** „găsește problemele cu code-reviewer, apoi repară-le cu optimizer."
 - **Background by default** — rulează cât tu continui; permisiunile apar în sesiunea ta.
 
@@ -223,3 +223,29 @@ A rula ≠ a fi util. Măsori două lucruri:
 # Întrebări?
 
 Următorul pas: **S5 — Hooks**
+
+---
+
+<!-- APPENDIX — slide-uri de backup, doar dacă apar întrebări avansate. Nu fac parte din flux. -->
+
+## Appendix · Câmpuri avansate de frontmatter
+
+Dincolo de `name`/`description`/`tools`/`model`:
+
+- **`disallowedTools`** — denylist (și pattern-uri MCP: `mcp__github`).
+- **`skills`** — preîncarcă conținut de skills în subagent (inversul lui `context: fork`).
+- **`memory: user|project|local`** — memorie persistentă între conversații.
+- **`permissionMode`** — `plan`/`acceptEdits`/`dontAsk`/… (părintele pe `bypass`/`acceptEdits` câștigă).
+- **`isolation: worktree`** — copie izolată a repo-ului, se curăță singură.
+- **`hooks`** — `Stop` în frontmatter → devine `SubagentStop` (fitil S5).
+
+---
+
+## Appendix · Invocare explicită & alte fapte
+
+- **Cum forțezi un subagent:** limbaj natural (Claude decide) · **@-mention** (garantat) · **`--agent <nume>`** (toată sesiunea).
+- **Thoroughness la `Explore`:** `quick` / `medium` / `very thorough`.
+- **Reluare:** `general-purpose`/custom se pot relua (`SendMessage`); `Explore`/`Plan` sunt one-shot.
+- **Nested:** un subagent poate porni subagenți; doar rezumatul de la vârf revine la tine.
+- **Securitate (S1/S9):** raportul fiecărui subagent e scanat înainte de a fi citit — defense-in-depth, nu înlocuiește restrângerea uneltelor.
+- **Scară susținută:** `agent teams`, altă unealtă.

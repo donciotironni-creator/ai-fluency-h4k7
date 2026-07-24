@@ -23,7 +23,7 @@ Criteriul care ține toată ziua: *ai nevoie de proces și un rezumat înapoi �
 Înainte să faci un subagent, decide dacă merită unul. Nu tot ce e greu se pune într-un subagent — unele lucruri au nevoie de dialogul din conversație.
 
 **Ce faci:**
-1. Ia sarcina din prep-ul S3 (ceva ce ți-ar umple contextul). Dacă n-ai una bună, candidați siguri pe LMS: „mapează cum e implementat un feature", „găsește toate locurile unde apare un pattern", „rezumă contractul unui fișier mare".
+1. Ia sarcina din prep-ul S3 (ceva ce ți-ar umple contextul). Dacă n-ai una bună, candidați siguri pe LMS (repo greenfield, un walking skeleton): „mapează stratul de API (controllere → `LmsDbContext` → migrări)", „unde e definit endpoint-ul de health și ce întoarce?", „rezumă ce face `LmsDbContext`".
 2. Aplică testul: poți descrie **rezumatul** pe care-l vrei înapoi? Dacă da → e bună de subagent. Dacă vrei „să lucrăm împreună, cu iterații" → e task de conversație principală, alege altceva.
 3. Decide din start: cercetare **read-only**, sau chiar are nevoie să modifice? (Aproape mereu e read-only.)
 
@@ -38,7 +38,7 @@ Criteriul care ține toată ziua: *ai nevoie de proces și un rezumat înapoi �
 Nu trebuie să construiești nimic ca să folosești subagenți: Claude Code vine cu `Explore`, `Plan` și `general-purpose`, și-i cheamă singur.
 
 **Ce faci:**
-1. Pune pe LMS o întrebare care necesită scanarea repo-ului: „unde e definită ruta de login?", „ce fișiere ating modelul de curs?".
+1. Pune pe LMS o întrebare care necesită scanarea repo-ului: „mapează backend-ul .NET — ce controllere și endpoint-uri există", „ce entități are `LmsDbContext` și cum sunt create?". (Repo-ul e greenfield — întrebi despre ce există, nu despre feature-uri încă nescrise.)
 2. Observă în `/tasks` că Claude deleagă la `Explore` (read-only) și rulează într-o fereastră separată.
 3. Compară contextul: în conversația principală a intrat **concluzia**, nu cele 15 fișiere pe care le-a deschis subagentul. Verifică cu `/context`.
 
@@ -120,7 +120,7 @@ Un subagent nu contează pentru că rulează, ci pentru că face munca **fără 
 1. **Comite** subagentul de proiect în git (`chore: add <nume> subagent`). Subagenții personali (`~/.claude/agents/`) **nu** se comit — sunt ai tăi, pe toate repo-urile.
 2. Notează pentru schimbul de practici: din ce sarcină a venit, ce unelte i-ai dat și de ce, și un moment „aici s-a văzut diferența".
 
-**Extensie (doar dacă ai terminat):** pornește **doi** subagenți în paralel pe două module independente de pe LMS (ex. „mapează modulul de cursuri și, separat, modulul de utilizatori") și vezi cum Claude sintetizează cele două rezumate. Simte compromisul din segmentul 5: dacă fiecare ar întoarce un dump în loc de rezumat, contextul principal ar fi mai plin decât dacă făceai totul singur.
+**Extensie (doar dacă ai terminat):** pornește **doi** subagenți în paralel pe două straturi independente de pe LMS (ex. „mapează stratul de API — controllere + `Program.cs`" și, separat, „mapează stratul de frontend — componente shadcn + `App.vue`") și vezi cum Claude sintetizează cele două rezumate. Simte compromisul din segmentul 5: dacă fiecare ar întoarce un dump în loc de rezumat, contextul principal ar fi mai plin decât dacă făceai totul singur.
 
 **Reușit dacă:** ai cel puțin un subagent comis, care e delegat corect și are dovada că păstrează contextul curat — iar oricine clonează repo-ul LMS îl are din prima sesiune Claude Code.
 

@@ -52,6 +52,14 @@
     <p style="color:var(--ink-soft);margin-top:12px;max-width:680px;">Prima sesiune din Faza 2. Până acum ai <strong>folosit</strong> Claude Code disciplinat; de aici <strong>construiești</strong> componente proprii. Subagenții rezolvă o problemă pe care ai simțit-o deja: contextul principal se umple de gunoi pe care nu-l reții. Un subagent face munca grea <strong>în fereastra lui</strong> și-ți întoarce doar concluzia.</p>
   </div>
 
+  <div class="callout callout-green" style="max-width:720px;">
+    <strong>Pe scurt, fără jargon.</strong> Imaginează-ți că lucrezi cu Claude la un birou cu spațiu limitat: tot ce vă spuneți stă pe birou — asta e <strong>„contextul"</strong> (memoria lui de lucru). Dacă îl pui să citească 40 de fișiere, biroul se umple de hârtii de care nu mai ai nevoie și nu mai ai loc de treaba importantă.
+    <br><br>
+    Un <strong>subagent</strong> e ca un coleg pe care-l trimiți în altă cameră cu tema grea: citește el cele 40 de fișiere la biroul <em>lui</em> și se întoarce cu o singură foaie — concluzia. Biroul tău rămâne curat.
+    <br><br>
+    Termenii care revin, pe scurt: <strong>context / fereastra de context</strong> = memoria de lucru, limitată ca un birou · <strong>system prompt</strong> = „fișa de post" a subagentului (cine e, ce are de făcut) · <strong>read-only</strong> = are voie doar să citească, nu să modifice · <strong>a delega</strong> = a-i pasa o sarcină.
+  </div>
+
   <!-- Role switch -->
   <div class="role-switch">
     <button class="role-btn active" data-role="facilitator">Ghid facilitare</button>
@@ -76,7 +84,7 @@
 
     <div class="section-label">Legătura cu S3 — al doilea nivel de economie de context</div>
     <div class="card">
-      <p>În S2–S3 ai învățat prima formă de <strong>context engineering</strong>: pui în context doar ce trebuie (fapte mereu, proceduri la cerere). Subagentul e a doua formă, la nivel de <em>execuție</em>: unele sarcini produc mult zgomot — output de teste, conținutul a 40 de fișiere căutate, un log de 2000 de linii. Zgomotul ăla îți mănâncă fereastra de context și nu-l mai atingi niciodată după.</p>
+      <p>În S2–S3 ai învățat prima formă de <strong>context engineering</strong> (a controla ce „știe" Claude în fiecare moment): pui în context doar ce trebuie (fapte mereu, proceduri la cerere). Subagentul e a doua formă, la nivel de <em>execuție</em>: unele sarcini produc mult zgomot — output de teste, conținutul a 40 de fișiere căutate, un log de 2000 de linii. Zgomotul ăla îți mănâncă fereastra de context și nu-l mai atingi niciodată după.</p>
       <p style="margin-top:12px;">Un singur criteriu ține sesiunea:</p>
       <ul>
         <li><strong>Ai nevoie de proces, nu de dump → subagent.</strong> „Rulează suita de teste și spune-mi doar ce pică", „caută în tot repo-ul unde se folosește X". Munca grea stă deoparte; înapoi vine un rezumat.</li>
@@ -89,10 +97,10 @@
     <div class="card">
       <p style="color:var(--ink-soft);font-size:.93rem;margin-bottom:8px;">La final, fiecare știe:</p>
       <ul>
-        <li>Ce e un subagent, concret: o sesiune Claude <strong>separată</strong>, cu propria fereastră de context, propriul system prompt și propriul set de unelte — care face o muncă și întoarce doar rezultatul.</li>
+        <li>Ce e un subagent, concret: o sesiune Claude <strong>separată</strong>, cu propria fereastră de context, propriul system prompt (instrucțiunile de bază — „fișa lui de post") și propriul set de unelte — care face o muncă și întoarce doar rezultatul.</li>
         <li>Cei <strong>trei agenți built-in</strong>: <code>Explore</code> (căutare read-only), <code>Plan</code> (cercetare read-only în plan mode), <code>general-purpose</code> (toate uneltele, task-uri multi-pas).</li>
         <li><strong>Compromisul central:</strong> un subagent pornește <strong>de la zero</strong> — nu-ți vede conversația, fișierele citite, skills-urile invocate. Izolarea e și beneficiul (context curat), și costul (poate rata context).</li>
-        <li>Cum <strong>definești un subagent propriu</strong>: <code>.claude/agents/&lt;nume&gt;.md</code> = frontmatter (<code>name</code>, <code>description</code>, opțional <code>tools</code>/<code>model</code>) + corp Markdown = system prompt.</li>
+        <li>Cum <strong>definești un subagent propriu</strong>: <code>.claude/agents/&lt;nume&gt;.md</code> = frontmatter (antetul cu setări: <code>name</code>, <code>description</code>, opțional <code>tools</code>/<code>model</code>) + corp Markdown = system prompt.</li>
         <li>Că <code>description</code> e, ca la skills, <strong>interfața de delegare</strong> — Claude decide să delege citind-o.</li>
         <li>Cum controlezi <strong>uneltele</strong> (read-only vs. cu scriere) și <strong>modelul</strong> (rutezi cercetarea grea pe <code>haiku</code>) per subagent.</li>
         <li>Cum rulezi mai mulți <strong>în paralel</strong> și de ce mulți subagenți care întorc fiecare un dump îți sabotează exact economia de context.</li>
@@ -125,12 +133,12 @@
     <div class="card">
       <h3>1. De ce subagenți — izolarea de context <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">10–15 min</span></h3>
       <ul>
-        <li><strong>Punctul de plecare:</strong> sarcina notată în prep-ul S3 — ceva ce ai da lui Claude și care ți-ar umple contextul cu output pe care nu-l reții. Candidați: „găsește toate locurile unde apelăm API-ul vechi", „rulează testele și spune-mi ce pică", „citește fișierul ăsta de 1500 de linii și rezumă-mi contractul lui".</li>
+        <li><strong>Punctul de plecare:</strong> sarcina notată în prep-ul S3 — ceva ce ai da lui Claude și care ți-ar umple contextul cu output pe care nu-l reții. Candidați pe LMS (repo greenfield, un walking skeleton): „mapează stratul de API — ce controllere și endpoint-uri există", „unde e definit endpoint-ul de health și ce întoarce?", „rezumă ce entități are <code>LmsDbContext</code> și cum sunt create (migrări SQL manuale)".</li>
         <li><strong>De ce contează:</strong> fereastra de context e un buget. Când Claude citește 40 de fișiere ca să-ți răspundă, cele 40 rămân în context și concurează cu munca ta reală. Un subagent le citește <strong>în fereastra lui</strong>, o aruncă la final, și-ți dă înapoi doar concluzia — două rânduri, nu 40 de fișiere.</li>
         <li><strong>Legătura cu S3:</strong> e aceeași economie de context de la skills (progressive disclosure), mutată de la <em>ce citește modelul</em> la <em>unde se face munca</em>.</li>
       </ul>
       <div class="callout callout-blue" style="margin-top:12px;">
-        <strong>Demo:</strong> pune o întrebare care necesită scanarea repo-ului („unde se definește ruta de login în LMS?"). Arată că Claude deleagă la <code>Explore</code>, iar în contextul principal apare doar concluzia — nu cele 15 fișiere pe care le-a deschis subagentul. Punctează: contextul tău a rămas curat.
+        <strong>Demo:</strong> pune o întrebare care necesită scanarea repo-ului („mapează backend-ul .NET al LMS: ce controllere, ce endpoint-uri, cum se leagă de DbContext și de migrări"). Arată că Claude deleagă la <code>Explore</code>, iar în contextul principal apare doar concluzia (harta) — nu conținutul fișierelor <code>.cs</code> pe care le-a deschis subagentul. Punctează: contextul tău a rămas curat.<br><br><em>Repo-ul de demo e un walking skeleton (<code>HealthController</code> + <code>LmsDbContext</code> cu o entitate, frontend Vue+shadcn — fără login/Course/User). Prompturile care cer feature-uri inexistente („ruta de login", „modulul de cursuri") întorc onest „nu găsesc nimic" — folosește-le pe cele care lovesc ce chiar există. Cheat-sheet cu ground truth: <code>ghiduri/demo-S4-lms.md</code>.</em>
       </div>
     </div>
 
@@ -159,7 +167,7 @@
       <h3>3. Compromisul central: izolarea ascunde context <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
       <p>Miezul conceptual al zilei — echivalentul segmentului „cine invocă" din S3. Un subagent pornește cu o fereastră de context <strong>proaspătă și goală</strong>. Nu-ți vede conversația, fișierele pe care Claude le-a citit deja, skills-urile pe care le-ai invocat. Claude îi scrie un mesaj de delegare care rezumă sarcina, și subagentul lucrează de acolo.</p>
       <div class="callout callout-green" style="margin:12px 0;">
-        Asta e <strong>și beneficiul, și costul</strong>, în același timp. <strong>Beneficiul:</strong> output-ul voluminos rămâne izolat; contextul tău nu se umflă; poți impune restricții de unelte. <strong>Costul:</strong> subagentul nu știe ce știi tu — dacă sarcina depinde de nuanțe discutate în conversație, ori le repeți în delegare, ori greșește. Și: rezultatul <strong>reintră</strong> în contextul tău, deci un subagent care-ți dă înapoi un dump de 500 de linii n-a economisit nimic.
+        Asta e <strong>și beneficiul, și costul</strong>, în același timp. <strong>Beneficiul:</strong> output-ul voluminos rămâne izolat; contextul tău nu se umflă; poți impune restricții de unelte. <strong>Costul:</strong> subagentul nu știe ce știi tu — e ca un coleg nou care n-a fost la nicio ședință: știe doar ce-i scrii în biletul de delegare. Dacă sarcina depinde de nuanțe discutate în conversație, ori le repeți în delegare, ori greșește. Și: rezultatul <strong>reintră</strong> în contextul tău, deci un subagent care-ți dă înapoi un dump de 500 de linii n-a economisit nimic.
       </div>
       <p>Decizia, pe o axă simplă:</p>
       <div style="overflow-x:auto;">
@@ -217,7 +225,7 @@ dependențele, punctele de intrare. Nu modifica nimic.
     <div class="card">
       <h3>5. Paralelism, înlănțuire — și costul lor <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
       <ul>
-        <li><strong>Paralelism:</strong> pentru investigații independente, Claude poate porni mai mulți subagenți deodată. „Cercetează în paralel modulele de auth, DB și API, cu subagenți separați." Fiecare explorează izolat, apoi Claude sintetizează.</li>
+        <li><strong>Paralelism:</strong> pentru investigații independente, Claude poate porni mai mulți subagenți deodată. „Mapează în paralel, cu subagenți separați: (1) stratul de API — controllere + <code>Program.cs</code>; (2) stratul de frontend — componente shadcn + <code>App.vue</code>." Fiecare explorează izolat, apoi Claude sintetizează.</li>
         <li><strong>Înlănțuire:</strong> pentru fluxuri multi-pas, subagenți în serie — unul găsește, altul repară. „Folosește code-reviewer să găsească problemele de performanță, apoi optimizer să le repare."</li>
         <li><strong>Background by default:</strong> subagenții rulează în fundal cât tu continui lucrul; prompturile de permisiune apar totuși în sesiunea ta principală, numind subagentul care cere.</li>
       </ul>
@@ -229,7 +237,7 @@ dependențele, punctele de intrare. Nu modifica nimic.
         <strong>Preview de S5 (leagă sesiunile):</strong> ciclul de viață al unui subagent are evenimente — <code>SubagentStart</code>, <code>SubagentStop</code> — pe care le poți prinde cu un <strong>hook</strong> ca să rulezi ceva determinist (setup înainte, cleanup după). Până acum totul depinde de <em>decizia</em> modelului; hook-urile rulează <strong>indiferent</strong> de ea. E fitilul pentru S5.
       </div>
       <div class="callout callout-blue" style="margin-top:12px;">
-        <strong>Demo:</strong> pornește două investigații în paralel pe LMS („mapează modulul de cursuri și, separat, modulul de utilizatori") și arată în <code>/tasks</code> cei doi subagenți rulând simultan, apoi sinteza. Menționează <code>SubagentStop</code> fără să-l implementezi.
+        <strong>Demo:</strong> pornește două investigații în paralel pe LMS („mapează stratul de API — controllere + <code>Program.cs</code>" și, separat, „mapează stratul de frontend — componente shadcn + <code>App.vue</code>") și arată în <code>/tasks</code> cei doi subagenți rulând simultan, apoi sinteza. Menționează <code>SubagentStop</code> fără să-l implementezi.
       </div>
     </div>
 
@@ -267,7 +275,7 @@ dependențele, punctele de intrare. Nu modifica nimic.
     <div class="card">
       <p><strong>Brief:</strong> fiecare iese cu cel puțin un subagent funcțional, comis în git pe repo-ul LMS (din S0–S3), făcut din propria sarcină de cercetare din prep — și cu <strong>dovada</strong> că e delegat și că păstrează contextul principal curat.</p>
       <ol>
-        <li><strong>Alege sarcina</strong> — cea din prep-ul S3 (ceva ce ți-ar polua contextul). Candidați siguri: „mapează cum e implementat un feature", „găsește toate locurile unde apare un pattern", „rezumă contractul unui fișier mare".</li>
+        <li><strong>Alege sarcina</strong> — cea din prep-ul S3 (ceva ce ți-ar polua contextul). Candidați siguri pe LMS: „mapează stratul de API (controllere → <code>LmsDbContext</code> → migrări)", „unde e definit endpoint-ul de health și ce întoarce?", „rezumă ce face <code>LmsDbContext</code>".</li>
         <li><strong>Decide izolarea</strong> — chiar merită un subagent? Poți descrie <strong>rezumatul</strong> pe care-l vrei înapoi? Dacă vrei dialog, e task de conversație principală — alege altă sarcină.</li>
         <li><strong>Generează subagentul</strong> — promptul de la segmentul 6, pasul 1. Citește fișierul propus <strong>înainte</strong> să accepți: <code>description</code> cu cuvinte naturale? Unelte read-only? <code>model</code> potrivit costului?</li>
         <li><strong>Verifică delegarea</strong> — cere ceva ce ar trebui să-l cheme. Dacă Claude nu deleagă, reglează <code>description</code>-ul, nu corpul.</li>
@@ -350,7 +358,7 @@ dependențele, punctele de intrare. Nu modifica nimic.
         <span class="ex-time">≈10 min</span>
         <span class="ex-trains">Antrenează: criteriul subagent vs. conversație principală</span>
       </div>
-      <p>Înainte să faci un subagent, decide dacă merită unul. Ia sarcina din prep-ul S3 (ceva ce ți-ar umple contextul). Dacă n-ai una bună, candidați siguri pe LMS: „mapează cum e implementat un feature", „găsește toate locurile unde apare un pattern", „rezumă contractul unui fișier mare".</p>
+      <p>Înainte să faci un subagent, decide dacă merită unul. Ia sarcina din prep-ul S3 (ceva ce ți-ar umple contextul). Dacă n-ai una bună, candidați siguri pe LMS (repo greenfield, un walking skeleton): „mapează stratul de API (controllere → <code>LmsDbContext</code> → migrări)", „unde e definit endpoint-ul de health și ce întoarce?", „rezumă ce face <code>LmsDbContext</code>".</p>
       <p style="margin-top:8px;">Aplică testul: poți descrie <strong>rezumatul</strong> pe care-l vrei înapoi? Dacă da → e bună de subagent. Dacă vrei „să lucrăm împreună, cu iterații" → e task de conversație principală, alege altceva. Decide și: cercetare <strong>read-only</strong>, sau chiar are nevoie să modifice? (Aproape mereu e read-only.)</p>
       <div class="success-box">
         <span class="success-box-label">Reușit dacă:</span>
@@ -368,7 +376,7 @@ dependențele, punctele de intrare. Nu modifica nimic.
       </div>
       <p>Nu trebuie să construiești nimic ca să folosești subagenți: Claude Code vine cu <code>Explore</code>, <code>Plan</code> și <code>general-purpose</code>, și-i cheamă singur.</p>
       <ol>
-        <li>Pune pe LMS o întrebare care necesită scanarea repo-ului: „unde e definită ruta de login?", „ce fișiere ating modelul de curs?".</li>
+        <li>Pune pe LMS o întrebare care necesită scanarea repo-ului: „mapează backend-ul .NET — ce controllere și endpoint-uri există", „ce entități are <code>LmsDbContext</code> și cum sunt create?". (Repo-ul e greenfield — întrebi despre ce există, nu despre feature-uri încă nescrise.)</li>
         <li>Observă în <code>/tasks</code> că Claude deleagă la <code>Explore</code> (read-only) și rulează într-o fereastră separată.</li>
         <li>Compară contextul: în conversația principală a intrat <strong>concluzia</strong>, nu cele 15 fișiere pe care le-a deschis subagentul. Verifică cu <code>/context</code>.</li>
       </ol>
@@ -455,7 +463,7 @@ dependențele, punctele de intrare. Nu modifica nimic.
         <li>Notează pentru schimbul de practici: din ce sarcină a venit, ce unelte i-ai dat și de ce, și un moment „aici s-a văzut diferența".</li>
       </ol>
       <div class="callout callout-green" style="margin:12px 0;">
-        <strong>Extensie (dacă ai terminat):</strong> pornește <strong>doi</strong> subagenți în paralel pe două module independente („mapează modulul de cursuri și, separat, modulul de utilizatori") și vezi cum Claude sintetizează cele două rezumate. Simte compromisul din segmentul 5: dacă fiecare ar întoarce un dump în loc de rezumat, contextul principal ar fi mai plin decât dacă făceai totul singur.
+        <strong>Extensie (dacă ai terminat):</strong> pornește <strong>doi</strong> subagenți în paralel pe două straturi independente („mapează stratul de API — controllere + <code>Program.cs</code>" și, separat, „mapează stratul de frontend — componente shadcn + <code>App.vue</code>") și vezi cum Claude sintetizează cele două rezumate. Simte compromisul din segmentul 5: dacă fiecare ar întoarce un dump în loc de rezumat, contextul principal ar fi mai plin decât dacă făceai totul singur.
       </div>
       <div class="success-box">
         <span class="success-box-label">Reușit dacă:</span>
