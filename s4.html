@@ -363,7 +363,7 @@ dependențele, punctele de intrare. Nu modifica nimic.
       <p style="margin-top:14px;"><strong>1 · Baza de date + insert cu EF</strong></p>
       <div class="prompt-box">
         <span class="prompt-box-label">Prompt — conexiune</span>
-        Sunt în repo-ul LMS (backend .NET 10 în <code>backend/LearningPlatform.Api</code>, SQL Server). Pornește SQL Server din <code>docker-compose.yml</code> (<code>docker compose up -d</code>) — are nevoie de parola SA în <code>.env</code> (<code>MSSQL_SA_PASSWORD</code>), pe care o pun EU (confirmă că <code>.env</code> e gitignored). Apoi dă-mi comanda <code>dotnet user-secrets set "ConnectionStrings:Lms" "…"</code> pe care s-o rulez eu cu baza mea (<code>Database=LMS_&lt;numele_meu&gt;</code>). Nu pune tu parola.
+        Sunt în repo-ul LMS (backend .NET 10 în <code>backend/LearningPlatform.Api</code>, SQL Server local). Ajută-mă să conectez API-ul la baza mea locală, cu <strong>autentificare Windows</strong> (fără parolă, fără SA): (1) confirmă că am o instanță SQL Server locală și baza <code>LMS_&lt;numele_meu&gt;</code> — dacă baza nu există, ajută-mă s-o creez; (2) connection string-ul se citește din user-secrets, cheia <code>Lms</code> (vezi <code>Program.cs</code>), așa că dă-mi comanda <code>dotnet user-secrets set "ConnectionStrings:Lms" "Server=localhost;Database=LMS_&lt;numele_meu&gt;;Trusted_Connection=True;TrustServerCertificate=True"</code> de rulat eu, ajustată la instanța mea (ex. <code>localhost\SQLEXPRESS</code>).
       </div>
       <div class="prompt-box" style="margin-top:10px;">
         <span class="prompt-box-label">Prompt — tabelă + verificare</span>
@@ -385,7 +385,7 @@ dependențele, punctele de intrare. Nu modifica nimic.
       </div>
 
       <div class="callout" style="margin-top:14px;">
-        <strong>Siguranță:</strong> parola SA, connection string-ul și token-ul de Bitbucket le pui <strong>tu</strong> — în <code>.env</code> (gitignored), <code>user-secrets</code>, cheie SSH. Nu le tasta în chat, nu le comite. Citește comenzile înainte să le aprobi (disciplina din S1).
+        <strong>Siguranță:</strong> connection string-ul (în <code>user-secrets</code>, cu autentificare Windows — deci fără parolă) și token-ul de Bitbucket le configurezi <strong>tu</strong> (cheie SSH sau app password). Nu le tasta în chat, nu le comite. Citește comenzile înainte să le aprobi (disciplina din S1).
       </div>
       <div class="success-box">
         <span class="success-box-label">Reușit dacă:</span>

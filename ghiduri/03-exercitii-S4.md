@@ -20,12 +20,12 @@ Criteriul care ține toată ziua: *ai nevoie de proces și un rezumat înapoi �
 
 Înainte de exercițiile cu subagenți, asigură-te că mediul e viu: te conectezi la baza ta de date și faci un insert prin Entity Framework, apoi confirmi că poți face push pe repo-ul tău de Bitbucket. Repo-ul are deja tot ce trebuie — endpoint-ul de insert, migrarea, agentul `run-lms` și comanda `/ship` (nu construiești skill-uri/agenți acum — aia e S3/S4).
 
-> **Siguranță:** parola SA, connection string-ul și token-ul de Bitbucket le pui **tu** — în `.env` (gitignored), `user-secrets`, cheie SSH. Nu le tasta în chat, nu le comite. Citește comenzile înainte să le aprobi.
+> **Siguranță:** connection string-ul (în `user-secrets`, cu autentificare Windows — deci fără parolă) și token-ul de Bitbucket le configurezi **tu** (cheie SSH sau app password). Nu le tasta în chat, nu le comite. Citește comenzile înainte să le aprobi.
 
 ### 1 · Baza de date + insert cu EF
 
 **Prompt — conexiune:**
-> Sunt în repo-ul LMS (backend .NET 10 în `backend/LearningPlatform.Api`, SQL Server). Pornește SQL Server din `docker-compose.yml` (`docker compose up -d`) — are nevoie de parola SA în `.env` (`MSSQL_SA_PASSWORD`), pe care o pun eu (confirmă că `.env` e gitignored). Apoi dă-mi comanda `dotnet user-secrets set "ConnectionStrings:Lms" "…"` de rulat cu baza mea (`Database=LMS_<numele_meu>`). Nu pune tu parola.
+> Sunt în repo-ul LMS (backend .NET 10 în `backend/LearningPlatform.Api`, SQL Server local). Conectează API-ul la baza mea locală cu **autentificare Windows** (fără parolă, fără SA): confirmă că am instanța locală și baza `LMS_<numele_meu>` (creeaz-o dacă lipsește), apoi dă-mi comanda `dotnet user-secrets set "ConnectionStrings:Lms" "Server=localhost;Database=LMS_<numele_meu>;Trusted_Connection=True;TrustServerCertificate=True"` de rulat eu, ajustată la instanța mea (ex. `localhost\SQLEXPRESS`).
 
 **Prompt — tabelă + verificare:**
 > Rulează migrarea `backend/Migrations/001_CreateConnectionTest.sql` pe baza mea (creează `dbo.ConnectionTest`, idempotentă). Pornește API-ul cu agentul `run-lms`. Verifică: `GET /Health/db` → `{status:"ok"}`; dacă dă 503, ajută-mă cu connection string-ul.
