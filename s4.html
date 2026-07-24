@@ -356,40 +356,41 @@ dependențele, punctele de intrare. Nu modifica nimic.
       <div class="exercise-header">
         <span class="ex-num">Prep</span>
         <span class="ex-time">≈20 min</span>
-        <span class="ex-trains">Confirmă că baza de date și Bitbucket merg pe repo-ul tău</span>
+        <span class="ex-trains">Confirmă că baza ta de date și repo-ul tău de Bitbucket merg</span>
       </div>
-      <p>Înainte de exercițiile cu subagenți, asigură-te că mediul e viu: te conectezi la baza ta de date și faci un insert prin Entity Framework, apoi confirmi că poți face push pe repo-ul tău de Bitbucket. Repo-ul are deja tot ce trebuie — endpoint-ul de insert, migrarea, agentul <code>run-lms</code> și comanda <code>/ship</code>.</p>
+      <p>Un test rapid că mediul tău e gata, înainte de exercițiile cu subagenți: (1) te conectezi la baza ta de date și scrii un rând prin cod (Entity Framework); (2) faci un push pe repo-ul tău de Bitbucket. <strong>Fiecare are baza și repo-ul lui, numite după numele tău</strong> — peste tot mai jos înlocuiește <code>&lt;Nume&gt;</code> cu al tău (ex. Ionut → baza <code>LMS_Ionut</code>, repo-ul <code>LMS_Ionut</code>).</p>
+      <p style="color:var(--ink-soft);font-size:.92rem;">Serverul de baze de date e comun — adresa lui ți-o dă facilitatorul la curs; mai jos e scrisă ca <code>&lt;SERVER&gt;</code>. Conectarea e cu <strong>contul tău de Windows</strong>, fără parolă de scris nicăieri.</p>
 
-      <p style="margin-top:14px;"><strong>1 · Baza de date + insert cu EF</strong></p>
+      <p style="margin-top:14px;"><strong>1 · Baza de date — scrie un rând cu EF</strong></p>
       <div class="prompt-box">
-        <span class="prompt-box-label">Prompt — conexiune</span>
-        Sunt în repo-ul LMS (backend .NET 10 în <code>backend/LearningPlatform.Api</code>, SQL Server local). Ajută-mă să conectez API-ul la baza mea locală, cu <strong>autentificare Windows</strong> (fără parolă, fără SA): (1) confirmă că am o instanță SQL Server locală și baza <code>LMS_&lt;numele_meu&gt;</code> — dacă baza nu există, ajută-mă s-o creez; (2) connection string-ul se citește din user-secrets, cheia <code>Lms</code> (vezi <code>Program.cs</code>), așa că dă-mi comanda <code>dotnet user-secrets set "ConnectionStrings:Lms" "Server=localhost;Database=LMS_&lt;numele_meu&gt;;Trusted_Connection=True;TrustServerCertificate=True"</code> de rulat eu, ajustată la instanța mea (ex. <code>localhost\SQLEXPRESS</code>).
+        <span class="prompt-box-label">Pasul 1 — conectează-te la baza ta</span>
+        Sunt în repo-ul LMS (backend .NET în <code>backend/LearningPlatform.Api</code>). Vreau să conectez API-ul la baza mea de date: se numește <code>LMS_&lt;Nume&gt;</code> și e pe serverul <code>&lt;SERVER&gt;</code>, cu <strong>autentificare Windows</strong> (fără parolă). Connection string-ul se pune în user-secrets, la cheia <code>Lms</code> (vezi <code>Program.cs</code>). Dă-mi comanda exactă de rulat și explică-mi pe scurt ce face: <code>dotnet user-secrets set "ConnectionStrings:Lms" "Server=&lt;SERVER&gt;;Database=LMS_&lt;Nume&gt;;Trusted_Connection=True;TrustServerCertificate=True"</code>
       </div>
       <div class="prompt-box" style="margin-top:10px;">
-        <span class="prompt-box-label">Prompt — tabelă + verificare</span>
-        Rulează migrarea <code>backend/Migrations/001_CreateConnectionTest.sql</code> pe baza mea (creează <code>dbo.ConnectionTest</code>, e idempotentă). Pornește API-ul cu agentul <code>run-lms</code>. Apoi verifică: <code>GET /Health/db</code> trebuie să întoarcă <code>{status:"ok"}</code>; dacă dă 503, ajută-mă să depanez connection string-ul.
+        <span class="prompt-box-label">Pasul 2 — pornește app-ul și verifică legătura</span>
+        Pornește API-ul cu agentul <code>run-lms</code>. Apoi deschide <code>GET /Health/db</code> și spune-mi ce întoarce — ar trebui <code>status: "ok"</code> și numele bazei mele. Dacă tabela de test lipsește, rulează migrarea <code>backend/Migrations/001_CreateConnectionTest.sql</code> (e sigură de rulat de câte ori vrei). Dacă dă eroare de conexiune, ajută-mă s-o depanez.
       </div>
       <div class="prompt-box" style="margin-top:10px;">
-        <span class="prompt-box-label">Prompt — insert prin EF</span>
-        Fă un insert pentru obiectul de test cu Entity Framework (nu SQL brut): apelează <code>POST /Health/db/rows</code> cu un <code>Note</code> al meu (ex. „test &lt;numele_meu&gt;"). Arată-mi entitatea întoarsă (<code>Id</code> + <code>CreatedAt</code> puse de DB). Apoi confirmă că rândul e în bază: <code>GET /Health/db/rows</code>.
+        <span class="prompt-box-label">Pasul 3 — scrie un rând cu Entity Framework</span>
+        Scrie un rând nou în baza mea folosind Entity Framework (nu SQL scris de mână): apelează <code>POST /Health/db/rows</code> cu un text al meu (ex. „test &lt;Nume&gt;"). Arată-mi ce a răspuns — rândul, cu <code>Id</code> și data completate de baza de date. Apoi deschide <code>GET /Health/db/rows</code> ca să-mi văd rândul în listă. Ăsta e obiectul de test scris în bază cu EF.
       </div>
 
-      <p style="margin-top:14px;"><strong>2 · Bitbucket + push</strong></p>
+      <p style="margin-top:14px;"><strong>2 · Bitbucket — fă primul push</strong></p>
       <div class="prompt-box">
-        <span class="prompt-box-label">Prompt — conectare</span>
-        Repo-ul meu e pe Bitbucket și am deja drepturi. Verifică <code>git remote -v</code> (dacă lipsește, ajută-mă să adaug remote-ul — îți dau eu URL-ul), apoi <code>git fetch</code> ca să confirm accesul. Dacă cere autentificare, spune-mi ce-mi lipsește (cheie SSH sau app password) — o configurez EU, nu-mi cere token-ul în chat.
+        <span class="prompt-box-label">Pasul 1 — conectează-te la repo-ul tău</span>
+        Repo-ul meu e pe Bitbucket, în workspace-ul <code>smartsoftpower</code>, proiectul „AI Fluency", și se numește <code>LMS_&lt;Nume&gt;</code>. Am deja drepturi. Dacă nu l-am clonat încă, dă-mi comanda <code>git clone</code> (iau URL-ul din butonul „Clone" de pe pagina repo-ului). Dacă sunt deja în el, verifică <code>git remote -v</code> și <code>git fetch</code> că merge accesul. Dacă cere autentificare, spune-mi ce-mi lipsește (cheie SSH sau app password) — o configurez eu.
       </div>
       <div class="prompt-box" style="margin-top:10px;">
-        <span class="prompt-box-label">Prompt — push</span>
-        Fă o modificare mică de test (un fișier <code>HELLO.md</code> cu numele meu), pune-mă pe un branch de feature (nu <code>main</code>/<code>develop</code>), commit conventional, și push pe branch-ul meu — arată-mi comenzile înainte. Sau, mai simplu, folosește comanda <code>/ship</code> (agentul <code>git-shipper</code>): commit + push + link de PR pe Bitbucket, cu toate guardrails-urile.
+        <span class="prompt-box-label">Pasul 2 — commit + push</span>
+        Vreau primul push pe repo-ul meu: (1) fă o modificare mică — un fișier <code>HELLO.md</code> cu numele meu; (2) pune-mă pe un branch nou (nu <code>main</code>/<code>develop</code>) și fă un commit cu mesaj scurt; (3) push pe branch-ul meu — arată-mi comenzile înainte. Sau, mai simplu, folosește comanda <code>/ship</code>, care face tot (commit + push + îți dă link de PR).
       </div>
 
       <div class="callout" style="margin-top:14px;">
-        <strong>Siguranță:</strong> connection string-ul (în <code>user-secrets</code>, cu autentificare Windows — deci fără parolă) și token-ul de Bitbucket le configurezi <strong>tu</strong> (cheie SSH sau app password). Nu le tasta în chat, nu le comite. Citește comenzile înainte să le aprobi (disciplina din S1).
+        <strong>Siguranță:</strong> baza se conectează cu contul tău de Windows — <strong>nicio parolă</strong> de scris nicăieri. Token-ul/cheia de Bitbucket le configurezi tu; nu le scrie în chat, nu le comite. Și citește comenzile înainte să le aprobi (disciplina din S1).
       </div>
       <div class="success-box">
         <span class="success-box-label">Reușit dacă:</span>
-        <code>GET /Health/db</code> întoarce ok, îți vezi rândul în <code>GET /Health/db/rows</code>, și ai făcut un push pe branch-ul tău de Bitbucket.
+        <code>GET /Health/db</code> zice ok, îți vezi rândul în <code>GET /Health/db/rows</code>, și ai un push reușit pe repo-ul tău <code>LMS_&lt;Nume&gt;</code>.
       </div>
     </div>
 

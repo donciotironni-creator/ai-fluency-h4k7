@@ -18,30 +18,30 @@ Criteriul care ține toată ziua: *ai nevoie de proces și un rezumat înapoi �
 
 ## Prerechizite de mediu (≈20 min) — fă-le înainte de exerciții
 
-Înainte de exercițiile cu subagenți, asigură-te că mediul e viu: te conectezi la baza ta de date și faci un insert prin Entity Framework, apoi confirmi că poți face push pe repo-ul tău de Bitbucket. Repo-ul are deja tot ce trebuie — endpoint-ul de insert, migrarea, agentul `run-lms` și comanda `/ship` (nu construiești skill-uri/agenți acum — aia e S3/S4).
+Un test rapid că mediul tău e gata, înainte de exercițiile cu subagenți: (1) te conectezi la baza ta de date și scrii un rând prin cod (Entity Framework); (2) faci un push pe repo-ul tău de Bitbucket. **Fiecare are baza și repo-ul lui, numite după numele tău** — peste tot mai jos înlocuiește `<Nume>` cu al tău (ex. Ionut → baza `LMS_Ionut`, repo-ul `LMS_Ionut`). Serverul de baze de date e comun; adresa lui ți-o dă facilitatorul la curs (mai jos e scrisă ca `<SERVER>`). Conectarea e cu **contul tău de Windows**, fără parolă.
 
-> **Siguranță:** connection string-ul (în `user-secrets`, cu autentificare Windows — deci fără parolă) și token-ul de Bitbucket le configurezi **tu** (cheie SSH sau app password). Nu le tasta în chat, nu le comite. Citește comenzile înainte să le aprobi.
+> **Siguranță:** baza se conectează cu contul tău de Windows — nicio parolă de scris. Token-ul/cheia de Bitbucket le configurezi tu (SSH sau app password). Nu le scrie în chat, nu le comite. Citește comenzile înainte să le aprobi.
 
-### 1 · Baza de date + insert cu EF
+### 1 · Baza de date — scrie un rând cu EF
 
-**Prompt — conexiune:**
-> Sunt în repo-ul LMS (backend .NET 10 în `backend/LearningPlatform.Api`, SQL Server local). Conectează API-ul la baza mea locală cu **autentificare Windows** (fără parolă, fără SA): confirmă că am instanța locală și baza `LMS_<numele_meu>` (creeaz-o dacă lipsește), apoi dă-mi comanda `dotnet user-secrets set "ConnectionStrings:Lms" "Server=localhost;Database=LMS_<numele_meu>;Trusted_Connection=True;TrustServerCertificate=True"` de rulat eu, ajustată la instanța mea (ex. `localhost\SQLEXPRESS`).
+**Pasul 1 — conectează-te la baza ta:**
+> Sunt în repo-ul LMS (backend .NET în `backend/LearningPlatform.Api`). Vreau să conectez API-ul la baza mea de date: se numește `LMS_<Nume>` și e pe serverul `<SERVER>`, cu **autentificare Windows** (fără parolă). Dă-mi comanda de rulat și explică-mi pe scurt ce face: `dotnet user-secrets set "ConnectionStrings:Lms" "Server=<SERVER>;Database=LMS_<Nume>;Trusted_Connection=True;TrustServerCertificate=True"`
 
-**Prompt — tabelă + verificare:**
-> Rulează migrarea `backend/Migrations/001_CreateConnectionTest.sql` pe baza mea (creează `dbo.ConnectionTest`, idempotentă). Pornește API-ul cu agentul `run-lms`. Verifică: `GET /Health/db` → `{status:"ok"}`; dacă dă 503, ajută-mă cu connection string-ul.
+**Pasul 2 — pornește app-ul și verifică legătura:**
+> Pornește API-ul cu agentul `run-lms`. Apoi deschide `GET /Health/db` și spune-mi ce întoarce — ar trebui `status: "ok"` și numele bazei mele. Dacă tabela de test lipsește, rulează migrarea `backend/Migrations/001_CreateConnectionTest.sql` (e sigură de rulat de câte ori vrei). Dacă dă eroare de conexiune, ajută-mă s-o depanez.
 
-**Prompt — insert prin EF:**
-> Fă un insert pentru obiectul de test cu EF (nu SQL brut): apelează `POST /Health/db/rows` cu un `Note` al meu. Arată-mi entitatea întoarsă (`Id` + `CreatedAt` puse de DB), apoi confirmă cu `GET /Health/db/rows`.
+**Pasul 3 — scrie un rând cu Entity Framework:**
+> Scrie un rând nou în baza mea folosind Entity Framework (nu SQL scris de mână): apelează `POST /Health/db/rows` cu un text al meu (ex. „test <Nume>"). Arată-mi ce a răspuns — rândul, cu `Id` și data completate de baza de date. Apoi deschide `GET /Health/db/rows` ca să-mi văd rândul în listă. Ăsta e obiectul de test scris în bază cu EF.
 
-### 2 · Bitbucket + push
+### 2 · Bitbucket — fă primul push
 
-**Prompt — conectare:**
-> Repo-ul meu e pe Bitbucket și am deja drepturi. Verifică `git remote -v` (adaugă remote-ul dacă lipsește — îți dau eu URL-ul), apoi `git fetch` ca să confirm accesul. Dacă cere autentificare, spune-mi ce-mi lipsește (SSH / app password) — o configurez eu, nu-mi cere token-ul în chat.
+**Pasul 1 — conectează-te la repo-ul tău:**
+> Repo-ul meu e pe Bitbucket, în workspace-ul `smartsoftpower`, proiectul „AI Fluency", și se numește `LMS_<Nume>`. Am deja drepturi. Dacă nu l-am clonat încă, dă-mi comanda `git clone` (iau URL-ul din butonul „Clone" de pe pagina repo-ului). Dacă sunt deja în el, verifică `git remote -v` și `git fetch` că merge accesul. Dacă cere autentificare, spune-mi ce-mi lipsește (cheie SSH sau app password) — o configurez eu.
 
-**Prompt — push:**
-> Fă o modificare mică (un `HELLO.md` cu numele meu), pune-mă pe un branch de feature, commit conventional, push pe branch-ul meu — arată-mi comenzile înainte. Sau folosește `/ship` (agentul `git-shipper`): commit + push + link de PR pe Bitbucket.
+**Pasul 2 — commit + push:**
+> Vreau primul push pe repo-ul meu: (1) fă o modificare mică — un fișier `HELLO.md` cu numele meu; (2) pune-mă pe un branch nou (nu `main`/`develop`) și fă un commit cu mesaj scurt; (3) push pe branch-ul meu — arată-mi comenzile înainte. Sau, mai simplu, folosește comanda `/ship`, care face tot (commit + push + îți dă link de PR).
 
-**Reușit dacă:** `GET /Health/db` întoarce ok, îți vezi rândul în `/Health/db/rows`, și ai făcut un push pe branch-ul tău de Bitbucket.
+**Reușit dacă:** `GET /Health/db` zice ok, îți vezi rândul în `/Health/db/rows`, și ai un push reușit pe repo-ul tău `LMS_<Nume>`.
 
 ---
 
