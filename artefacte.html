@@ -180,6 +180,38 @@ progres. Construită greenfield de echipă; structura apare slice cu slice.
     <div class="template-block">CLAUDE.local.md</div>
   </div>
 
+  <div class="card">
+    <div class="section-label">AGENTS.md — geamănul cross-tool al lui CLAUDE.md (proiect + user)</div>
+    <p style="margin-bottom:6px;"><code>AGENTS.md</code> e un fișier de <strong>context</strong> (nu un agent!) — numele open-standard, citit de mai multe unelte (Cursor, Codex etc.). Conține <strong>același gen de lucruri ca un <code>CLAUDE.md</code></strong>. Atenție: <strong>Claude Code citește <code>CLAUDE.md</code>, NU <code>AGENTS.md</code></strong> — dacă repo-ul are un <code>AGENTS.md</code>, pui în <code>CLAUDE.md</code> o linie de import, ca ambele unelte să citească aceeași sursă.</p>
+    <div style="margin-bottom:10px;">
+      <span class="tag">AGENTS.md (rădăcina repo-ului)</span>
+      <span class="tag">proiect · comis</span>
+      <span class="tag">context, nu agent</span>
+    </div>
+    <p style="margin-bottom:4px;"><strong>La nivel de proiect</strong> (<code>AGENTS.md</code> în rădăcină, comis) — context de proiect, partajat cu echipa și cu toate uneltele:</p>
+    <div class="template-block"># Project Context
+
+Ce e aplicația, în 1-2 fraze.
+
+## Architecture
+- Frontend: … (framework, unde stă)
+- Backend: … (framework, unde stă)
+- DB: …
+
+## Conventions
+- Convenții care diferă de default (naming, structură, format de API).
+
+## Important Notes
+- Capcane și „nu atinge X fără să întrebi".</div>
+    <p style="margin:10px 0 4px;"><strong>La nivel de user</strong> (global, pe toate proiectele tale) — doar preferințe personale, universale, nu fapte de proiect. Unele unelte au un <code>AGENTS.md</code> global; în <strong>Claude Code</strong> echivalentul e <code>~/.claude/CLAUDE.md</code> (cardul de mai sus).</p>
+    <p style="margin-bottom:6px;"><strong>Cum îl folosești în Claude Code</strong> — pui în <code>CLAUDE.md</code> un import către <code>AGENTS.md</code>:</p>
+    <div class="template-block">@AGENTS.md
+
+## Claude Code
+Instrucțiuni în plus, specifice Claude Code (opțional).</div>
+    <p style="color:var(--ink-soft);font-size:.9rem;margin-top:10px;">Regula rămâne cea din S2: <strong>fapte stabile</strong> (ce e, stack, convenții, capcane), nu proceduri (alea → skills) și nu documentație-pentru-oameni. Scurt — se încarcă la fiecare sesiune.</p>
+  </div>
+
   <!-- ══════════════ GRUP 2 — PERMISIUNI & SETTINGS ══════════════ -->
   <div class="phase-title">Permisiuni &amp; settings</div>
 
