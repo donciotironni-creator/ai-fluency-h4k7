@@ -18,20 +18,20 @@ Criteriul care ține toată ziua: *ai nevoie de proces și un rezumat înapoi �
 
 ## Prerechizite de mediu (≈20 min) — fă-le înainte de exerciții
 
-Un test rapid că mediul tău e gata, înainte de exercițiile cu subagenți: (1) te conectezi la baza ta de date și scrii un rând prin cod (Entity Framework); (2) faci un push pe repo-ul tău de Bitbucket. **Fiecare are baza și repo-ul lui, numite după numele tău** — peste tot mai jos înlocuiește `<Nume>` cu al tău (ex. Ionut → baza `LMS_Ionut`, repo-ul `LMS_Ionut`). Serverul de baze de date e comun; adresa lui ți-o dă facilitatorul la curs (mai jos e scrisă ca `<SERVER>`). Conectarea e cu **contul tău de Windows**, fără parolă.
+Un test rapid că mediul tău e gata, înainte de exercițiile cu subagenți: (1) te conectezi la baza ta de date și scrii un rând prin cod (Entity Framework); (2) faci un push pe repo-ul tău de Bitbucket. **Nu-ți impunem cum să-ți structurezi backend-ul** — pornești de la repo-ul tău și lași Claude să genereze ce vrea; contează doar rezultatul. Peste tot mai jos înlocuiește `<Nume>` cu al tău (ex. Ionut → baza `LMS_Ionut`, repo-ul `LMS_Ionut`). Serverul de baze de date e comun; adresa lui ți-o dă facilitatorul la curs (mai jos e scrisă ca `<SERVER>`). Conectarea e cu **contul tău de Windows**, fără parolă.
 
 > **Siguranță:** baza se conectează cu contul tău de Windows — nicio parolă de scris. Token-ul/cheia de Bitbucket le configurezi tu (SSH sau app password). Nu le scrie în chat, nu le comite. Citește comenzile înainte să le aprobi.
 
 ### 1 · Baza de date — scrie un rând cu EF
 
-**Pasul 1 — conectează-te la baza ta:**
-> Sunt în repo-ul LMS (backend .NET în `backend/LearningPlatform.Api`). Vreau să conectez API-ul la baza mea de date: se numește `LMS_<Nume>` și e pe serverul `<SERVER>`, cu **autentificare Windows** (fără parolă). Dă-mi comanda de rulat și explică-mi pe scurt ce face: `dotnet user-secrets set "ConnectionStrings:Lms" "Server=<SERVER>;Database=LMS_<Nume>;Trusted_Connection=True;TrustServerCertificate=True"`
+**Pasul 1 — un backend minimal conectat la baza ta:**
+> Sunt în repo-ul meu de curs. Ajută-mă să pornesc un backend .NET minimal care se conectează la baza mea de date SQL Server. Baza se numește `LMS_<Nume>` și e pe serverul `<SERVER>`, cu **autentificare Windows** (fără parolă). **Tu decizi structura și numele** (proiect, DbContext etc.) — explică-mi pe scurt ce alegi. Connection string-ul îl pun eu în user-secrets: spune-mi ce cheie folosești și ce comandă `dotnet user-secrets set` să rulez (valoarea e de forma `Server=<SERVER>;Database=LMS_<Nume>;Trusted_Connection=True;TrustServerCertificate=True`). Nu scrie tu parola.
 
-**Pasul 2 — pornește app-ul și verifică legătura:**
-> Pornește API-ul cu agentul `run-lms`. Apoi deschide `GET /Health/db` și spune-mi ce întoarce — ar trebui `status: "ok"` și numele bazei mele. Dacă tabela de test lipsește, rulează migrarea `backend/Migrations/001_CreateConnectionTest.sql` (e sigură de rulat de câte ori vrei). Dacă dă eroare de conexiune, ajută-mă s-o depanez.
+**Pasul 2 — un obiect de test + tabela lui:**
+> Creează un obiect de test simplu (tu alegi numele și câmpurile — ceva minimal, un text și o dată) și tabela lui în baza mea. Spune-mi cum o creezi (EF migrations sau un script SQL) și arată-mi ce scrii înainte. Apoi verifică că API-ul chiar ajunge la baza mea.
 
 **Pasul 3 — scrie un rând cu Entity Framework:**
-> Scrie un rând nou în baza mea folosind Entity Framework (nu SQL scris de mână): apelează `POST /Health/db/rows` cu un text al meu (ex. „test <Nume>"). Arată-mi ce a răspuns — rândul, cu `Id` și data completate de baza de date. Apoi deschide `GET /Health/db/rows` ca să-mi văd rândul în listă. Ăsta e obiectul de test scris în bază cu EF.
+> Scrie un rând nou în baza mea pentru obiectul de test, folosind Entity Framework (nu SQL scris de mână). Confirmă-mi că s-a scris — citește-l înapoi din baza de date și arată-mi-l (cu `Id`-ul și data puse de bază). Ăsta e obiectul de test scris în bază cu EF.
 
 ### 2 · Bitbucket — fă primul push
 
@@ -39,9 +39,9 @@ Un test rapid că mediul tău e gata, înainte de exercițiile cu subagenți: (1
 > Repo-ul meu e pe Bitbucket, în workspace-ul `smartsoftpower`, proiectul „AI Fluency", și se numește `LMS_<Nume>`. Am deja drepturi. Dacă nu l-am clonat încă, dă-mi comanda `git clone` (iau URL-ul din butonul „Clone" de pe pagina repo-ului). Dacă sunt deja în el, verifică `git remote -v` și `git fetch` că merge accesul. Dacă cere autentificare, spune-mi ce-mi lipsește (cheie SSH sau app password) — o configurez eu.
 
 **Pasul 2 — commit + push:**
-> Vreau primul push pe repo-ul meu: (1) fă o modificare mică — un fișier `HELLO.md` cu numele meu; (2) pune-mă pe un branch nou (nu `main`/`develop`) și fă un commit cu mesaj scurt; (3) push pe branch-ul meu — arată-mi comenzile înainte. Sau, mai simplu, folosește comanda `/ship`, care face tot (commit + push + îți dă link de PR).
+> Vreau primul push pe repo-ul meu: (1) fă o modificare mică — un fișier `HELLO.md` cu numele meu; (2) pune-mă pe un branch nou (nu `main`/`develop`) și fă un commit cu mesaj scurt; (3) push pe branch-ul meu — arată-mi comenzile înainte.
 
-**Reușit dacă:** `GET /Health/db` zice ok, îți vezi rândul în `/Health/db/rows`, și ai un push reușit pe repo-ul tău `LMS_<Nume>`.
+**Reușit dacă:** ai scris un rând în baza ta `LMS_<Nume>` prin EF și l-ai citit înapoi, și ai făcut un push reușit pe repo-ul tău `LMS_<Nume>`.
 
 ---
 

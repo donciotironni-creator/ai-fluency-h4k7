@@ -358,21 +358,21 @@ dependențele, punctele de intrare. Nu modifica nimic.
         <span class="ex-time">≈20 min</span>
         <span class="ex-trains">Confirmă că baza ta de date și repo-ul tău de Bitbucket merg</span>
       </div>
-      <p>Un test rapid că mediul tău e gata, înainte de exercițiile cu subagenți: (1) te conectezi la baza ta de date și scrii un rând prin cod (Entity Framework); (2) faci un push pe repo-ul tău de Bitbucket. <strong>Fiecare are baza și repo-ul lui, numite după numele tău</strong> — peste tot mai jos înlocuiește <code>&lt;Nume&gt;</code> cu al tău (ex. Ionut → baza <code>LMS_Ionut</code>, repo-ul <code>LMS_Ionut</code>).</p>
+      <p>Un test rapid că mediul tău e gata, înainte de exercițiile cu subagenți: (1) te conectezi la baza ta de date și scrii un rând prin cod (Entity Framework); (2) faci un push pe repo-ul tău de Bitbucket. <strong>Nu-ți impunem cum să-ți structurezi backend-ul</strong> — pornești de la repo-ul tău și lași Claude să genereze ce vrea; contează doar rezultatul. Peste tot mai jos înlocuiește <code>&lt;Nume&gt;</code> cu al tău (ex. Ionut → baza <code>LMS_Ionut</code>, repo-ul <code>LMS_Ionut</code>).</p>
       <p style="color:var(--ink-soft);font-size:.92rem;">Serverul de baze de date e comun — adresa lui ți-o dă facilitatorul la curs; mai jos e scrisă ca <code>&lt;SERVER&gt;</code>. Conectarea e cu <strong>contul tău de Windows</strong>, fără parolă de scris nicăieri.</p>
 
       <p style="margin-top:14px;"><strong>1 · Baza de date — scrie un rând cu EF</strong></p>
       <div class="prompt-box">
-        <span class="prompt-box-label">Pasul 1 — conectează-te la baza ta</span>
-        Sunt în repo-ul LMS (backend .NET în <code>backend/LearningPlatform.Api</code>). Vreau să conectez API-ul la baza mea de date: se numește <code>LMS_&lt;Nume&gt;</code> și e pe serverul <code>&lt;SERVER&gt;</code>, cu <strong>autentificare Windows</strong> (fără parolă). Connection string-ul se pune în user-secrets, la cheia <code>Lms</code> (vezi <code>Program.cs</code>). Dă-mi comanda exactă de rulat și explică-mi pe scurt ce face: <code>dotnet user-secrets set "ConnectionStrings:Lms" "Server=&lt;SERVER&gt;;Database=LMS_&lt;Nume&gt;;Trusted_Connection=True;TrustServerCertificate=True"</code>
+        <span class="prompt-box-label">Pasul 1 — un backend minimal conectat la baza ta</span>
+        Sunt în repo-ul meu de curs. Ajută-mă să pornesc un backend .NET minimal care se conectează la baza mea de date SQL Server. Baza se numește <code>LMS_&lt;Nume&gt;</code> și e pe serverul <code>&lt;SERVER&gt;</code>, cu <strong>autentificare Windows</strong> (fără parolă). <strong>Tu decizi structura și numele</strong> (proiect, DbContext etc.) — explică-mi pe scurt ce alegi. Connection string-ul îl pun eu în user-secrets: spune-mi ce cheie folosești și ce comandă <code>dotnet user-secrets set</code> să rulez (valoarea e de forma <code>Server=&lt;SERVER&gt;;Database=LMS_&lt;Nume&gt;;Trusted_Connection=True;TrustServerCertificate=True</code>). Nu scrie tu parola.
       </div>
       <div class="prompt-box" style="margin-top:10px;">
-        <span class="prompt-box-label">Pasul 2 — pornește app-ul și verifică legătura</span>
-        Pornește API-ul cu agentul <code>run-lms</code>. Apoi deschide <code>GET /Health/db</code> și spune-mi ce întoarce — ar trebui <code>status: "ok"</code> și numele bazei mele. Dacă tabela de test lipsește, rulează migrarea <code>backend/Migrations/001_CreateConnectionTest.sql</code> (e sigură de rulat de câte ori vrei). Dacă dă eroare de conexiune, ajută-mă s-o depanez.
+        <span class="prompt-box-label">Pasul 2 — un obiect de test + tabela lui</span>
+        Creează un obiect de test simplu (tu alegi numele și câmpurile — ceva minimal, un text și o dată) și tabela lui în baza mea. Spune-mi cum o creezi (EF migrations sau un script SQL) și arată-mi ce scrii înainte. Apoi verifică că API-ul chiar ajunge la baza mea.
       </div>
       <div class="prompt-box" style="margin-top:10px;">
         <span class="prompt-box-label">Pasul 3 — scrie un rând cu Entity Framework</span>
-        Scrie un rând nou în baza mea folosind Entity Framework (nu SQL scris de mână): apelează <code>POST /Health/db/rows</code> cu un text al meu (ex. „test &lt;Nume&gt;"). Arată-mi ce a răspuns — rândul, cu <code>Id</code> și data completate de baza de date. Apoi deschide <code>GET /Health/db/rows</code> ca să-mi văd rândul în listă. Ăsta e obiectul de test scris în bază cu EF.
+        Scrie un rând nou în baza mea pentru obiectul de test, folosind Entity Framework (nu SQL scris de mână). Confirmă-mi că s-a scris — citește-l înapoi din baza de date și arată-mi-l (cu <code>Id</code>-ul și data puse de bază). Ăsta e obiectul de test scris în bază cu EF.
       </div>
 
       <p style="margin-top:14px;"><strong>2 · Bitbucket — fă primul push</strong></p>
@@ -382,7 +382,7 @@ dependențele, punctele de intrare. Nu modifica nimic.
       </div>
       <div class="prompt-box" style="margin-top:10px;">
         <span class="prompt-box-label">Pasul 2 — commit + push</span>
-        Vreau primul push pe repo-ul meu: (1) fă o modificare mică — un fișier <code>HELLO.md</code> cu numele meu; (2) pune-mă pe un branch nou (nu <code>main</code>/<code>develop</code>) și fă un commit cu mesaj scurt; (3) push pe branch-ul meu — arată-mi comenzile înainte. Sau, mai simplu, folosește comanda <code>/ship</code>, care face tot (commit + push + îți dă link de PR).
+        Vreau primul push pe repo-ul meu: (1) fă o modificare mică — un fișier <code>HELLO.md</code> cu numele meu; (2) pune-mă pe un branch nou (nu <code>main</code>/<code>develop</code>) și fă un commit cu mesaj scurt; (3) push pe branch-ul meu — arată-mi comenzile înainte.
       </div>
 
       <div class="callout" style="margin-top:14px;">
@@ -390,7 +390,7 @@ dependențele, punctele de intrare. Nu modifica nimic.
       </div>
       <div class="success-box">
         <span class="success-box-label">Reușit dacă:</span>
-        <code>GET /Health/db</code> zice ok, îți vezi rândul în <code>GET /Health/db/rows</code>, și ai un push reușit pe repo-ul tău <code>LMS_&lt;Nume&gt;</code>.
+        ai scris un rând în baza ta <code>LMS_&lt;Nume&gt;</code> prin EF și l-ai citit înapoi, și ai făcut un push reușit pe repo-ul tău <code>LMS_&lt;Nume&gt;</code>.
       </div>
     </div>
 
