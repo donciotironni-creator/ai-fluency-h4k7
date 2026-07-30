@@ -46,38 +46,649 @@
       <span class="badge badge-p2">Faza 2</span>
       <span class="tag">MCP</span>
       <span class="tag">integrări</span>
-      <span class="tag">API-uri externe</span>
+      <span class="tag">baze de date</span>
+      <span class="tag">perimetru</span>
     </div>
+    <p style="color:var(--ink-soft);margin-top:12px;max-width:680px;">A treia sesiune din Faza 2. Până acum ai schimbat cum lucrează Claude <strong>în interiorul</strong> uneltei — fapte, proceduri, subagenți, hook-uri, toate cu uneltele lui proprii. Azi îi dai <strong>unelte noi</strong>, care ajung la sisteme reale: baza ta de date în primul rând.</p>
   </div>
 
-  <div class="card" style="border-left:3px solid var(--accent-3);">
-    <h2 style="color:var(--accent-3);font-size:1.1rem;">Conținut în pregătire</h2>
-    <p>Ghidul de facilitare și exercițiile pentru S6 sunt în lucru. Mai jos găsești rezumatul sesiunii din curriculum.</p>
+  <div class="callout callout-green" style="max-width:720px;">
+    <strong>Pe scurt, fără jargon.</strong> Până acum Claude putea citi fișiere, căuta în cod și rula comenzi. Tot ce e <em>în afara</em> repo-ului ajungea la el doar dacă i-l lipeai tu în chat: un rezultat de query rulat în SSMS, un ticket parafrazat, un log copiat din dashboard. De fiecare dată <strong>tu</strong> erai transportul.
+    <br><br>
+    <strong>MCP</strong> (Model Context Protocol) e o convenție prin care un program separat — un <strong>server MCP</strong> — îi oferă lui Claude unelte noi. Conectezi un server de bază de date și îl întrebi „ce tabele am și care e cea mai mare?"; el interoghează, se uită la rezultat, mai întreabă, și-ți răspunde. Nu mai lipești nimic.
+    <br><br>
+    Termenii care revin, pe scurt: <strong>server MCP</strong> = programul care oferă uneltele · <strong>transport</strong> = cum vorbește Claude cu el (proces local, sau prin rețea) · <strong>tool</strong> = o unealtă expusă de server · <strong>scope</strong> = unde stă configurația (doar la tine, sau comisă în repo pentru toată echipa) · <strong>OAuth</strong> = login prin browser, pentru servere din cloud.
   </div>
 
-  <div class="card">
-    <h2>Despre această sesiune</h2>
-    <p>MCP (Model Context Protocol) conectează Claude Code la servicii externe și la tooling-ul intern: API-uri proprii, baze de date, browser automation.</p>
+  <!-- Role switch -->
+  <div class="role-switch">
+    <button class="role-btn active" data-role="facilitator">Ghid facilitare</button>
+    <button class="role-btn" data-role="echipa">Exerciții echipă</button>
+  </div>
 
-    <h3 style="margin-top:16px;">Transporturi MCP</h3>
-    <table>
-      <tr><th>Transport</th><th>Când îl folosești</th></tr>
-      <tr><td><code>stdio</code></td><td>Proces local — cel mai comun, simplu de testat</td></tr>
-      <tr><td><code>SSE</code></td><td>Server remote — bun pentru servicii partajate de echipă</td></tr>
-    </table>
+  <!-- ══ FACILITATOR PANEL ══ -->
+  <div id="facilitator" class="role-panel active">
 
-    <h3 style="margin-top:16px;">MCP vs. script/CLI</h3>
-    <ul>
-      <li><strong>Merită un server MCP</strong> când: Claude trebuie să raționeze iterativ pe output-ul unui serviciu, sau când mai multe sesiuni partajează același tool.</li>
-      <li><strong>Un script/CLI e suficient</strong> când: e o operație one-shot sau outputul se citește direct cu <code>Bash</code>.</li>
-    </ul>
-
-    <div class="callout">
-      <strong>Suprafața de risc:</strong> un server MCP rău configurat poate expune date sensibile sau executa comenzi neintenționate. Se tratează serios în S9.
+    <div class="callout" style="margin-bottom:20px;">
+      <strong>Notă: numele se schimbă.</strong> Claude Code publică des. Comenzile, flag-urile și transporturile se pot schimba de la o lună la alta. La începutul fiecărei sesiuni rulează <code>/help</code> și <code>claude mcp --help</code>, și verifică docul oficial (<code>code.claude.com/docs/en/mcp</code>). Ghidul predă <strong>principii care rezistă</strong>, nu sintaxă săptămânală.
     </div>
 
-    <div class="artefact">o configurație MCP funcțională pentru un flux propriu</div>
-  </div>
+    <div class="callout callout-blue" style="margin-bottom:20px;">
+      <strong>Trei lucruri de reținut ca fiind curente</strong> (verificat pe docul oficial, iulie 2026) — fixează-le explicit, pentru că toate trei contrazic materiale mai vechi:
+      <ul style="margin:8px 0 0;">
+        <li>Transportul <code>SSE</code> e <strong>deprecat</strong>. Pentru servere remote se folosește <code>http</code> (în JSON: <code>http</code>, cu alias <code>streamable-http</code>); SSE doar dacă serviciul nu expune altceva.</li>
+        <li>Scope-urile se numesc <strong><code>local</code> (default) / <code>project</code> / <code>user</code></strong> — în versiuni vechi erau <code>project</code> și <code>global</code>. <strong>Doar <code>project</code> scrie <code>.mcp.json</code></strong>; <code>local</code> și <code>user</code> stau în <code>~/.claude.json</code>.</li>
+        <li><strong>Tool search e activ by default</strong> — uneltele MCP nu se încarcă în context la pornire, ci sunt descoperite la nevoie. Un server în plus costă aproape nimic în context până e chiar folosit.</li>
+      </ul>
+    </div>
+
+    <div class="section-label">Legătura cu S5 — de la „ce face Claude" la „la ce ajunge Claude"</div>
+    <div class="card">
+      <p>Până acum ai controlat <strong>comportamentul</strong>: ce știe (S2), ce proceduri urmează (S3), unde face munca grea (S4), ce se întâmplă determinist (S5). MCP schimbă altceva: <strong>suprafața de acțiune</strong>. Un server MCP e un proces separat care expune Claude-ului unelte noi, prin protocol — nu prin <code>Bash</code>, nu prin copy-paste din alt tool.</p>
+      <p style="margin-top:12px;">Semnalul practic că ai nevoie de MCP e mereu același: <strong>te prinzi copiind date dintr-un alt sistem în chat</strong>. Un rând de query rulat manual în SSMS și lipit în conversație, un ticket parafrazat, un log copiat dintr-un dashboard. Fiecare copy-paste e un tool care lipsește.</p>
+      <p style="margin-top:12px;">Un singur criteriu ține sesiunea:</p>
+      <ul>
+        <li><strong>Claude trebuie să raționeze iterativ pe un sistem viu → server MCP.</strong> Interoghează, se uită la rezultat, întreabă altceva, corelează. Are nevoie de <em>acces</em>, nu de un output.</li>
+        <li><strong>E o operație one-shot, cu output previzibil → un script sau o comandă CLI</strong>, chemată cu <code>Bash</code> (sau împachetată într-un skill, ca în S3). Nu-ți trebuie protocol pentru un <code>sqlcmd</code>.</li>
+      </ul>
+      <p style="margin-top:12px;">Premisa vine din prep-ul S5: fiecare a notat un <strong>sistem extern la care ar vrea ca Claude să ajungă</strong>. Azi conectăm exact acele sisteme.</p>
+    </div>
+
+    <div class="section-label">Obiective de învățare</div>
+    <div class="card">
+      <p style="color:var(--ink-soft);font-size:.93rem;margin-bottom:8px;">La final, fiecare știe:</p>
+      <ul>
+        <li>Ce e MCP, concret: un <strong>protocol deschis</strong> client-server. Claude Code e clientul; un <strong>server MCP</strong> e un proces (local sau remote) care expune unelte, resurse și prompturi.</li>
+        <li>Ce expune un server, <strong>dincolo de tools</strong>: <strong>resources</strong> (referențiate cu <code>@server:protocol://cale</code>, ca fișierele) și <strong>prompts</strong> (apar ca <code>/mcp__server__prompt</code>).</li>
+        <li>Cele <strong>trei transporturi</strong> care contează azi: <code>stdio</code> (proces local), <code>http</code> (remote, recomandat, suportă OAuth), <code>sse</code> (<strong>deprecat</strong>). Plus <code>ws</code>, pentru servere care împing evenimente.</li>
+        <li>Cum instalezi: <code>claude mcp add</code>, cu <code>--transport</code>, <code>--env</code>, <code>--header</code>, <code>--scope</code> — și de ce <code>--</code> e obligatoriu la stdio.</li>
+        <li>Cele <strong>trei scope-uri</strong> și ce fișier scrie fiecare: <code>local</code> → <code>~/.claude.json</code>, <code>project</code> → <strong><code>.mcp.json</code> comis în repo</strong>, <code>user</code> → <code>~/.claude.json</code> pentru toate proiectele.</li>
+        <li>Cum <strong>verifici</strong> că merge: <code>claude mcp list</code> (status de sănătate), <code>claude mcp get</code>, <code>/mcp</code> în sesiune.</li>
+        <li>Cum <strong>restrângi perimetrul</strong>: reguli de permisiuni pe <code>mcp__server__tool</code>, un user de bază de date read-only, și de ce „serverul poate face X" nu înseamnă „Claude are voie să facă X".</li>
+        <li>Cum <strong>scrii un server MCP propriu</strong>, minimal, pe <code>stdio</code>, care expune un tool intern al echipei.</li>
+      </ul>
+    </div>
+
+    <div class="callout callout-blue" style="margin-bottom:20px;">
+      <strong>Notă de scop:</strong> S6 are <strong>două miezuri</strong>. Conceptual, miezul e <strong>segmentul 4</strong> (MCP vs. script/CLI — judecata care oprește oamenii să împacheteze tot în servere). Practic, miezul e <strong>segmentul 3 plus exercițiul pe baza de date</strong> — momentul în care fiecare vede Claude interogându-și propria bază, în română, fără să scrie SQL. Dacă timpul strânge, comprimă segmentul 2 (anatomia devine un <code>/mcp</code> comentat, 5 minute) și segmentul 6 (serverul propriu devine demo, iar scrisul lui rămâne temă). <strong>Protejează 3 și 4.</strong> Capcana clasică: oamenii vor un server MCP pentru fiecare unealtă care le trece prin cap — și ajung cu șase servere pornite din care folosesc unul.
+    </div>
+
+    <div class="section-label">Structura zilei</div>
+    <div class="agenda">
+      <div class="agenda-row">
+        <div class="agenda-time">90–110 min</div>
+        <div class="agenda-content"><strong>Tutorial</strong> — 6 segmente (vezi mai jos). Demo pe repo-ul de nisip și pe o bază de date reală.</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">70–85 min</div>
+        <div class="agenda-content"><strong>Lucru aplicat</strong> — o configurație MCP funcțională, comisă în <code>.mcp.json</code>.</div>
+      </div>
+      <div class="agenda-row">
+        <div class="agenda-time">15–20 min</div>
+        <div class="agenda-content"><strong>Schimb de practici</strong> — ~2 min/persoană, notate în „AI Wins &amp; Fails".</div>
+      </div>
+    </div>
+
+    <div class="section-label">Tutorial (90–110 min) — 6 segmente</div>
+
+    <div class="card">
+      <h3>1. De ce MCP — ce lipsește când Claude n-are acces <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">10–15 min</span></h3>
+      <ul>
+        <li><strong>Punctul de plecare:</strong> sistemul extern notat în prep-ul S5. Întreabă în cerc: „ce ai conecta primul?" <strong>Notează răspunsurile pe tablă</strong> — le folosim la segmentul 4 ca material de triaj.</li>
+        <li><strong>Simptomul care se vede:</strong> te prinzi copiind date în chat. Rulezi un <code>SELECT</code> în SSMS și lipești rezultatul. Deschizi un PR, îl citești, îl parafrazezi. De fiecare dată <strong>tu</strong> ești transportul dintre Claude și sistem.</li>
+        <li><strong>Ce schimbă MCP:</strong> Claude primește unelte noi, care vorbesc direct cu sistemul. Nu mai lipești rezultate — ceri ce vrei să afli, iar el iterează singur: se uită la schema, vede că îi lipsește o coloană, o caută, corelează două tabele.</li>
+        <li><strong>De ce nu e „doar un wrapper peste <code>Bash</code>":</strong> un server MCP întoarce <strong>date structurate</strong> cu <strong>schemă de unealtă</strong> (ce parametri acceptă, ce înseamnă), nu text pe stdout care trebuie ghicit. Și, spre deosebire de un script, poate fi partajat cu echipa ca <strong>configurație</strong>, nu ca fișier de copiat.</li>
+      </ul>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> pornește de la eșec. Cere-i lui Claude, fără MCP: „ce tabele are baza <code>LMS_&lt;Nume&gt;</code> și câte rânduri are cea mai mare?" Arată ce face — încearcă <code>Bash</code> cu <code>sqlcmd</code>, ghicește, sau spune onest că nu ajunge la bază. Păstrează întrebarea: o repeți în segmentul 3, cu serverul conectat.
+      </div>
+      <div class="callout callout-green" style="margin-top:12px;">
+        <strong>Firul S4, dus mai departe:</strong> economia de context nu dispare cu MCP — se mută. Tool search e activ by default, deci uneltele unui server nu intră în context la pornire; Claude le caută când are nevoie. Fixează asta acum, ca să nu apară frica de „prea multe servere = context plin". Costul real nu e definiția uneltei, e <strong>output-ul</strong> ei — vezi segmentul 4.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>2. Anatomia unui server: tools, resources, prompts — și transportul <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <p>Majoritatea documentației vorbește doar de tools. Un server expune trei lucruri:</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <tr><th>Ce expune</th><th>Cum îl folosești</th><th>Exemplu</th></tr>
+          <tr><td><strong>Tools</strong></td><td>Claude le cheamă singur, ca orice unealtă</td><td><code>list_tables</code>, <code>execute_sql</code></td></tr>
+          <tr><td><strong>Resources</strong></td><td>tu le referențiezi cu <code>@</code>, ca fișierele: <code>@server:protocol://cale</code></td><td><code>@github:issue://123</code></td></tr>
+          <tr><td><strong>Prompts</strong></td><td>apar ca slash commands: <code>/mcp__server__prompt</code> (argumente separate prin spațiu)</td><td><code>/mcp__jira__create_issue "Bug în login" high</code></td></tr>
+        </table>
+      </div>
+      <ul style="margin-top:12px;">
+        <li><strong>Resources</strong> se completează cu <code>@</code> în prompt — apar în autocomplete lângă fișiere și se atașează la conversație când le referențiezi. E puntea directă spre S3: un server bun îți dă și <em>context</em> la cerere, nu doar acțiuni.</li>
+        <li><strong>Prompts</strong> sunt slash commands venite de la server — exact forma din S3, doar definită în altă parte. Numele se normalizează (spațiile devin <code>_</code>).</li>
+      </ul>
+      <p style="margin-top:12px;"><strong>Transporturile</strong> — care contează azi:</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <tr><th>Transport</th><th>Ce e</th><th>Când îl folosești</th></tr>
+          <tr><td><code>stdio</code></td><td>proces local, pornit de Claude Code, care vorbește pe stdin/stdout</td><td>tool local, acces la sistemul tău, baza ta de date, scripturi proprii. <strong>Default-ul pentru ce construiești singur.</strong></td></tr>
+          <tr><td><code>http</code></td><td>server remote (în JSON: <code>http</code>, alias <code>streamable-http</code>)</td><td>servicii cloud partajate; <strong>singurul care suportă OAuth</strong>. Recomandarea pentru remote.</td></tr>
+          <tr><td><code>sse</code></td><td><strong>deprecat</strong></td><td>doar dacă serviciul nu expune decât un endpoint SSE</td></tr>
+          <tr><td><code>ws</code></td><td>WebSocket, conexiune bidirecțională persistentă</td><td>servere care <strong>împing</strong> evenimente spre tine, neîntrebate. Doar prin JSON, autentificare doar prin header.</td></tr>
+        </table>
+      </div>
+      <div class="warning-card" style="margin-top:12px;">
+        <h4>⚠️ Corecție față de intuiția comună</h4>
+        <p style="margin:0;font-size:.93rem;">„SSE = pentru servicii partajate de echipă" e greșit pe două planuri. SSE e <strong>deprecat</strong>, și <strong>partajarea nu e o proprietate a transportului</strong> — e o proprietate a <strong>scope-ului</strong> (segmentul 3). Un server <code>stdio</code> pus în <code>.mcp.json</code> e partajat cu toată echipa; un server <code>http</code> pus în scope <code>local</code> nu e partajat cu nimeni.</p>
+      </div>
+      <p style="margin-top:12px;"><strong>Un detaliu util la <code>stdio</code>:</strong> Claude Code pune <code>CLAUDE_PROJECT_DIR</code> în mediul procesului pornit, deci serverul tău poate rezolva căi relative la rădăcina proiectului fără să depindă de directorul curent.</p>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> rulează <code>/mcp</code> cu un server deja conectat. Arată: lista de servere, statusul fiecăruia, <strong>numărul de tool-uri</strong>, și meniul unui server (autentificare, dezactivare). Apoi tastează <code>@</code> și arată resources în autocomplete, și <code>/</code> și arată prompturile <code>mcp__...</code>.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>3. Instalare și scope — unde trăiește configurația <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <p>Segmentul de mecanică, și cel pe care se sprijină tot lucrul aplicat. Fă-l încet.</p>
+      <p style="margin-top:12px;"><strong>Cele trei forme de <code>claude mcp add</code>:</strong></p>
+      <div class="template-block"># remote, HTTP (recomandat pentru servicii cloud)
+claude mcp add --transport http notion https://mcp.notion.com/mcp
+
+# remote, cu token în header
+claude mcp add --transport http github https://api.githubcopilot.com/mcp/ \
+  --header "Authorization: Bearer &lt;PAT&gt;"
+
+# local, stdio — tot ce e după `--` e comanda serverului
+claude mcp add --env DB_NAME=LMS_Ionut --transport stdio db -- npx -y pachetul-serverului</div>
+      <ul style="margin-top:12px;">
+        <li><strong><code>--</code> (dublă cratimă) e obligatoriu la stdio.</strong> Separă opțiunile Claude Code (<code>--transport</code>, <code>--env</code>, <code>--scope</code>) de comanda serverului. Fără el, un <code>--port 8080</code> al serverului e citit de Claude Code ca flag propriu și comanda eșuează.</li>
+        <li><strong><code>--env</code> / <code>-e</code></strong> acceptă mai multe <code>KEY=value</code>. Capcană reală: <strong>nu pune numele serverului imediat după <code>--env</code></strong> — CLI-ul îl citește ca încă o pereche și îl respinge. Pune cel puțin o altă opțiune între ele.</li>
+        <li><strong><code>--header</code> / <code>-H</code></strong> pentru autentificare cu token. <code>--transport</code> are și forma scurtă <code>-t</code>.</li>
+        <li><code>claude mcp add</code> <strong>nu validează credențialele</strong> — scrie configurația și confirmă cu <code>Added ...</code>. Un token greșit se vede abia la conectare.</li>
+      </ul>
+      <p style="margin-top:12px;"><strong>Cele trei scope-uri</strong> — tabelul care trebuie să rămână pe tablă toată ziua:</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <tr><th>Scope</th><th>Se încarcă în</th><th>Partajat cu echipa</th><th>Scris în</th></tr>
+          <tr><td><code>local</code> (<strong>default</strong>)</td><td>doar proiectul curent</td><td>nu</td><td><code>~/.claude.json</code>, sub calea proiectului</td></tr>
+          <tr><td><code>project</code></td><td>doar proiectul curent</td><td><strong>da, prin git</strong></td><td><strong><code>.mcp.json</code></strong> în rădăcina repo-ului</td></tr>
+          <tr><td><code>user</code></td><td>toate proiectele tale</td><td>nu</td><td><code>~/.claude.json</code></td></tr>
+        </table>
+      </div>
+      <p style="margin-top:12px;"><strong>Default-ul e <code>local</code></strong> — dacă nu pui <code>--scope</code>, serverul e al tău și doar în proiectul asta. Bun pentru experimente și pentru servere cu credențiale. <strong><code>project</code> e singurul care produce un fișier de comis:</strong></p>
+      <div class="template-block">{
+  "mcpServers": {
+    "lms-db": {
+      "type": "stdio",
+      "command": "dotnet",
+      "args": ["C:/tools/mssql-mcp/MSSQL.MCP.dll"],
+      "env": {
+        "MSSQL_CONNECTION_STRING": "Server=${SQL_SERVER};Database=${LMS_DB:-LMS_Demo};Trusted_Connection=True;TrustServerCertificate=True"
+      }
+    }
+  }
+}</div>
+      <ul style="margin-top:12px;">
+        <li><strong>Expansiune de variabile de mediu în <code>.mcp.json</code>:</strong> <code>${VAR}</code> și <code>${VAR:-default}</code>, în <code>command</code>, <code>args</code>, <code>env</code>, <code>url</code> și <code>headers</code>. Ăsta e mecanismul care face un <code>.mcp.json</code> <strong>comisibil</strong>: numele bazei diferă de la om la om, deci îl lași ca variabilă. Dacă variabila nu e setată și n-are default, configurația se încarcă oricum, dar <code>claude mcp list</code> raportează un warning și textul <code>${VAR}</code> rămâne neexpandat.</li>
+        <li><strong>Aprobare la scope <code>project</code>:</strong> un server din <code>.mcp.json</code> nu pornește necerut — Claude Code cere aprobare prima dată. Până atunci apare ca <code>⏸ Pending approval</code>. Dacă vrei să reiei decizia: <code>claude mcp reset-project-choices</code>. La nivel de echipă, <code>enabledMcpjsonServers</code> / <code>disabledMcpjsonServers</code> / <code>enableAllProjectMcpServers</code> în <code>settings.json</code> (S1) pre-aprobă sau resping servere fără prompt.</li>
+        <li><strong>Precedență</strong>, când același nume apare în mai multe locuri: <code>local</code> &gt; <code>project</code> &gt; <code>user</code> &gt; servere din plugin-uri &gt; conectori claude.ai. Se ia <strong>întreaga</strong> definiție din sursa câștigătoare — câmpurile nu se combină.</li>
+      </ul>
+      <p style="margin-top:12px;"><strong>Verificarea, în trei comenzi:</strong></p>
+      <div class="template-block">claude mcp list          # status: ✔ Connected / ! Needs authentication / ✘ Failed to connect / ⏸ Pending approval
+claude mcp get lms-db    # detaliile unui server
+claude mcp remove lms-db # scoate-l</div>
+      <p style="margin-top:12px;">Plus <code>/mcp</code> în sesiune: status, număr de tool-uri, autentificare, și un toggle care dezactivează un server <strong>fără</strong> să-i pierzi configurația.</p>
+      <p style="margin-top:12px;"><strong>Servere remote cu OAuth:</strong> le adaugi fără credențiale, apoi te autentifici din <code>/mcp</code> (sau, din shell, <code>claude mcp login &lt;nume&gt;</code> / <code>claude mcp logout &lt;nume&gt;</code>). Token-urile se stochează și se reîmprospătează singure. OAuth merge pe HTTP.</p>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> instalează live un server care nu cere nimic (filesystem sau browser), arată-l în <code>claude mcp list</code>, deschide <code>/mcp</code>. Apoi conectează serverul de bază de date și <strong>repetă întrebarea din segmentul 1</strong> — „ce tabele are baza mea și care e cea mai mare?". Ăsta e momentul „aha" al zilei; nu-l grăbi. La final arată același server mutat în <code>.mcp.json</code> și explică de ce fișierul se comite.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>4. MCP vs. script/CLI — și costul real <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <p>Miezul conceptual al zilei — echivalentul segmentului „când merită" din S3/S4/S5. Ia lista de sisteme de pe tablă din segmentul 1 și <strong>triază-o live, cu grupul</strong>.</p>
+      <div class="callout callout-green" style="margin:12px 0;">
+        <strong>Merită un server MCP când:</strong> Claude trebuie să <strong>raționeze iterativ</strong> pe sistem (o bază de date e cazul canonic) · <strong>mai multe sesiuni sau mai mulți oameni</strong> folosesc același acces, deci se configurează o dată în <code>.mcp.json</code> · sistemul are <strong>multe operații înrudite</strong> care beneficiază de scheme de unelte, nu de un CLI cu flag-uri ghicite.
+        <br><br>
+        <strong>E suficient un script / CLI când:</strong> e o operație <strong>one-shot</strong> cu output previzibil (<code>git log</code>, <code>dotnet test</code>) — <code>Bash</code> le face deja · fluxul e o <strong>procedură</strong>, nu un acces, deci e un <strong>skill</strong> (S3) · ai deja un CLI bun, iar un server care doar reîmpachetează <code>gh</code> adaugă un proces și zero capabilitate.
+      </div>
+      <p><strong>Regula de aur:</strong> un server MCP merită când poți numi <strong>întrebările</strong> pe care Claude le va pune sistemului. Dacă poți numi doar <strong>comanda</strong> pe care ai rula-o tu, e script.</p>
+      <p style="margin-top:12px;"><strong>Costul, ca să nu-l descoperiți în practică:</strong></p>
+      <ul>
+        <li><strong>Contextul:</strong> tool search e activ by default, deci definițiile de unelte sunt amânate — un server în plus nu-ți umple contextul. Ce-l umple e <strong>output-ul</strong>. Claude Code avertizează când un tool MCP întoarce peste <strong>10.000 de tokens</strong> și taie la <strong>25.000</strong> implicit (<code>MAX_MCP_OUTPUT_TOKENS</code> ridică plafonul). Un <code>SELECT *</code> pe o tabelă mare e exact greșeala care se vede aici. Legătura cu S4: rezumate, nu dump-uri — regula nu s-a schimbat, doar sursa dump-ului.</li>
+        <li><strong>Un server în plus e un proces în plus</strong> care poate să nu pornească, să atârne sau să pice. <code>claude mcp list</code> îți arată care. Timeout-uri: <code>MCP_TIMEOUT</code> la pornire, <code>timeout</code> per server (milisecunde) pentru un apel de unealtă. Un apel din conversația principală care trece de 2 minute trece automat în background, ca task — îl vezi în <code>/tasks</code>.</li>
+        <li><strong><code>alwaysLoad: true</code></strong> pe un server îi încarcă uneltele în context la pornire, ocolind tool search. Util pentru 2–3 unelte de care Claude are nevoie la fiecare tură; scump dacă îl pui pe tot.</li>
+      </ul>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> ia din listă un candidat prost (ex. „vreau un server MCP care rulează testele") și arată de ce e script/skill, nu MCP. Apoi ia unul bun (baza de date) și arată-l lucrând. Închide cu un <code>SELECT</code> prea larg pe baza demo, ca să apară avertismentul de output — se învață mai bine văzut.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>5. Perimetrul: ce lași uneltele să facă <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">15–20 min</span></h3>
+      <p>Firul de siguranță din S1, aplicat pe MCP. Aici stabilim <strong>granițele</strong>; suprafața de risc propriu-zisă (prompt injection, exfiltrare) se tratează serios în <strong>S9</strong> — azi doar o numim.</p>
+      <p style="margin-top:12px;"><strong>Distincția care contează:</strong> „serverul poate face X" <strong>≠</strong> „Claude are voie să facă X". Sunt două straturi separate, și le controlezi separat.</p>
+      <p style="margin-top:12px;"><strong>Stratul 1 — ce poate serverul.</strong> Ține de configurația lui, nu de Claude Code:</p>
+      <ul>
+        <li>Un <strong>user de bază de date read-only</strong> în connection string e cea mai eficientă graniță din toată sesiunea. Un server care nu are drept de scriere nu poate scrie, indiferent ce cere modelul. Pe bazele de curs, contul de Windows e suficient — dar reflexul pentru orice bază reală e user dedicat, drepturi minime.</li>
+        <li>Unele servere expun deliberat o unealtă atotputernică (<code>execute_sql</code> acceptă și <code>DROP</code>). Citește lista de tool-uri <strong>înainte</strong> să conectezi ceva la o bază care contează.</li>
+      </ul>
+      <p style="margin-top:12px;"><strong>Stratul 2 — ce are voie Claude.</strong> Reguli de permisiuni în <code>settings.json</code> (S1), pe nume de unealtă MCP:</p>
+      <div style="overflow-x:auto;">
+        <table>
+          <tr><th>Regulă</th><th>Ce prinde</th></tr>
+          <tr><td><code>mcp__lms-db</code></td><td>orice unealtă a serverului <code>lms-db</code></td></tr>
+          <tr><td><code>mcp__lms-db__*</code></td><td>la fel, cu wildcard explicit</td></tr>
+          <tr><td><code>mcp__lms-db__list_tables</code></td><td>exact acea unealtă</td></tr>
+          <tr><td><code>mcp__*</code> (doar în <code>deny</code>)</td><td>toate uneltele MCP</td></tr>
+        </table>
+      </div>
+      <ul style="margin-top:12px;">
+        <li><strong>Wildcard-urile în <code>allow</code> merg doar după prefixul literal <code>mcp__&lt;server&gt;__</code>.</strong> Segmentul cu numele serverului trebuie să fie fără glob — o regulă de <code>allow</code> neancorată (<code>"*"</code>, <code>"mcp__*"</code>) e ignorată cu warning și nu aprobă nimic. În <code>deny</code> însă, <code>mcp__*</code> e valid și taie tot.</li>
+        <li>Tiparul practic pe baza de date: <code>allow</code> pe uneltele de citire, <code>ask</code> sau <code>deny</code> pe cea care execută SQL arbitrar. Se citește ca o politică, și se comite în repo ca orice altă regulă din S1.</li>
+      </ul>
+      <div class="warning-card" style="margin-top:12px;">
+        <h4>Fitilul pentru S9 (îl numim, nu-l desfacem)</h4>
+        <p style="margin:0;font-size:.93rem;">Un server MCP citește conținut pe care <strong>nu l-ai scris tu</strong> — rânduri din bază, descrieri de tickete, pagini web. Conținutul ăla ajunge în contextul modelului și <strong>poate conține instrucțiuni</strong>. Asta e <strong>prompt injection</strong>, și e vectorul serios al MCP-ului. A doua față: date care <strong>ies</strong> din perimetru — un server remote vede ce-i trimiți. Ambele se tratează în S9, cu tot ce trebuie. Azi reține doar: <strong>verifică în cine te încrezi înainte să conectezi</strong>, și restrânge de la început.</p>
+      </div>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> adaugă o regulă de permisiuni care blochează unealta de SQL arbitrar și lasă doar citirea. Cere-i lui Claude ceva ce ar necesita scriere și arată promptul/refuzul. Punctează: serverul putea, Claude n-a avut voie.
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>6. Serverul tău MCP, stdio minimal — și cum verifici <span style="font-family:var(--mono);font-size:11px;color:var(--ink-soft);font-weight:400;">20–25 min</span></h3>
+      <p>Ținta finală a zilei: fiecare pleacă cu o <strong>configurație MCP funcțională, comisă</strong> — iar cine ajunge până aici, și cu un <strong>server propriu</strong> care expune un tool intern. Un server MCP minimal e surprinzător de mic: declari un tool cu un nume, o descriere și o schemă de parametri, apoi asculți pe stdio.</p>
+      <div class="template-block">npm install @modelcontextprotocol/server zod</div>
+      <div class="template-block" style="margin-top:8px;">import { McpServer } from "@modelcontextprotocol/server";
+import { StdioServerTransport } from "@modelcontextprotocol/server/stdio";
+import { z } from "zod";
+
+const server = new McpServer({ name: "lms-tools", version: "1.0.0" });
+
+server.registerTool(
+  "get_naming_rules",
+  {
+    description: "Întoarce convențiile de denumire ale echipei pentru tabele și proceduri.",
+    inputSchema: z.object({ layer: z.enum(["db", "api"]) }),
+  },
+  async ({ layer }) =&gt; ({
+    content: [{ type: "text", text: layer === "db" ? "Tabele: PascalCase..." : "Endpoint-uri: kebab-case..." }],
+  }),
+);
+
+const transport = new StdioServerTransport();
+await server.connect(transport);</div>
+      <div class="callout" style="margin-top:12px;">
+        <strong>Atenție la numele pachetului:</strong> e <code>@modelcontextprotocol/server</code>. Tutorialele mai vechi (și multe răspunsuri de pe net) spun <code>@modelcontextprotocol/sdk</code> — dacă cineva copiază de acolo, va instala altceva.
+      </div>
+      <p style="margin-top:12px;"><strong>Python</strong>, dacă preferă cineva: <code>uv add "mcp[cli]"</code>, apoi <code>from mcp.server import MCPServer</code>, un <code>@mcp.tool()</code> pe o funcție cu docstring (docstring-ul <strong>e</strong> descrierea uneltei), și <code>mcp.run(transport="stdio")</code>.</p>
+      <p style="margin-top:12px;"><strong>Nu-l scriem manual</strong> — îi cerem lui Claude, ca orice altă sarcină. Alternativ, există un plugin oficial care face scaffolding-ul: <code>/plugin install mcp-server-dev@claude-plugins-official</code>, apoi <code>/mcp-server-dev:build-mcp-server</code>.</p>
+      <div class="template-block" style="margin-top:12px;">claude mcp add --transport stdio lms-tools -- node C:/cale/absoluta/server.js
+claude mcp list          # apare ✔ Connected?</div>
+      <p style="margin-top:12px;"><strong>Dovada care contează la MCP</strong> — trei lucruri, în ordine:</p>
+      <ol>
+        <li><strong>Se conectează?</strong> <code>claude mcp list</code> arată <code>✔ Connected</code>, nu <code>✘ Failed to connect</code>. La un server stdio, cauza tipică e comanda greșită sau o cale relativă.</li>
+        <li><strong>Uneltele se văd?</strong> <code>/mcp</code> arată numărul de tool-uri. Zero tool-uri la un server conectat = serverul rulează, dar nu declară nimic.</li>
+        <li><strong>Claude o cheamă pe cea potrivită?</strong> Aceeași lecție ca la skills (S3) și subagenți (S4): dacă unealta nu e chemată, problema e aproape mereu <strong>descrierea</strong> ei, nu implementarea. Descrierile de unelte și instrucțiunile de server se taie la 2KB — pune ce e important la început.</li>
+      </ol>
+      <div class="callout callout-blue" style="margin-top:12px;">
+        <strong>Demo:</strong> cere-i lui Claude un server stdio minimal cu un tool intern (ex. „întoarce-mi convențiile de denumire ale echipei"), <strong>citește fișierul cu grupul înainte de accept</strong> (regula S1–S5), conectează-l, și arată cei trei pași de verificare. Dacă rămâne timp: schimbă descrierea uneltei în ceva vag și arată cum Claude nu o mai cheamă.
+      </div>
+    </div>
+
+    <div class="section-label">Lucru aplicat (70–85 min)</div>
+    <div class="card">
+      <p><strong>Brief:</strong> fiecare iese cu o configurație MCP funcțională, comisă în <code>.mcp.json</code> pe repo-ul lui de curs — minim serverul de bază de date, care răspunde la întrebări reale despre baza lui — plus regulile de permisiuni care îi restrâng perimetrul.</p>
+      <ol>
+        <li><strong>Triază sistemele</strong> — lista din prep-ul S5. Pentru fiecare: server MCP sau script/skill? Poți numi întrebările pe care Claude le-ar pune sistemului?</li>
+        <li><strong>Un server existent, zero cod</strong> — instalează unul care nu cere credențiale (filesystem sau browser), verifică-l cu <code>claude mcp list</code> + <code>/mcp</code>.</li>
+        <li><strong>Baza ta prin MCP</strong> — conectează un server de SQL Server la baza <code>LMS_&lt;Nume&gt;</code>, cu autentificare Windows. Pune-i trei întrebări reale, în română.</li>
+        <li><strong>Restrânge perimetrul</strong> — reguli de permisiuni pe <code>mcp__&lt;server&gt;__*</code>: citirea permisă, SQL arbitrar pe <code>ask</code> sau <code>deny</code>. Verifică că regula chiar prinde.</li>
+        <li><strong>De la tine la echipă</strong> — mută serverul în <code>.mcp.json</code> cu scope <code>project</code>, cu numele bazei ca <code>${VAR}</code>, și <strong>comite-l</strong>.</li>
+        <li><strong>Serverul tău</strong> (capstone) — un server stdio minimal, cu un tool intern, conectat și verificat.</li>
+      </ol>
+      <p><strong>Extensie (dacă ai terminat):</strong> adaugă <code>alwaysLoad: true</code> pe serverul de bază de date și vezi diferența în <code>/context</code>. Sau: conectează un server remote cu OAuth (<code>/mcp</code> → autentificare) și observă fluxul.</p>
+      <div class="artefact">o configurație MCP funcțională pentru un flux propriu: <code>.mcp.json</code> comis în repo, cu cel puțin serverul de bază de date, plus regulile de permisiuni care îi limitează uneltele</div>
+    </div>
+
+    <div class="section-label">Schimb de practici (15–20 min)</div>
+    <div class="card">
+      <p>Fiecare, ~2 min:</p>
+      <ul>
+        <li>Ce a conectat și de ce <strong>acela</strong> primul. Ce triaj a făcut: ce a rămas MCP și ce s-a dovedit script.</li>
+        <li>Un moment „aici s-a văzut diferența" — fie o întrebare la care Claude a răspuns corect pe baza lui, fie un perimetru pe care l-a restrâns conștient.</li>
+      </ul>
+      <p style="color:var(--ink-soft);font-size:.93rem;">Se notează în docul „AI Wins &amp; Fails", coloana „Candidat standard?" — de-aici alegeți, în Faza 3, ce servere MCP intră în setul de referință al echipei. Fitilul spre S7: dacă trei oameni au configurat același server în trei feluri, aia e exact problema pe care o rezolvă un <strong>plugin</strong>.</p>
+    </div>
+
+    <div class="section-label">Capcane comune</div>
+
+    <div class="warning-card">
+      <h4>Un server MCP pentru fiecare idee.</h4>
+      <p style="margin:0;font-size:.93rem;">Capcana zilei. Cineva vrea servere pentru teste, pentru build, pentru git — toate lucruri pe care <code>Bash</code> le face deja. Testul: <em>poți numi întrebările pe care Claude le-ar pune sistemului? Dacă poți numi doar comanda, e script.</em></p>
+    </div>
+    <div class="warning-card">
+      <h4><code>--</code> uitat la stdio.</h4>
+      <p style="margin:0;font-size:.93rem;">Cea mai frecventă eroare de sintaxă. Fără <code>--</code>, flag-urile serverului sunt citite ca flag-uri Claude Code. Dacă un <code>claude mcp add</code> cade cu o eroare de opțiune necunoscută, verifică <code>--</code> întâi.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Numele serverului imediat după <code>--env</code>.</h4>
+      <p style="margin:0;font-size:.93rem;">CLI-ul îl citește ca încă un <code>KEY=value</code> și îl respinge. Pune altă opțiune între ele.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Scope greșit.</h4>
+      <p style="margin:0;font-size:.93rem;">Cineva adaugă serverul în <code>local</code> (default!) și se miră că nu e în repo. Sau invers: pune un server cu token personal în <code>.mcp.json</code> comis. Întrebarea de control: <em>vreau să-l aibă echipa? → <code>project</code>. Vreau să-l am pe toate proiectele mele? → <code>user</code>. Doar aici, doar eu? → <code>local</code>.</em></p>
+    </div>
+    <div class="warning-card">
+      <h4>Credențiale în <code>.mcp.json</code>.</h4>
+      <p style="margin:0;font-size:.93rem;">Fișierul se comite. Token-uri și parole se pun în variabile de mediu și se referențiază cu <code>${VAR}</code>. Pe bazele noastre nu e problemă (autentificare Windows, fără parolă) — dar reflexul se formează azi.</p>
+    </div>
+    <div class="warning-card">
+      <h4><code>SELECT *</code> pe o tabelă mare.</h4>
+      <p style="margin:0;font-size:.93rem;">Apare avertismentul de output MCP (peste 10.000 de tokens), și contextul se umple. Aceeași lecție ca la subagenți: cere rezumate, nu dump-uri. Aici o pui în promptul spre Claude: „numără, nu lista".</p>
+    </div>
+    <div class="warning-card">
+      <h4>„Serverul poate, deci Claude are voie."</h4>
+      <p style="margin:0;font-size:.93rem;">Confuzia dintre cele două straturi. Un <code>execute_sql</code> expus nu înseamnă aprobat — permisiunile sunt separate, și se comit.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Wildcard neancorat în <code>allow</code>.</h4>
+      <p style="margin:0;font-size:.93rem;"><code>"mcp__*"</code> în <code>allow</code> e ignorat cu warning. Merge doar în <code>deny</code>. Dacă cineva crede că a permis tot și nu se schimbă nimic, e asta.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Server conectat, zero tool-uri.</h4>
+      <p style="margin:0;font-size:.93rem;">Se vede în <code>/mcp</code>. Serverul rulează dar nu declară nimic — de obicei o eroare în înregistrarea uneltelor, nu în transport.</p>
+    </div>
+    <div class="warning-card">
+      <h4>Încredere oarbă în server străin.</h4>
+      <p style="margin:0;font-size:.93rem;">Un server MCP rulează cu privilegiile tale și citește conținut pe care nu-l controlezi. Verifică sursa înainte să conectezi, exact ca la skills (S3) și hooks (S5).</p>
+    </div>
+
+    <div class="section-label">Prep pentru S7</div>
+    <div class="card">
+      <p>Temă de 5 minute: fiecare notează <strong>ce din tot ce a construit până acum ar vrea să aibă și colegul de lângă, fără să-i explice nimic</strong>. Uită-te la ce ai în <code>.claude/</code>: un <code>CLAUDE.md</code> (S2), un skill (S3), un subagent (S4), un hook (S5), o configurație MCP (S6). Fiecare a fost partajat altfel — sau n-a fost partajat deloc. Ai văzut fitilul azi: dacă trei oameni au configurat același server MCP în trei feluri, problema nu e serverul, e <strong>distribuția</strong>. În S7: <strong>plugins</strong> — un bundle versionat care livrează împreună skills, subagenți, comenzi, hooks și definiții MCP, instalabil cu o comandă. De la „am configurat" la „am publicat".</p>
+    </div>
+
+  </div><!-- /facilitator -->
+
+  <!-- ══ ECHIPA PANEL ══ -->
+  <div id="echipa" class="role-panel">
+
+    <div class="callout callout-blue">
+      <strong>Context:</strong> în S5 ai transformat o regulă ratată într-o garanție deterministă. Până acum, tot ce ai construit lucrează cu uneltele <strong>proprii</strong> ale Claude Code. Azi îi dai <strong>unelte noi</strong>: MCP conectează Claude la sisteme reale — începând cu cel mai relevant pentru tine, baza ta de date. Exercițiile urmează pașii de lucru aplicat din tutorial.
+    </div>
+    <div class="callout" style="margin-bottom:24px;">
+      <strong>Sursa exercițiilor:</strong> setul de mai jos e derivat direct din secțiunea „lucru aplicat" a ghidului de facilitare S6 — cadrul corect de urmat azi.
+    </div>
+    <div class="callout callout-green" style="margin-bottom:24px;">
+      <strong>Ținta zilei:</strong> la final ai o <strong>configurație MCP funcțională, comisă în <code>.mcp.json</code></strong> pe repo-ul tău — minim serverul de bază de date, care răspunde la întrebări reale despre baza <strong>ta</strong> — plus regulile de permisiuni care îi limitează perimetrul.
+    </div>
+    <div class="callout" style="margin-bottom:24px;">
+      <strong>Regula de siguranță:</strong> un server MCP e un proces care rulează <strong>cu privilegiile tale</strong> și care poate ajunge la sisteme reale. Înainte să conectezi un server pe care nu l-ai scris tu: uită-te ce tool-uri expune și de unde vine. Și nu pune niciodată parole sau token-uri în <code>.mcp.json</code> — fișierul se comite.
+    </div>
+
+    <div class="callout callout-blue" style="margin-bottom:24px;">
+      <strong>Recuperare rapidă (ai lipsit / intri târziu):</strong> minimul ca să poți intra în S7 e (a) un server MCP conectat la baza ta, care răspunde la o întrebare reală, și (b) un <code>.mcp.json</code> comis în repo. Dacă nu le ai, fă doar <strong>Ex. 3</strong> (baza ta prin MCP, pe <em>calea B</em> — e mai puțin dependentă de mediu) + <strong>Ex. 5</strong> (mutarea în <code>.mcp.json</code> și commit). Restul (serverul existent din Ex. 2, permisiunile din Ex. 4, serverul propriu din Ex. 6) le poți relua ulterior — Ex. 4 în special merită recuperat înainte de S9.
+    </div>
+
+    <!-- Prerechizite de mediu -->
+    <div class="section-label">Prerechizite de mediu — fă-le înainte de exerciții</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Prep</span>
+        <span class="ex-time">≈15 min</span>
+        <span class="ex-trains">Confirmă că baza ta răspunde și că ai <code>dotnet</code> / <code>node</code></span>
+      </div>
+      <p>Trei lucruri, verificate rapid. Peste tot mai jos înlocuiește <code>&lt;Nume&gt;</code> cu al tău (ex. Ionut → baza <code>LMS_Ionut</code>) și <code>&lt;SERVER&gt;</code> cu serverul de baze de date pe care ți-l dă facilitatorul (dacă baza e pe mașina ta, <code>&lt;SERVER&gt;</code> e <code>localhost</code>).</p>
+      <ol>
+        <li><strong>Baza ta răspunde.</strong> Ai deja baza <code>LMS_&lt;Nume&gt;</code> din S4, cu cel puțin o tabelă și un rând scris prin EF. Confirmă că te conectezi cu <strong>contul tău de Windows</strong>, fără parolă: connection string-ul e de forma <code>Server=&lt;SERVER&gt;;Database=LMS_&lt;Nume&gt;;Trusted_Connection=True;TrustServerCertificate=True</code>.</li>
+        <li><strong><code>dotnet</code> merge.</strong> Rulează <code>dotnet --list-sdks</code> și notează versiunile. Îți trebuie la Ex. 3, calea A.</li>
+        <li><strong><code>node</code> și <code>npm</code> merg.</strong> Rulează <code>node -v</code> și <code>npm -v</code>. Îți trebuie la Ex. 6.</li>
+      </ol>
+      <div class="callout" style="margin-top:14px;">
+        <strong>Siguranță:</strong> connection string-ul de mai sus <strong>nu conține parolă</strong> — autentificarea e cu contul tău de Windows. Ăsta e și motivul pentru care îl putem pune într-un fișier comis. Dacă la un moment dat lucrezi cu o bază care cere user și parolă, parola merge în variabilă de mediu și în fișier pui <code>${VAR}</code> — niciodată valoarea.
+      </div>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        ai o bază <code>LMS_&lt;Nume&gt;</code> la care ajungi cu autentificare Windows, și <code>dotnet --list-sdks</code> + <code>node -v</code> întorc ceva.
+      </div>
+    </div>
+
+    <!-- Ex 1 -->
+    <div class="section-label">Exercițiul 1 — Triază sistemele: MCP sau script?</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 1</span>
+        <span class="ex-time">≈10 min</span>
+        <span class="ex-trains">Antrenează: criteriul care ține sesiunea</span>
+      </div>
+      <p>Înainte să conectezi ceva, decide <strong>ce</strong> merită conectat. Nu tot ce e extern are nevoie de un server MCP — multe lucruri sunt deja acoperite de <code>Bash</code> sau de un skill din S3.</p>
+      <ol>
+        <li>Ia lista din prep-ul S5 (sistemele externe la care ai vrea ca Claude să ajungă). Dacă n-ai una, scrie trei acum: baza ta de date, repo-ul tău remote, un dashboard sau API pe care-l deschizi des.</li>
+        <li>Pentru fiecare, aplică testul: <strong>poți numi întrebările</strong> pe care Claude le-ar pune sistemului? („ce tabele are?", „care e cea mai mare?", „ce coloane are asta?") → <strong>MCP</strong>. Poți numi doar <strong>comanda</strong> pe care ai rula-o tu (<code>git log</code>, <code>dotnet test</code>) → <strong>script</strong>, chemat cu <code>Bash</code>, eventual împachetat într-un skill.</li>
+        <li>Pentru cel care rămâne MCP, scrie într-o frază <strong>ce ai lăsa să facă acolo</strong>: doar citire, sau și scriere? Ai nevoie de răspunsul ăsta la Ex. 4.</li>
+      </ol>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Ai cel puțin un sistem clasificat „MCP" cu întrebările numite, și cel puțin unul pe care l-ai respins conștient ca fiind treabă de script.
+      </div>
+    </div>
+
+    <!-- Ex 2 -->
+    <div class="section-label">Exercițiul 2 — Primul server, zero cod</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 2</span>
+        <span class="ex-time">≈15 min</span>
+        <span class="ex-trains">Antrenează: <code>claude mcp add</code>, scope-ul default, verificarea</span>
+      </div>
+      <p>Începe cu un server care nu cere credențiale și nu poate face pagube. Scopul e mecanica: comanda, statusul, <code>/mcp</code>.</p>
+      <div class="prompt-box">
+        <span class="prompt-box-label">Prompt de pornire</span>
+        „Vreau să conectez la Claude Code un server MCP de <strong>filesystem</strong> (sau de browser automation), limitat la directorul acestui repo. Dă-mi comanda <code>claude mcp add</code> exactă pentru Windows, cu transport <code>stdio</code>, în scope <code>local</code>. Explică-mi ce face fiecare parte din comandă, inclusiv de ce e nevoie de <code>--</code>. Nu o rula tu — o rulez eu."
+      </div>
+      <ol style="margin-top:12px;">
+        <li><strong>Citește comanda înainte s-o rulezi.</strong> Verifică: transportul e <code>stdio</code>? Directorul pe care-l dai serverului e chiar repo-ul tău, nu <code>C:\</code>? Există <code>--</code> înainte de comanda serverului?</li>
+        <li>Rulează-o, apoi verifică pe trei căi: <code>claude mcp list</code> (apare <code>✔ Connected</code>?), <code>claude mcp get &lt;nume&gt;</code> (configurația e cea pe care ai vrut-o?), și <code>/mcp</code> în sesiune (serverul apare, cu <strong>câte tool-uri</strong>?).</li>
+        <li>Pune-i o întrebare care are nevoie de el, și observă că Claude cheamă o unealtă <code>mcp__...</code> în loc de <code>Read</code>/<code>Bash</code>.</li>
+      </ol>
+      <div class="callout" style="margin:12px 0;">
+        <strong>De ce contează:</strong> ai adăugat serverul în scope <code>local</code> (default-ul) — adică în <code>~/.claude.json</code>, doar pentru tine, doar în proiectul asta. <strong>Nu</strong> e în repo. Ține minte pentru Ex. 5.
+      </div>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Un server apare <code>✔ Connected</code> în <code>claude mcp list</code>, îl vezi în <code>/mcp</code> cu tool-urile lui, și Claude a chemat cel puțin o unealtă venită de la el.
+      </div>
+    </div>
+
+    <!-- Ex 3 -->
+    <div class="section-label">Exercițiul 3 — Baza ta prin MCP</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 3</span>
+        <span class="ex-time">≈25 min</span>
+        <span class="ex-trains">Antrenează: miezul practic — Claude interoghează baza <strong>ta</strong></span>
+      </div>
+      <p>Ăsta e exercițiul pentru care există sesiunea. La final, îi pui întrebări în română despre baza ta și primești răspunsuri corecte, fără să scrii SQL. Ai <strong>două căi</strong> — alege una; a doua e plasa de siguranță.</p>
+
+      <p style="margin-top:14px;"><strong>Calea A — un server existent (mai rapid, dacă ai .NET 9)</strong></p>
+      <p>Serverul <code>mssql-mcp</code> (terță parte, .NET, open-source: <code>github.com/Aaronontheweb/mssql-mcp</code>) se conectează la SQL Server cu <strong>autentificare Windows</strong> și expune trei tool-uri: <code>list_schemas</code>, <code>list_tables</code>, <code>execute_sql</code>. Ținta e <code>net9.0</code>, deci ai nevoie de SDK-ul 9 în <code>dotnet --list-sdks</code>. <strong>Dacă nu-l ai, mergi pe calea B</strong> — nu instala un SDK la curs.</p>
+      <div class="template-block">git clone https://github.com/Aaronontheweb/mssql-mcp C:\tools\mssql-mcp-src
+dotnet publish C:\tools\mssql-mcp-src\src\MSSQL.MCP -c Release -o C:\tools\mssql-mcp</div>
+      <div class="template-block" style="margin-top:8px;">claude mcp add --env "MSSQL_CONNECTION_STRING=Server=&lt;SERVER&gt;;Database=LMS_&lt;Nume&gt;;Trusted_Connection=True;TrustServerCertificate=True" --transport stdio lms-db -- C:\tools\mssql-mcp\MSSQL.MCP.exe</div>
+      <p style="margin-top:10px;">Atenție la două lucruri din tutorial: <strong><code>--</code></strong> înainte de executabil, și <strong>numele serverului (<code>lms-db</code>) nu vine imediat după <code>--env</code></strong> — de asta e <code>--transport stdio</code> între ele. Clonează-l <strong>în afara repo-ului tău</strong>, nu vrem codul lui în repo-ul de curs.</p>
+      <p style="margin-top:10px;"><strong>Uită-te la ce ai conectat, înainte să-l folosești:</strong> <code>execute_sql</code> acceptă orice T-SQL, inclusiv <code>DROP</code>. Nu e o problemă acum (e baza ta de curs), dar e exact situația pe care o restrângi la Ex. 4.</p>
+
+      <p style="margin-top:16px;"><strong>Calea B — îi ceri lui Claude un server minimal, read-only</strong></p>
+      <p>Mai lent de scris, dar înțelegi tot codul și e read-only din construcție. Merge cu orice versiune de .NET sau cu Node.</p>
+      <div class="prompt-box">
+        <span class="prompt-box-label">Prompt de pornire — calea B</span>
+        „Scrie-mi un server MCP minimal, pe transport <code>stdio</code>, care se conectează la baza mea SQL Server <code>LMS_&lt;Nume&gt;</code> de pe <code>&lt;SERVER&gt;</code> cu <strong>autentificare Windows</strong> (<code>Trusted_Connection=True</code>, fără parolă — connection string-ul îl citești din variabila de mediu <code>MSSQL_CONNECTION_STRING</code>). Expune <strong>doar două tool-uri, ambele read-only</strong>: <code>list_tables</code> (schema, nume, număr de rânduri) și <code>run_select</code>, care acceptă <strong>doar</strong> interogări <code>SELECT</code> — respinge orice altceva, explicit, cu un mesaj clar. Alege limbajul care merge cu ce am instalat (verifică <code>dotnet --list-sdks</code> și <code>node -v</code>) și pune serverul într-un folder separat, în afara repo-ului. <strong>Arată-mi fișierul înainte să-l scrii.</strong> Apoi dă-mi comanda <code>claude mcp add</code> care îl conectează, dar nu o rula tu."
+      </div>
+      <p style="margin-top:10px;">Citește codul înainte de accept. Verifică în special: <code>run_select</code> chiar refuză non-<code>SELECT</code>? Connection string-ul e citit din mediu, nu hardcodat?</p>
+
+      <p style="margin-top:16px;"><strong>Ambele căi — verificarea care contează</strong></p>
+      <ol>
+        <li><code>claude mcp list</code> → <code>lms-db</code> e <code>✔ Connected</code>. Dacă e <code>✘ Failed to connect</code>, cauzele tipice, în ordine: calea din comandă e greșită, connection string-ul are altă bază, sau contul tău nu are drepturi pe <code>LMS_&lt;Nume&gt;</code>.</li>
+        <li><code>/mcp</code> → serverul apare cu tool-urile lui. <strong>Zero tool-uri</strong> la un server conectat înseamnă că pornește, dar nu declară nimic.</li>
+        <li><strong>Trei întrebări reale, în română</strong>, despre baza ta. Nu inventa — întreabă ce chiar există acolo: „Ce tabele am în baza mea și câte rânduri are fiecare?" · „Ce coloane are tabela pe care am creat-o în S4 și ce tipuri au?" · „Arată-mi ultimele 5 rânduri scrise, cele mai recente primele."</li>
+        <li>Observă <strong>ce unelte cheamă</strong> Claude și în ce ordine. La întrebarea a doua, de obicei întâi listează tabelele, apoi se uită la cea relevantă — asta e „raționamentul iterativ" din segmentul 1, văzut cu ochii tăi.</li>
+      </ol>
+      <div class="warning-card" style="margin-top:12px;">
+        <h4>⚠️ Nu cere <code>SELECT *</code> pe tabela cea mai mare.</h4>
+        <p style="margin:0;font-size:.93rem;">Vei vedea avertismentul de output MCP (peste 10.000 de tokens) și contextul se umple degeaba. Cere numărători și eșantioane: „câte rânduri", „primele 5". Aceeași lecție ca la subagenți în S4: rezumate, nu dump-uri.</p>
+      </div>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Claude a răspuns corect la trei întrebări despre baza <strong>ta</strong>, prin unelte MCP, iar tu poți arăta în transcript care unealtă a fost chemată pentru fiecare.
+      </div>
+    </div>
+
+    <!-- Ex 4 -->
+    <div class="section-label">Exercițiul 4 — Restrânge perimetrul</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 4</span>
+        <span class="ex-time">≈15 min</span>
+        <span class="ex-trains">Antrenează: cele două straturi de control, pe firul S1</span>
+      </div>
+      <p>Serverul tău de bază de date poate, în principiu, mai mult decât vrei să-i lași. „Serverul poate face X" nu înseamnă „Claude are voie să facă X" — sunt două straturi separate, și al doilea îl controlezi tu, în <code>settings.json</code>.</p>
+      <ol>
+        <li>Fă inventarul: <code>/mcp</code> → deschide serverul <code>lms-db</code> și <strong>notează numele exacte</strong> ale tool-urilor lui. Numele complet al unei unelte MCP e <code>mcp__&lt;server&gt;__&lt;tool&gt;</code> — ex. <code>mcp__lms-db__list_tables</code>.</li>
+        <li>Decide politica, pornind de la răspunsul tău din Ex. 1 (doar citire, sau și scriere?). Tiparul recomandat: citirea permisă, SQL arbitrar pe <code>ask</code> sau <code>deny</code>.</li>
+      </ol>
+      <div class="prompt-box" style="margin-top:12px;">
+        <span class="prompt-box-label">Prompt de pornire</span>
+        „Adaugă în <code>.claude/settings.json</code> reguli de permisiuni pentru serverul MCP <code>lms-db</code>: <code>allow</code> pe uneltele de citire (<code>list_tables</code>, <code>list_schemas</code>), și <code>deny</code> pe unealta care execută SQL arbitrar. Folosește forma <code>mcp__lms-db__&lt;tool&gt;</code>. Arată-mi diff-ul înainte."
+      </div>
+      <p style="margin-top:12px;"><strong>Verifică că regula chiar prinde.</strong> Cere-i lui Claude ceva ce ar avea nevoie de unealta blocată („șterge tabela de test din baza mea") și observă refuzul. Apoi cere ceva permis și observă că trece fără prompt.</p>
+      <div class="callout" style="margin:12px 0;">
+        <strong>Două capcane de reținut:</strong> (1) în <code>allow</code>, wildcard-ul merge <strong>doar după prefixul literal <code>mcp__&lt;server&gt;__</code></strong> — <code>mcp__lms-db__get_*</code> e valid, iar <code>mcp__*</code> în <code>allow</code> e ignorat cu warning; în <code>deny</code> însă e valid și taie tot MCP-ul. (2) Stratul 1 rămâne cel mai puternic: pe orice bază care contează, <strong>user de bază de date cu drepturi minime</strong>. O regulă de permisiune protejează sesiunea ta; un user read-only protejează baza de oricine.
+      </div>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Ai reguli comise care permit citirea și blochează scrierea pe serverul tău de bază de date, și <strong>ai demonstrat</strong> că regula de <code>deny</code> se declanșează.
+      </div>
+    </div>
+
+    <!-- Ex 5 -->
+    <div class="section-label">Exercițiul 5 — De la tine la echipă: <code>.mcp.json</code> comis</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 5</span>
+        <span class="ex-time">≈15 min</span>
+        <span class="ex-trains">Antrenează: scope-urile și fișierul de echipă — aici se produce artefactul</span>
+      </div>
+      <p>Până acum serverul e în scope <code>local</code> — în <code>~/.claude.json</code>, doar la tine. Dacă cineva clonează repo-ul, nu primește nimic. Acum îl muți în scope <code>project</code>, adică în <code>.mcp.json</code>, comis.</p>
+      <div class="prompt-box">
+        <span class="prompt-box-label">Prompt de pornire</span>
+        „Mută serverul MCP <code>lms-db</code> din scope <code>local</code> în scope <code>project</code>, adică în <code>.mcp.json</code> în rădăcina repo-ului. Numele bazei și serverul diferă de la coleg la coleg, deci <strong>nu le hardcoda</strong>: folosește expansiune de variabile de mediu, cu default-uri rezonabile — <code>${SQL_SERVER:-localhost}</code> și <code>${LMS_DB}</code>. Arată-mi fișierul înainte să-l scrii. Spune-mi și ce variabile trebuie să-mi setez ca să meargă la mine."
+      </div>
+      <ol style="margin-top:12px;">
+        <li><strong>Citește <code>.mcp.json</code> înainte de accept.</strong> Zero parole, zero token-uri. Numele bazei e <code>${LMS_DB}</code>, nu <code>LMS_Ionut</code>. Iar dacă calea către executabil e absolută, de pe mașina ta, e și ea ceva specific — pune-o în variabilă sau notează în README că trebuie ajustată.</li>
+        <li>Scoate versiunea veche, ca să nu ai două definiții: <code>claude mcp remove lms-db</code> (scoate cea din <code>local</code>; reține precedența — <code>local</code> bate <code>project</code>, deci cât timp ambele există, se folosește cea locală).</li>
+        <li>Repornește sesiunea. Serverul din <code>.mcp.json</code> <strong>nu pornește necerut</strong> — Claude Code cere aprobare, și până atunci apare ca <code>⏸ Pending approval</code> în <code>claude mcp list</code>. Aprobă-l, apoi confirmă <code>✔ Connected</code>.</li>
+        <li><strong>Comite</strong> (<code>chore: add lms-db MCP server to project config</code>). Comite și regulile de permisiuni din Ex. 4, dacă nu le-ai comis deja.</li>
+      </ol>
+      <div class="callout" style="margin:12px 0;">
+        Dacă vrei să reiei decizia de aprobare (ai aprobat greșit, sau vrei să vezi din nou promptul): <code>claude mcp reset-project-choices</code>. La nivel de echipă, <code>enabledMcpjsonServers</code> în <code>settings.json</code> pre-aprobă servere anume, fără prompt.
+      </div>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Ai un <code>.mcp.json</code> comis, fără nimic specific mașinii tale hardcodat, iar după o repornire serverul apare <code>✔ Connected</code>. Un coleg care clonează repo-ul și își setează două variabile de mediu are exact același acces.
+      </div>
+    </div>
+
+    <!-- Ex 6 -->
+    <div class="section-label">Exercițiul 6 — Serverul tău MCP, stdio minimal</div>
+    <div class="exercise">
+      <div class="exercise-header">
+        <span class="ex-num">Ex. 6</span>
+        <span class="ex-time">≈20 min</span>
+        <span class="ex-trains">Antrenează: ce e de fapt un server MCP (capstone)</span>
+      </div>
+      <p>Până acum ai <strong>consumat</strong> servere. Acum scrii unul — mic, dar real: un tool intern pe care doar echipa ta îl are.</p>
+      <p style="margin-top:8px;"><strong>Alege ce expune.</strong> Nu baza de date (ai deja). Candidați buni, mici și utili: convențiile de denumire ale echipei (tabele, proceduri, endpoint-uri), întoarse structurat · starea unui environment intern, citită dintr-un fișier sau un endpoint · un calcul pe care îl faci des și îl greșești (zile lucrătoare între două date, conversie de coduri interne).</p>
+      <div class="prompt-box" style="margin-top:12px;">
+        <span class="prompt-box-label">Prompt de pornire</span>
+        „Scrie-mi un server MCP minimal, pe transport <code>stdio</code>, în Node, care expune <strong>un singur tool</strong>: [descrie tool-ul: nume, ce parametri primește, ce întoarce]. Folosește pachetul <code>@modelcontextprotocol/server</code> (<strong>nu</strong> <code>@modelcontextprotocol/sdk</code> — ăla e numele vechi) și <code>zod</code> pentru schema de parametri. Pune-l într-un folder separat. <strong>Descrierea uneltei e interfața</strong> — scrie-o ca să știe Claude când s-o cheme, ca la skills în S3. Arată-mi fișierul înainte să-l scrii."
+      </div>
+      <ol style="margin-top:12px;">
+        <li>Citește codul. E scurt: un <code>new McpServer(...)</code>, un <code>server.registerTool(nume, { description, inputSchema }, handler)</code>, și un <code>server.connect(new StdioServerTransport())</code>. Dacă nu înțelegi o linie, întreabă — e miezul exercițiului.</li>
+        <li>Conectează-l: <code>claude mcp add --transport stdio &lt;nume&gt; -- node C:\cale\absoluta\server.js</code>, apoi <code>claude mcp list</code> (<code>✔ Connected</code>?) și <code>/mcp</code> (apare cu <strong>1 tool</strong>?).</li>
+        <li>Pune o întrebare pe care <strong>doar</strong> unealta ta poate răspunde, și verifică în transcript că a fost chemată.</li>
+        <li><strong>Testul care contează:</strong> dacă Claude <strong>nu</strong> cheamă unealta, nu umbla la implementare — reglează <strong>descrierea</strong> ei. Aceeași lecție ca la skills (S3) și subagenți (S4): descrierea e interfața de invocare.</li>
+      </ol>
+      <div class="callout callout-green" style="margin:12px 0;">
+        <strong>Alternativă, dacă vrei scaffolding în loc de scris de la zero:</strong> există un plugin oficial — <code>/plugin install mcp-server-dev@claude-plugins-official</code>, apoi <code>/mcp-server-dev:build-mcp-server</code>, care te întreabă ce vrei și generează structura.
+        <br><br>
+        <strong>Extensie (doar dacă ai terminat):</strong> strică intenționat descrierea uneltei (fă-o vagă: „procesează date") și observă că Claude nu o mai cheamă. Repar-o. Ăsta e cel mai rapid mod de a simți de ce descrierea e interfața.
+      </div>
+      <div class="success-box">
+        <span class="success-box-label">Reușit dacă:</span>
+        Ai un server stdio propriu, <code>✔ Connected</code>, cu un tool pe care Claude l-a chemat singur la o întrebare potrivită.
+      </div>
+    </div>
+
+    <!-- Artefact -->
+    <div class="section-label">Artefactul sesiunii</div>
+    <div class="card">
+      <div class="artefact">o configurație MCP funcțională pentru un flux propriu: <code>.mcp.json</code> comis în repo, cu cel puțin serverul de bază de date, plus regulile de permisiuni care îi limitează uneltele — oricine clonează repo-ul primește același acces, fără instrucțiuni de setup</div>
+    </div>
+
+  </div><!-- /echipa -->
+
+  <!-- ══ SELF-CHECK ══ -->
+  <section class="selfcheck">
+    <div class="section-label">Verifică-te</div>
+    <div class="card">
+      <div class="sc-q" data-correct="1">
+        <p class="sc-question"><strong>1.</strong> Vrei să conectezi un serviciu cloud care expune un server MCP remote. Ce transport alegi?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt"><code>sse</code> — e transportul standard pentru servere remote.</button>
+          <button type="button" class="sc-opt"><code>http</code> — e recomandarea curentă pentru remote și singurul care suportă OAuth; <code>sse</code> e deprecat.</button>
+          <button type="button" class="sc-opt"><code>stdio</code> — merge pentru orice, local sau remote.</button>
+        </div>
+        <div class="sc-explain">Transportul <code>SSE</code> e <strong>deprecat</strong>; îl folosești doar dacă serviciul nu expune altceva. Pentru remote se folosește <code>http</code> (în JSON: <code>http</code>, cu alias <code>streamable-http</code>), și e singurul care suportă OAuth. <code>stdio</code> e pentru procese <strong>locale</strong> — nu poate vorbi cu un serviciu din cloud.</div>
+      </div>
+
+      <div class="sc-q" data-correct="2">
+        <p class="sc-question"><strong>2.</strong> Ai adăugat un server cu <code>claude mcp add</code>, fără <code>--scope</code>. Vrei ca toată echipa să-l aibă la clonarea repo-ului. Ce faci?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Nimic — default-ul e deja partajat prin git.</button>
+          <button type="button" class="sc-opt">Îl muți în scope <code>user</code>, ca să fie disponibil peste tot.</button>
+          <button type="button" class="sc-opt">Îl muți în scope <code>project</code> — singurul care scrie <code>.mcp.json</code>, fișierul care se comite.</button>
+        </div>
+        <div class="sc-explain">Default-ul e <code>local</code>: serverul stă în <code>~/.claude.json</code>, doar la tine, doar în proiectul curent — nu ajunge în repo. <code>user</code> e și el privat (doar că pe toate proiectele tale). Singurul scope care produce un fișier de comis e <strong><code>project</code></strong> → <code>.mcp.json</code> în rădăcina repo-ului. Numele bazei sau alte valori specifice fiecărei mașini le pui ca <code>${VAR}</code>.</div>
+      </div>
+
+      <div class="sc-q" data-correct="0">
+        <p class="sc-question"><strong>3.</strong> Pui <code>"mcp__*"</code> în lista <code>allow</code> din <code>settings.json</code>, ca să nu mai fii întrebat de niciun tool MCP. Ce se întâmplă?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Nimic — un <code>allow</code> neancorat e ignorat cu warning; wildcard-ul merge doar după prefixul literal <code>mcp__&lt;server&gt;__</code>.</button>
+          <button type="button" class="sc-opt">Toate uneltele MCP sunt aprobate automat, din toate serverele.</button>
+          <button type="button" class="sc-opt">Regula e respinsă și Claude Code refuză să pornească.</button>
+        </div>
+        <div class="sc-explain">În <code>allow</code>, glob-urile sunt acceptate <strong>doar după un prefix literal <code>mcp__&lt;server&gt;__</code></strong>, iar segmentul cu numele serverului trebuie să fie fără wildcard — deci <code>mcp__lms-db__get_*</code> e valid, dar <code>"mcp__*"</code> (sau <code>"*"</code>) e ignorat cu un warning și nu aprobă nimic. În <code>deny</code>, însă, <code>mcp__*</code> e valid și taie tot MCP-ul.</div>
+      </div>
+
+      <div class="sc-q" data-correct="2">
+        <p class="sc-question"><strong>4.</strong> Serverul tău de bază de date expune un tool <code>execute_sql</code> care acceptă orice T-SQL, inclusiv <code>DROP</code>. Ce înseamnă asta?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Că Claude poate rula <code>DROP</code> oricând — serverul odată conectat, nu mai ai control.</button>
+          <button type="button" class="sc-opt">Că serverul e prost scris și nu ar trebui folosit niciodată.</button>
+          <button type="button" class="sc-opt">Că serverul <em>poate</em>, dar Claude <em>are voie</em> doar cât îi permiți: sunt două straturi separate — configurația serverului (user read-only) și permisiunile (S1).</button>
+        </div>
+        <div class="sc-explain">„Serverul poate face X" <strong>≠</strong> „Claude are voie să facă X". Stratul 1 e ce poate serverul — cel mai eficient control e un <strong>user de bază de date read-only</strong>, care nu poate scrie indiferent ce cere modelul. Stratul 2 e ce are voie Claude: reguli de permisiuni pe <code>mcp__&lt;server&gt;__&lt;tool&gt;</code>, comise în repo. Tiparul practic: <code>allow</code> pe citire, <code>ask</code> sau <code>deny</code> pe SQL arbitrar.</div>
+      </div>
+
+      <div class="sc-q" data-correct="1">
+        <p class="sc-question"><strong>5.</strong> Serverul tău propriu e <code>✔ Connected</code> și <code>/mcp</code> îi arată tool-ul, dar Claude nu-l cheamă niciodată la întrebarea potrivită. Ce reglezi?</p>
+        <div class="sc-opts">
+          <button type="button" class="sc-opt">Transportul — treci de pe <code>stdio</code> pe <code>http</code>, ca să fie „văzut" mai bine.</button>
+          <button type="button" class="sc-opt"><strong>Descrierea uneltei</strong> — ea e interfața de invocare, exact ca <code>description</code> la skills și subagenți.</button>
+          <button type="button" class="sc-opt">Implementarea handler-ului — logica lui e prea slabă ca să fie ales.</button>
+        </div>
+        <div class="sc-explain">Aceeași lecție ca la skills (S3) și subagenți (S4): dacă unealta nu e chemată, problema e aproape mereu <strong>descrierea</strong>, nu implementarea. Descrierea spune <em>când</em> se folosește unealta; handler-ul spune <em>ce face</em> odată chemată. Pune cazul principal și cuvintele naturale în față — descrierile de unelte și instrucțiunile de server se taie la 2KB.</div>
+      </div>
+    </div>
+  </section>
 
   <div class="page-nav">
     <a href="s5.html">← S5: Hooks</a>
@@ -88,5 +699,6 @@
 
 <script src="assets/main.js"></script>
 <script src="assets/glossary.js"></script>
+<script src="assets/selfcheck.js"></script>
 </body>
 </html>
