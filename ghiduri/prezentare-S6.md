@@ -58,10 +58,21 @@ Te prinzi **copiind date în chat**.
 
 Un **protocol deschis**, client–server.
 
-- **Claude Code = clientul.**
+- **Claude Code = aplicația-gazdă** (clientul, în vorbire curentă).
 - **Serverul MCP** = un proces (local sau remote) care expune capabilități.
 - Nu e un wrapper peste `Bash`: întoarce **date structurate**, cu **schemă de unealtă**.
 - Și, spre deosebire de un script, se partajează ca **configurație**, nu ca fișier de copiat.
+
+---
+
+## Analogia care prinde
+
+- **USB-C pentru AI** — un port standard; orice sistem se conectează la fel. *(analogia oficială Anthropic)*
+- **ODBC/JDBC pentru AI** — Claude vorbește un singur protocol; orice server se pluginează în spate, ca un driver.
+- **Linked Server** — înregistrezi o dată un sistem extern, apoi îl interoghezi printr-o interfață locală.
+- Schema unui tool = **semnătura unei proceduri**: nume, parametri tipați, ce întoarce.
+
+> Înainte de MCP: fiecare aplicație × fiecare sistem = integrare custom (N×M). Cu MCP: un standard — **N+M**.
 
 ---
 
@@ -85,7 +96,7 @@ Un **protocol deschis**, client–server.
 | `stdio` | proces **local** — Playwright, tempo-mcp, serverul tău. Default-ul pentru ce rulezi la tine. |
 | `http` | remote **recomandat** (în JSON: `http`, alias `streamable-http`). **Singurul cu OAuth.** Jira. |
 | `sse` | ⚠️ **deprecat** — doar dacă serviciul n-are altceva |
-| `ws` | servere care **împing** evenimente; doar prin JSON, autentificare doar prin header |
+| `ws` | ⚠️ doar config Claude Code — **nu în specul MCP core** (acolo: doar `stdio` + HTTP). Servere care împing evenimente. |
 
 > Azi atingem ambele care contează: `http` la Jira, `stdio` la Playwright / tempo / serverul tău.
 

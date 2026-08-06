@@ -22,7 +22,9 @@ Ce schimbă MCP: Claude primește unelte care vorbesc direct cu sistemul. Nu mai
 
 ## Ce este MCP, concret
 
-MCP este un **protocol deschis**, de tip client–server. Claude Code este clientul. Un **server MCP** este un proces — local sau remote — care expune capabilități. Nu este un simplu wrapper peste comenzi shell: un server MCP întoarce **date structurate**, cu o **schemă de unealtă** care spune ce parametri acceptă și ce înseamnă, nu text pe care Claude trebuie să-l ghicească. Și, spre deosebire de un script, un server MCP se partajează ca **configurație**, nu ca fișier de copiat.
+MCP este un **protocol deschis**, de tip client–server. Claude Code este aplicația-gazdă — în vorbire curentă, clientul — și deschide câte o conexiune pentru fiecare server. Un **server MCP** este un proces — local sau remote — care expune capabilități. Nu este un simplu wrapper peste comenzi shell: un server MCP întoarce **date structurate**, cu o **schemă de unealtă** care spune ce parametri acceptă și ce înseamnă, nu text pe care Claude trebuie să-l ghicească. Și, spre deosebire de un script, un server MCP se partajează ca **configurație**, nu ca fișier de copiat.
+
+Analogia oficială a celor de la Anthropic e **USB-C pentru aplicațiile de AI**: la fel cum un port USB-C oferă o cale standard de a conecta orice periferic, MCP oferă o cale standard de a conecta un model la orice sistem extern — un singur conector în locul unui sertar plin de cabluri diferite. Pentru o echipă care vine din SQL, alte două analogii prind și mai bine. **ODBC sau JDBC pentru AI**: scrii aplicația o dată pe interfața standard și schimbi driverul în spate fără să schimbi aplicația — la fel, Claude vorbește un singur protocol, iar orice server se pluginează în spate ca un driver. Și **linked server**-ul din SQL Server: înregistrezi o dată un sistem extern, apoi îl interoghezi printr-o interfață locală, exact cum un server MCP înregistrat devine accesibil lui Claude. Un ultim reper util: schema unei unelte seamănă cu **semnătura unei proceduri stocate** — un nume, parametri tipați, și ce întoarce. Fundalul care motivează tot: înainte de MCP, fiecare aplicație de AI avea nevoie de cod-lipici pentru fiecare sistem, deci numărul de integrări creștea ca produsul dintre aplicații și sisteme; MCP înlocuiește asta cu un singur standard, deci integrările cresc doar ca sumă.
 
 ## Ce expune un server: nu doar tools
 
@@ -36,7 +38,7 @@ Primul este `stdio`: serverul e un proces **local**, pornit de Claude Code, care
 
 Al doilea este `http`: serverul e **remote**, undeva în cloud. În fișierul de configurare apare ca `http`, cu aliasul `streamable-http`. E singurul transport care suportă **OAuth**, adică autentificare prin browser — de aceea Jira, un serviciu cloud, se conectează prin `http`.
 
-Mai există două, pe care le recunoști dar nu le folosești azi. `sse` este **deprecat** — îl vezi doar dacă un serviciu vechi nu expune altceva. Și `ws`, WebSocket, pentru servere care împing evenimente, configurabil doar prin JSON.
+Mai există două, pe care le recunoști dar nu le folosești azi. `sse` este **deprecat** — îl vezi doar dacă un serviciu vechi nu expune altceva. Și `ws`, WebSocket, pentru servere care împing evenimente; de reținut că `ws` e o opțiune de configurare specifică Claude Code, nu face parte din specul MCP core, care recunoaște doar `stdio` și Streamable HTTP.
 
 Un lucru important de dezmințit: intuiția că „SSE e pentru echipă" e greșită pe două planuri. SSE e deprecat, iar partajarea **nu** e o proprietate a transportului, ci a scope-ului. Un server local pus în fișierul de proiect e partajat cu toată echipa; un server remote pus în scope local nu e partajat cu nimeni.
 

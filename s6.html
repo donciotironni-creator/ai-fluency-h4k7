@@ -58,6 +58,8 @@
     <br><br>
     <strong>MCP</strong> (Model Context Protocol) e o convenție prin care un program separat — un <strong>server MCP</strong> — îi oferă lui Claude unelte noi. Conectezi serverul de Jira și îl întrebi „ce tickete deschise am în sprint?"; conectezi Playwright și îi zici „mergi pe pagina asta și verifică ce apare"; conectezi serverul de pontaj și îi ceri „loghează o oră pe ticketul ăsta". El interoghează, se uită la rezultat, mai întreabă. Nu mai lipești nimic.
     <br><br>
+    Analogia oficială (Anthropic): <strong>USB-C pentru AI</strong> — un port standard prin care orice sistem se conectează la fel. Pentru o echipă din SQL prind mai bine <strong>ODBC/JDBC</strong> (Claude vorbește un protocol, orice server se pluginează în spate ca un driver) și <strong>linked server</strong> (înregistrezi o dată un sistem extern, apoi îl interoghezi printr-o interfață locală). Iar schema unui tool = <strong>semnătura unei proceduri</strong>: nume, parametri tipați, ce întoarce.
+    <br><br>
     Termenii care revin, pe scurt: <strong>server MCP</strong> = programul care oferă uneltele · <strong>transport</strong> = cum vorbește Claude cu el (proces local, sau prin rețea) · <strong>tool</strong> = o unealtă expusă de server · <strong>scope</strong> = unde stă configurația (doar la tine, sau comisă în repo pentru toată echipa) · <strong>OAuth</strong> = login prin browser, pentru servere din cloud.
   </div>
 
@@ -110,7 +112,7 @@
     <div class="card">
       <p style="color:var(--ink-soft);font-size:.93rem;margin-bottom:8px;">La final, fiecare știe:</p>
       <ul>
-        <li>Ce e MCP, concret: un <strong>protocol deschis</strong> client-server. Claude Code e clientul; un <strong>server MCP</strong> e un proces (local sau remote) care expune unelte, resurse și prompturi.</li>
+        <li>Ce e MCP, concret: un <strong>protocol deschis</strong> client-server. Claude Code e aplicația-gazdă (clientul, în vorbire curentă); un <strong>server MCP</strong> e un proces (local sau remote) care expune unelte, resurse și prompturi.</li>
         <li>Ce expune un server, <strong>dincolo de tools</strong>: <strong>resources</strong> (referențiate cu <code>@server:protocol://cale</code>, ca fișierele) și <strong>prompts</strong> (apar ca <code>/mcp__server__prompt</code>).</li>
         <li>Cele <strong>două transporturi</strong> care contează azi, văzute pe viu: <code>http</code> (remote, OAuth — Jira) și <code>stdio</code> (proces local — Playwright, tempo, serverul propriu). Plus <code>sse</code> (<strong>deprecat</strong>) și <code>ws</code>.</li>
         <li>Cum instalezi un server <strong>remote cu OAuth</strong> (Jira), unul <strong>stdio dintr-un pachet npm</strong> (Playwright), și unul <strong>custom clonat din git</strong> (tempo) — și de ce <code>--</code> e obligatoriu la stdio.</li>
@@ -182,7 +184,7 @@
           <tr><td><code>stdio</code></td><td>proces local, pe stdin/stdout</td><td>Playwright, tempo, serverul tău. <strong>Default pentru ce rulezi local.</strong></td></tr>
           <tr><td><code>http</code></td><td>server remote (JSON: <code>http</code>, alias <code>streamable-http</code>)</td><td>Jira. <strong>Singurul cu OAuth.</strong></td></tr>
           <tr><td><code>sse</code></td><td><strong>deprecat</strong></td><td>doar dacă serviciul n-are altceva</td></tr>
-          <tr><td><code>ws</code></td><td>bidirecțional, servere care împing evenimente</td><td>doar prin JSON, autentificare doar prin header</td></tr>
+          <tr><td><code>ws</code></td><td>bidirecțional, servere care împing evenimente</td><td>⚠️ doar config Claude Code — <strong>nu în specul MCP core</strong> (acolo: doar <code>stdio</code> + Streamable HTTP)</td></tr>
         </table>
       </div>
       <div class="warning-card" style="margin-top:12px;">

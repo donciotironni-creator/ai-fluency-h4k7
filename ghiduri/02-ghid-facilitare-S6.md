@@ -33,7 +33,7 @@ Un singur criteriu ține sesiunea:
 ### Obiective de învățare
 
 La final, fiecare știe:
-- Ce e MCP, concret: un **protocol deschis** client-server. Claude Code e clientul; un **server MCP** e un proces (local sau remote) care expune unelte, resurse și prompturi.
+- Ce e MCP, concret: un **protocol deschis** client-server. Claude Code e aplicația-gazdă (clientul, în vorbire curentă); un **server MCP** e un proces (local sau remote) care expune unelte, resurse și prompturi.
 - Ce expune un server, **dincolo de tools**: **resources** (referențiate cu `@server:protocol://cale`, ca fișierele) și **prompts** (apar ca `/mcp__server__prompt`).
 - Cele **două transporturi** care contează azi, văzute pe viu: `http` (remote, OAuth — Jira) și `stdio` (proces local — Playwright, tempo, serverul propriu). Plus `sse` (**deprecat**) și `ws`, ca să le recunoască.
 - Cum instalezi un server **remote cu OAuth** (Jira), unul **stdio dintr-un pachet npm** (Playwright), și unul **custom clonat din git** (tempo) — și de ce `--` e obligatoriu la stdio.
@@ -63,6 +63,7 @@ La final, fiecare știe:
 - **Simptomul care se vede:** te prinzi copiind date în chat. Rulezi un `SELECT` în SSMS și lipești rezultatul. Deschizi un ticket Jira, îl parafrazezi. De fiecare dată **tu** ești transportul dintre Claude și sistem.
 - **Ce schimbă MCP:** Claude primește unelte noi, care vorbesc direct cu sistemul. Nu mai lipești rezultate — ceri ce vrei să afli, iar Claude iterează singur.
 - **De ce nu e „doar un wrapper peste Bash":** un server MCP întoarce **date structurate** cu **schemă de unealtă**, nu text pe stdout care trebuie ghicit. Și, spre deosebire de un script, se partajează ca **configurație**.
+- **Analogii, dacă grupul cere una** (folosește-le, nu le preda pe toate): **USB-C pentru AI** — un port standard, orice sistem se conectează la fel (analogia oficială Anthropic); pentru publicul ăsta merge mai bine **ODBC/JDBC** — Claude vorbește un protocol, orice server se pluginează în spate ca un driver — sau **Linked Server** — înregistrezi o dată un sistem extern și-l interoghezi printr-o interfață locală. Iar schema unui tool = **semnătura unei proceduri** (nume, parametri tipați, ce întoarce). Cadrul „de ce": înainte de MCP, fiecare aplicație × fiecare sistem = integrare custom (N×M); cu MCP, un standard, N+M.
 - **Criteriul, pus din prima ca să nu apară derapajul:** merită un server MCP când poți numi **întrebările** pe care Claude le va pune sistemului. Dacă poți numi doar **comanda** pe care ai rula-o tu — e script, și `Bash` îl face deja. Ține-l pe tablă toată ziua; la fiecare server din tur, întreabă grupul „e MCP sau ar fi fost script?".
 
 **Demo:** pornește de la eșec. Cere-i lui Claude, fără niciun server conectat: „ce tickete deschise am eu în Jira?" Arată ce face — spune onest că nu ajunge la Jira, sau ghicește. Ăsta e golul pe care-l umple segmentul 3.
@@ -91,7 +92,7 @@ Segmentul de mecanică. E cel pe care se sprijină tot turul; fă-l încet, o da
 | `stdio` | proces local, pe stdin/stdout | Playwright, tempo, serverul tău. **Default pentru ce rulezi local.** |
 | `http` | server remote (JSON: `http`, alias `streamable-http`) | Jira. **Singurul cu OAuth.** |
 | `sse` | **deprecat** | doar dacă serviciul n-are altceva |
-| `ws` | bidirecțional, servere care împing evenimente | doar prin JSON, autentificare doar prin header |
+| `ws` | bidirecțional, servere care împing evenimente | ⚠️ doar config Claude Code — **nu în specul MCP core** (acolo: doar `stdio` + Streamable HTTP) |
 
 > ⚠️ **Corecție față de intuiția comună:** „SSE = pentru echipă" e greșit pe două planuri. SSE e deprecat, și **partajarea nu e o proprietate a transportului** — e a **scope-ului**. Un server `stdio` pus în `.mcp.json` e partajat cu echipa; un server `http` în scope `local` nu e partajat cu nimeni.
 
